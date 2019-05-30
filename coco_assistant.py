@@ -84,6 +84,94 @@ class COCO_Assistant():
 
 		with open(outAnnFile,'w') as oa:
 		    json.dump(x,oa)
+		
+	def coco_cat_count(self,annotations):
+	    
+	    with open(annotations) as a:
+	    	ann = json.load(a)
+	    
+	    a_cats = []
+
+	    for i in ann['annotations']:
+	        j = i['category_id']
+	        for cat in ann['categories']:
+	            if j == cat['id']:
+	                a_cats.append(cat['name'])
+	        
+	        
+	    # Create dictionary of category and counts
+	    a_count_dict = dict(Counter(a_cats))
+	    
+	    # Create dictionary of category and ids
+	    ids = []
+	    cats = []
+	    for ind in range(len(a['categories'])):
+	        cat_id,cat,_ = zip(a['categories'][ind].values())
+	        ids.append(cat_id[0])
+	        cats.append(cat[0])
+	    cat_dict = dict(zip(ids, cats))
+	    
+	    missing_train = set(list(cat_dict.values())) - set(list(a_count_dict.keys()))
+	    a_add = dict(zip(missing_train, [0]*len(missing_train)))
+	    a_count_dict.update(a_add)
+	    
+	    return [a_count_dict,a_add]
+
+	def show_class_distribution_both(annotations=None, dist="train",bar="h"):
+	    gtrain,gval = annotations
+	    assert dist in ["train","val"], "Has to be either 'train' or 'val' data"
+	    train_cats, val_cats, _ = cat_count([gtrain,gval])
+	    train_labels, train_values = zip(*Counter(train_cats).items())
+	    val_labels, val_values = zip(*Counter(val_cats).items())
+
+
+	    dat = ["train","val"]
+	    
+	    for name in dat:
+	        
+	        if name == "train":
+	            labels = train_labels
+	            values = train_values
+	        elif name == "val":
+	            labels = val_labels
+	            values = val_values
+	        
+	        
+	        indexes = np.arange(len(labels))
+	        width = 0.5
+
+	        if bar == "v":
+	            fig_size = (20,10)
+	        elif bar == "h":
+	            fig_size = (8,10)
+
+	        plt.figure(figsize=fig_size)
+
+	        if bar == "h":
+	            plt.barh(indexes, values, width,align="edge")
+	            plt.yticks(indexes+width/2,labels)
+	            plt.ylabel('Classes')
+	            plt.xlabel('Count')
+	        elif bar == "v":
+	            plt.bar(indexes, values, width,align="edge")
+	            plt.xticks(indexes, labels,rotation='vertical')
+	            plt.xlabel('Classes')
+	            plt.ylabel('Count')
+
+
+	        plt.tight_layout()
+	        plt.title('Class Distribution')
+
+
+	        if bar == "h":
+	            for i, v in enumerate(values):
+	                plt.text(v + 3, i , str(v), color='blue', fontweight='bold')
+	        elif bar == "v":
+	            for i, v in enumerate(values):
+	                plt.text(i,v + 5,str(v), color='blue', fontsize=0.6*fig_size[0],fontweight='bold')
+
+	        plt.savefig(name + ".jpg")
+	        plt.show()
 
 def parse_args():
     parser = argparse.ArgumentParser()

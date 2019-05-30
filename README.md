@@ -22,8 +22,8 @@ Example:
 │   ├── images
 ``` 
 
-The coco_maker functionality will combine the images and annotations to generate an image folder containing all images and an annotation file corresponding to it. Note however, that the individiual annotations needs to have different annotation ids so that they can be seamlesslt merged. In the future, functionality will be added to check annotation ids automatically.
+The `coco_maker` functionality will combine the images and annotations to generate an image folder containing all images and an annotation file corresponding to it. Note however, that the individiual annotations needs to have different annotation ids so that they can be seamlesslt merged. In the future, functionality will be added to check annotation ids automatically.
 
 #### Remover
 
-Suppose you wanted to remove certain categories from the annotation file. The coco_remover does just that.
+Suppose you wanted to remove certain categories from the annotation file. The `coco_remover` does just that.

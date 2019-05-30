@@ -91,6 +91,7 @@ def parse_args():
     parser.add_argument('--out_dir', help='the directory to store results')
     parser.add_argument('--make',action='store_true',help='create coco data')
     parser.add_argument('--remove',action='store_true',help='remove certain categories from the annotations')
+    parser.add_argument('--cat_count',action='store_true',help='generate countplot of class occurrences')
     args = parser.parse_args()
 
     return args
@@ -110,7 +111,10 @@ def main():
 
 	if args.remove is True:
 		cas.coco_remover()
-
+	
+	if args.cat_count is True:
+		ann_file = None
+		cas.coco_cat_count(annotations=ann_file)
 
 if __name__ == "__main__":
 	main()

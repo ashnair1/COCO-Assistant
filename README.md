@@ -27,3 +27,7 @@ The `coco_maker` functionality will combine the images and annotations to genera
 #### Remover
 
 Suppose you wanted to remove certain categories from the annotation file. The `coco_remover` does just that.
+
+To be added: <br>
+&#9744; Coco2yolo Converter <br>
+&#9744; Class Counter

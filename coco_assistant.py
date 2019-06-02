@@ -1,10 +1,12 @@
-import json
-from pycocotools.coco import COCO
 import os
 import shutil
-from shutil import copyfile
 import random
 import argparse
+
+import numpy as np
+import matplotlib.pyplot as plt
+import json
+from pycocotools.coco import COCO
 
 
 class COCO_Assistant():
@@ -31,7 +33,7 @@ class COCO_Assistant():
 		    imgs = [i for i in os.listdir(src) if i[-4:].lower() in imext]
 		    #random.shuffle(imgs)
 		    for img in imgs:
-		        copyfile(os.path.join(src,img), os.path.join(dst,img))
+		        shutil.copyfile(os.path.join(src,img), os.path.join(dst,img))
 
 
 		p = {'images':[],
@@ -85,93 +87,70 @@ class COCO_Assistant():
 		with open(outAnnFile,'w') as oa:
 		    json.dump(x,oa)
 		
-	def coco_cat_count(self,annotations):
+	def cat_count(self,coco_ann):
+
+		"""
+		Generate a dictionairy of categories and their counts.
+
+		Returns the dict, list of cats and list of counts
+		"""
+
+		catcount = {}
+		for catid, occurrences in coco_ann.catToImgs.items():
+			catcount[coco_ann.cats[catid]['name']] = len(occurrences)
+
+		labels = [ck for ck in catcount.keys()]
+		values = [cv for cv in catcount.values()]
+
+		return catcount, labels, values
+
+	def disp_cat_count(self, annotations=None, name="test", bar="h", show=False):
 	    
-	    with open(annotations) as a:
-	    	ann = json.load(a)
-	    
-	    a_cats = []
+	    _, labels, values = self.cat_count(annotations)
 
-	    for i in ann['annotations']:
-	        j = i['category_id']
-	        for cat in ann['categories']:
-	            if j == cat['id']:
-	                a_cats.append(cat['name'])
-	        
-	        
-	    # Create dictionary of category and counts
-	    a_count_dict = dict(Counter(a_cats))
-	    
-	    # Create dictionary of category and ids
-	    ids = []
-	    cats = []
-	    for ind in range(len(a['categories'])):
-	        cat_id,cat,_ = zip(a['categories'][ind].values())
-	        ids.append(cat_id[0])
-	        cats.append(cat[0])
-	    cat_dict = dict(zip(ids, cats))
-	    
-	    missing_train = set(list(cat_dict.values())) - set(list(a_count_dict.keys()))
-	    a_add = dict(zip(missing_train, [0]*len(missing_train)))
-	    a_count_dict.update(a_add)
-	    
-	    return [a_count_dict,a_add]
+	    indexes = np.arange(len(labels))
+	    width = 0.5
 
-	def show_class_distribution_both(annotations=None, dist="train",bar="h"):
-	    gtrain,gval = annotations
-	    assert dist in ["train","val"], "Has to be either 'train' or 'val' data"
-	    train_cats, val_cats, _ = cat_count([gtrain,gval])
-	    train_labels, train_values = zip(*Counter(train_cats).items())
-	    val_labels, val_values = zip(*Counter(val_cats).items())
+	    if bar == "v":
+	        fig_size = (20,10)
+	    elif bar == "h":
+	        fig_size = (8,10)
+
+	    plt.figure(figsize=fig_size)
+
+	    if bar == "h":
+	        plt.barh(indexes, values, width,align="edge")
+	        plt.yticks(indexes+width/2,labels)
+	        plt.ylabel('Classes')
+	        plt.xlabel('Count')
+	    elif bar == "v":
+	        plt.bar(indexes, values, width,align="edge")
+	        plt.xticks(indexes, labels,rotation='vertical')
+	        plt.xlabel('Classes')
+	        plt.ylabel('Count')
 
 
-	    dat = ["train","val"]
-	    
-	    for name in dat:
-	        
-	        if name == "train":
-	            labels = train_labels
-	            values = train_values
-	        elif name == "val":
-	            labels = val_labels
-	            values = val_values
-	        
-	        
-	        indexes = np.arange(len(labels))
-	        width = 0.5
-
-	        if bar == "v":
-	            fig_size = (20,10)
-	        elif bar == "h":
-	            fig_size = (8,10)
-
-	        plt.figure(figsize=fig_size)
-
-	        if bar == "h":
-	            plt.barh(indexes, values, width,align="edge")
-	            plt.yticks(indexes+width/2,labels)
-	            plt.ylabel('Classes')
-	            plt.xlabel('Count')
-	        elif bar == "v":
-	            plt.bar(indexes, values, width,align="edge")
-	            plt.xticks(indexes, labels,rotation='vertical')
-	            plt.xlabel('Classes')
-	            plt.ylabel('Count')
+	    plt.tight_layout()
+	    plt.title('Class Distribution')
 
 
-	        plt.tight_layout()
-	        plt.title('Class Distribution')
+	    if bar == "h":
+	        for i, v in enumerate(values):
+	            plt.text(v + 3, i, str(v), color='blue', fontweight='bold')
+	    elif bar == "v":
+	        for i, v in enumerate(values):
+	            plt.text(i,v + 5, str(v), color='blue', fontsize=0.6*fig_size[0],fontweight='bold')
+
+	    out_dir = os.path.join(os.getcwd(),'plots')
+	    if os.path.exists(out_dir) is False:
+		    os.mkdir(out_dir)
 
 
-	        if bar == "h":
-	            for i, v in enumerate(values):
-	                plt.text(v + 3, i , str(v), color='blue', fontweight='bold')
-	        elif bar == "v":
-	            for i, v in enumerate(values):
-	                plt.text(i,v + 5,str(v), color='blue', fontsize=0.6*fig_size[0],fontweight='bold')
+	    plt.savefig(os.path.join(out_dir,name + ".jpg"))
+	    if show is True:
+	    	plt.show()
 
-	        plt.savefig(name + ".jpg")
-	        plt.show()
+
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -190,7 +169,9 @@ def main():
 	
 	args = parse_args()
 
-	assert args.make != args.remove
+    # Both cannot be True
+	assert args.make & args.remove is False
+
 
 	cas = COCO_Assistant(args.work_dir, args.out_dir)
 
@@ -201,8 +182,12 @@ def main():
 		cas.coco_remover()
 	
 	if args.cat_count is True:
-		ann_file = None
-		cas.coco_cat_count(annotations=ann_file)
+		ann_dir = os.path.join(os.getcwd(),'annotations')
+		assert os.path.exists(ann_dir) is True, "Annotations directory does not exist. Please create a directory here with all the json files you want to check"
+		ann_files = [os.path.join(ann_dir,i) for i in os.listdir(ann_dir) if i[-4:] == "json"]
+		for i in ann_files:
+			coco_ann = COCO(i)
+			cas.disp_cat_count(annotations=coco_ann, name=os.path.basename(i)[:-5], bar="h", show=False)
 
 if __name__ == "__main__":
 	main()

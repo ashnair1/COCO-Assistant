@@ -31,3 +31,7 @@ Suppose you wanted to remove certain categories from the annotation file. The `c
 #### Cat Counter
 
 Counts and displays a countplot of the categories.
+
+#### COCO to YOLO Converter
+
+Converts COCO annotations to YOLO format (modified version of ultralytics's [original repo](https://github.com/ultralytics/COCO2YOLO))

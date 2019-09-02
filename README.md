@@ -1,4 +1,4 @@
-# COCO-Assistant
+# COCO-Assistant <img src="images/coco.png" height="50">
 
 Helper for dealing with MS-COCO annotations. 
 

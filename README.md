@@ -10,8 +10,7 @@ The MS COCO annotation format along with the pycocotools library is quite popula
 #### Maker
 
 Assuming you have multiple directories containing a folder of images and a COCO style annotation file for each set
-
-```
+ <!---   
 Example:
 .
 ├── IMAGE_SET1
@@ -20,6 +19,21 @@ Example:
 ├── IMAGE_SET2
 │   ├── coco.json
 │   ├── images
+
+--->
+```
+Example:
+.
+├── images
+│   ├── train
+│   ├── val
+|   ├── test
+|   
+├── annotations
+│   ├── train.json
+│   ├── val.json
+│   ├── test.json
+
 ``` 
 
 The `coco_maker` functionality will combine the images and annotations to generate an image folder containing all images and an annotation file corresponding to it. Note however, that the individiual annotations needs to have different annotation ids so that they can be seamlessly merged. In the future, functionality will be added to check annotation ids automatically.

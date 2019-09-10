@@ -14,25 +14,32 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 def cat_count(ann, name="test", show_count=False):
-	# Prepare annotations dataframe
-	# This should be done at the start
-	ann_df = pd.DataFrame(ann.anns).transpose()
+    # Prepare annotations dataframe
+    # This should be done at the start
+    ann_df = pd.DataFrame(ann.anns).transpose()
 
-	plt.figure(figsize=(10, 10))
-	chart = sns.countplot(
-		data=ann_df,
+    plt.figure(figsize=(10, 10))
+    chart = sns.countplot(
+                data=ann_df,
 		x='category_name',
 		order=ann_df['category_name'].value_counts().index,
 		palette='Set1')
-	chart.set_title("Instances per category")
-	chart.set_xticklabels(chart.get_xticklabels(), rotation=90)
+    chart.set_title("Instances per category")
+    chart.set_xticklabels(chart.get_xticklabels(), rotation=90)
 
-	if show_count is True:
-		for p in chart.patches:
-			height = p.get_height()
-			chart.text(p.get_x() + p.get_width() / 2., height + 0.9, height, ha="center")
+    if show_count is True:
+        for p in chart.patches:
+            height = p.get_height()
+            chart.text(p.get_x() + p.get_width() / 2., height + 0.9, height, ha="center")
 
-	plt.show()
+    out_dir = os.path.join(os.getcwd(),'plots')
+    if os.path.exists(out_dir) is False:
+        os.mkdir(out_dir)
+
+    plt.savefig(os.path.join(out_dir, name + "_cat_dist" ".jpg"))
+
+
+    plt.show()
 
 
 def get_areas(ann):
@@ -105,12 +112,12 @@ def pi_area_split(ann, areaRng):
 
 if __name__ == "__main__":
 	# Get Annotations Dir and Image folder
-    folder = "test"
+    folder = "combined"
     annFile = os.path.join(os.getcwd(), 'annotations', "iSAID_{}.json".format(folder))
     ann = COCO(annFile)
 
-    #cat_count(ann, folder, show_count=False)
+    cat_count(ann, folder, show_count=True)
 
-    pi_area_split(ann, areaRng=[0, 144, 512, 1e5])
+    #pi_area_split(ann, areaRng=[0, 144, 512, 1e5])
 
     #view_area_dist(ann)

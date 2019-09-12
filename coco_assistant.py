@@ -49,7 +49,7 @@ class COCO_Assistant():
 		if os.path.exists(self.res_dir) is False:
 			os.mkdir(self.res_dir)
 
-		self.imgfolders = os.listdir(img_dir)
+		self.imgfolders = [i for i in os.listdir(self.img_dir) if os.path.isdir(os.path.join(self.img_dir,i)) is True]
 		self.jsonfiles = sorted([j for j in os.listdir(ann_dir) if j[-5:] == ".json"])
 		self.names = [n[:-5] for n in self.jsonfiles]
 
@@ -65,7 +65,7 @@ class COCO_Assistant():
 
 		self.anndict = dict(zip(self.jsonfiles, self.annfiles))
 
-		print(self.anndict.keys())
+		#print(self.anndict.keys())
 
 
 	def combine(self):
@@ -147,10 +147,10 @@ class COCO_Assistant():
 		print(self.jsonfiles)
 		print("Who needs a cat removal?")
 		jc = input()
-		assert jc in self.jsonfiles, "Choice not in json file list"
-		ann = self.anndict[jc]
-		#ind = self.jsonfiles.index(jc)
-		#ann = self.annfiles[ind]
+		assert jc.lower() in [item.lower() for item in self.jsonfiles], "Choice not in json file list"
+		#ann = self.anndict[jc]
+		ind = self.jsonfiles.index(jc.lower())
+		ann = self.annfiles[ind]
 
 		print("\nCategories present:")
 		cats = [i['name'] for i in ann.cats.values()]
@@ -196,10 +196,10 @@ class COCO_Assistant():
 		Function for displaying statistics
 		"""
 		if stat == "area":
-			stats.pi_area_split(list(self.anndict.values()), self.names, areaRng=arearng, save=save)
+			stats.pi_area_split(self.annfiles, self.names, areaRng=arearng, save=save)
 			#stats.pi_area_split_single(self.annfiles[0], kwargs['arearng'])
 		elif stat == "cat":
-			stats.cat_count(list(self.anndict.values()), self.names, show_count=show_count, save=save)
+			stats.cat_count(self.annfiles, self.names, show_count=show_count, save=save)
 
 
 
@@ -211,11 +211,11 @@ class COCO_Assistant():
 		"""
 		
 		print("Choose directory:")
-		print(os.listdir(self.img_dir))
+		print(self.imgfolders)
 		
 		dir_choice = input()
 
-		assert dir_choice in self.imgfolders, "Choice not in images folder"
+		assert dir_choice.lower() in [item.lower() for item in self.imgfolders], "Choice not in images folder"
 		ann = self.anndict[dir_choice + ".json"]
 		#ind = self.imgfolders.index(dir_choice)
 		#ann = self.annfiles[ind]

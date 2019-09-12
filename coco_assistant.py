@@ -216,9 +216,9 @@ class COCO_Assistant():
 		dir_choice = input()
 
 		assert dir_choice.lower() in [item.lower() for item in self.imgfolders], "Choice not in images folder"
-		ann = self.anndict[dir_choice + ".json"]
-		#ind = self.imgfolders.index(dir_choice)
-		#ann = self.annfiles[ind]
+		#ann = self.anndict[dir_choice + ".json"]
+		ind = self.imgfolders.index(dir_choice.lower())
+		ann = self.annfiles[ind]
 		img_dir = os.path.join(self.img_dir,dir_choice)
 		cocovis.visualise_all(ann, img_dir)
 

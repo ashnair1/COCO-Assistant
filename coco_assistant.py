@@ -10,7 +10,7 @@ from pycocotools.coco import COCO
 from tqdm import tqdm
 import logging
 import pdb
-
+import coco_stats as stats
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -50,6 +50,7 @@ class COCO_Assistant():
 
 		self.imgfolders = os.listdir(img_dir)
 		self.jsonfiles = sorted([j for j in os.listdir(ann_dir) if j[-5:] == ".json"])
+		self.names = [n[:-5] for n in self.jsonfiles]
 
 		# Note: Add check for confirming these folders only contain .jpg and .json respectively
 
@@ -184,19 +185,32 @@ class COCO_Assistant():
 			json.dump(x, oa)
 
 
-	def ann_stats(self):
+	def ann_stats(self, stat, show_count=False, arearng=[0,32,96,1e5], save=False):
 		"""
 		Function for displaying statistics
 		"""
+		if stat == "area":
+			stats.pi_area_split(self.annfiles, self.names, areaRng=arearng, save=save)
+			#stats.pi_area_split_single(self.annfiles[0], kwargs['arearng'])
+		elif stat == "cat":
+			stats.cat_count(self.annfiles, self.names, show_count=show_count, save=save)
 
-		
+
 
 		pass
 
-	def visualiser(self):
+	def visualise(self, filename=None):
 		"""
 		Function for visualising annotations
 		"""
+		if filename == None:
+			mode = 'all'
+		else:
+			mode = 'single'
+			logging.debug("Visualising {}".format(filename))
+
+
+		
 		pass
 
 
@@ -211,4 +225,6 @@ if __name__ == "__main__":
 	cas = COCO_Assistant(img_dir,ann_dir)
 
 	#cas.combine()
-	cas.remove_cat()
+	#cas.remove_cat()
+	#cas.ann_stats(stat="area",arearng=[10,144,512,1e5])
+	cas.ann_stats(stat="cat", show_count=False, save=True)

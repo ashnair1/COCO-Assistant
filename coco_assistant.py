@@ -202,9 +202,6 @@ class COCO_Assistant():
 			stats.cat_count(self.annfiles, self.names, show_count=show_count, save=save)
 
 
-
-		pass
-
 	def visualise(self):
 		"""
 		Function for visualising annotations
@@ -221,11 +218,6 @@ class COCO_Assistant():
 		ann = self.annfiles[ind]
 		img_dir = os.path.join(self.img_dir,dir_choice)
 		cocovis.visualise_all(ann, img_dir)
-
-
-		
-		pass
-
 
 
 if __name__ == "__main__":

@@ -11,6 +11,7 @@ from tqdm import tqdm
 import logging
 import pdb
 import coco_stats as stats
+import coco_visualiser as cocovis
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -61,6 +62,10 @@ class COCO_Assistant():
 		assert len(self.imgfolders) >= 1, "Image folders not passed"
 
 		self.annfiles = [COCO(os.path.join(ann_dir, i)) for i in self.jsonfiles]
+
+		self.anndict = dict(zip(self.jsonfiles, self.annfiles))
+
+		print(self.anndict.keys())
 
 
 	def combine(self):
@@ -143,8 +148,9 @@ class COCO_Assistant():
 		print("Who needs a cat removal?")
 		jc = input()
 		assert jc in self.jsonfiles, "Choice not in json file list"
-		ind = self.jsonfiles.index(jc)
-		ann = self.annfiles[ind]
+		ann = self.anndict[jc]
+		#ind = self.jsonfiles.index(jc)
+		#ann = self.annfiles[ind]
 
 		print("\nCategories present:")
 		cats = [i['name'] for i in ann.cats.values()]
@@ -190,24 +196,31 @@ class COCO_Assistant():
 		Function for displaying statistics
 		"""
 		if stat == "area":
-			stats.pi_area_split(self.annfiles, self.names, areaRng=arearng, save=save)
+			stats.pi_area_split(list(self.anndict.values()), self.names, areaRng=arearng, save=save)
 			#stats.pi_area_split_single(self.annfiles[0], kwargs['arearng'])
 		elif stat == "cat":
-			stats.cat_count(self.annfiles, self.names, show_count=show_count, save=save)
+			stats.cat_count(list(self.anndict.values()), self.names, show_count=show_count, save=save)
 
 
 
 		pass
 
-	def visualise(self, filename=None):
+	def visualise(self):
 		"""
 		Function for visualising annotations
 		"""
-		if filename == None:
-			mode = 'all'
-		else:
-			mode = 'single'
-			logging.debug("Visualising {}".format(filename))
+		
+		print("Choose directory:")
+		print(os.listdir(self.img_dir))
+		
+		dir_choice = input()
+
+		assert dir_choice in self.imgfolders, "Choice not in images folder"
+		ann = self.anndict[dir_choice + ".json"]
+		#ind = self.imgfolders.index(dir_choice)
+		#ann = self.annfiles[ind]
+		img_dir = os.path.join(self.img_dir,dir_choice)
+		cocovis.visualise_all(ann, img_dir)
 
 
 		
@@ -226,5 +239,6 @@ if __name__ == "__main__":
 
 	#cas.combine()
 	#cas.remove_cat()
-	#cas.ann_stats(stat="area",arearng=[10,144,512,1e5])
-	cas.ann_stats(stat="cat", show_count=False, save=True)
+	cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)
+	cas.ann_stats(stat="cat", show_count=False, save=False)
+	#cas.visualise()

@@ -102,10 +102,10 @@ def get_imgid_dict(ann):
     return id_fn_dict
 
 
-def visualise_all(ann, folder):
-    assert folder in ['train', 'val', 'test']
+
+def visualise_all(ann, img_dir):
+    
     # Get List of Images
-    img_dir = os.path.join(os.getcwd(), 'images', folder)
     imgs = os.listdir(img_dir)
 
     # Get image id and image filename mapping dict

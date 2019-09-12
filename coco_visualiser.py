@@ -112,6 +112,8 @@ def visualise_all(ann, img_dir):
     id_fn_dict = get_imgid_dict(ann)
 
     num_pages = len(ann.imgs.keys())
+    
+    # Visualise first image
 
     fig, ax = plt.subplots()
     fig.subplots_adjust(bottom=0.18)

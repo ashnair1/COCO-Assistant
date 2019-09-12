@@ -41,7 +41,7 @@ Removes a specific category from an annotation file.
 1. Generate countplot of instances per category that occur in the annotation files.
 2. Generate pie-chart that shows distribution of objects according to their size (as specified in areaRng).
 
-### Visualise annotations
+#### Visualise annotations
 
 Couldn't pycocotools visualise annotations (via the [showAnns](https://github.com/cocodataset/cocoapi/blob/636becdc73d54283b3aac6d4ec363cffbb6f9b20/PythonAPI/pycocotools/coco.py#L233)) as well? Sure it could, but I required a way to view all the annotations of a particular dataset so here we are.
 

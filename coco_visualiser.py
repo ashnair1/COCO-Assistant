@@ -119,7 +119,11 @@ def visualise_all(ann, img_dir):
     fig.subplots_adjust(bottom=0.18)
 
     im = io.imread(os.path.join(img_dir, imgs[0]))
-    annids = ann.getAnnIds(imgIds=id_fn_dict[imgs[0]], iscrowd=None)
+    imgid = id_fn_dict[imgs[0]]
+    # Modification for string image ids
+    if type(imgid) == str:
+    	imgid = [imgid]
+    annids = ann.getAnnIds(imgIds=imgid, iscrowd=None)
     anns = ann.loadAnns(annids)
     ax.axis('off')
     ax.set_title(imgs[0])
@@ -133,7 +137,11 @@ def visualise_all(ann, img_dir):
         ax.clear()
         ind = int(slider.val)
         im = io.imread(os.path.join(img_dir, imgs[ind]))
-        img_annids = ann.getAnnIds(imgIds=id_fn_dict[imgs[ind]], iscrowd=None)
+        imid = id_fn_dict[imgs[ind]]
+        # Modification for string image ids
+        if type(imid) == str:
+        	imid = [imid]
+        img_annids = ann.getAnnIds(imgIds=imid, iscrowd=None)
         img_anns = ann.loadAnns(img_annids)
         ax.axis('off')
         ax.set_title(imgs[ind])

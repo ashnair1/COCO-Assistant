@@ -1,4 +1,4 @@
-# COCO-Assistant<img src="rep_images/coco.png" height="40">
+# COCO-Assistant<img src="rep_stuff/coco.png" height="40">
 
 Helper for dealing with MS-COCO annotations. 
 
@@ -45,7 +45,7 @@ Removes a specific category from an annotation file.
 
 Couldn't `pycocotools` visualise annotations (via [showAnns](https://github.com/cocodataset/cocoapi/blob/636becdc73d54283b3aac6d4ec363cffbb6f9b20/PythonAPI/pycocotools/coco.py#L233)) as well? Sure it could, but I required a way to freely view all the annotations of a particular dataset so here we are.
 
-![](./rep_images/visualiser.gif)
+![](./rep_stuff/visualiser.gif)
 
 ### In Progress: 
 #### COCO to YOLO Converter

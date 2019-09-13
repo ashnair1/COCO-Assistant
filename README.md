@@ -26,7 +26,7 @@ Example:
 
 ``` 
 
-## What can CASS do?:
+## So what can CASS do?:
 
 #### Merge datasets
 
@@ -43,8 +43,9 @@ Removes a specific category from an annotation file.
 
 #### Visualise annotations
 
-Couldn't pycocotools visualise annotations (via the [showAnns](https://github.com/cocodataset/cocoapi/blob/636becdc73d54283b3aac6d4ec363cffbb6f9b20/PythonAPI/pycocotools/coco.py#L233)) as well? Sure it could, but I required a way to view all the annotations of a particular dataset so here we are.
+Couldn't `pycocotools` visualise annotations (via [showAnns](https://github.com/cocodataset/cocoapi/blob/636becdc73d54283b3aac6d4ec363cffbb6f9b20/PythonAPI/pycocotools/coco.py#L233)) as well? Sure it could, but I required a way to freely view all the annotations of a particular dataset so here we are.
 
+![](./rep_images/visualiser.gif)
 
 ### In Progress: 
 #### COCO to YOLO Converter

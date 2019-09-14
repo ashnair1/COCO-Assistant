@@ -1,19 +1,18 @@
 import os
 import shutil
-import random
-import argparse
 
-import numpy as np
-import matplotlib.pyplot as plt
 import json
 from pycocotools.coco import COCO
-from tqdm import tqdm
 import logging
 import pdb
-import coco_stats as stats
-import coco_visualiser as cocovis
 
-logging.basicConfig(level=logging.DEBUG)
+from . import coco_stats as stats
+from . import coco_visualiser as cocovis
+
+#import coco_stats as stats
+#import coco_visualiser as cocovis
+
+logging.basicConfig(level=logging.ERROR)
 
 
 """

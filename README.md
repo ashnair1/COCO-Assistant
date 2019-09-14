@@ -26,6 +26,15 @@ Example:
 
 ``` 
 
+## Installation
+
+```
+# Clone the repository
+git clone https://github.com/ashnair1/COCO-Assistant.git
+# Build and install the library
+make
+```
+
 ## So what can CASS do?:
 
 #### Merge datasets

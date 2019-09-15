@@ -1,0 +1,65 @@
+import os
+import shutil
+
+import tarfile
+
+from coco_assistant.coco_assistant import COCO_Assistant
+
+import data_getter
+
+from pycocotools.coco import COCO
+
+import pytest
+
+@pytest.fixture
+def get_data():
+	if os.path.isdir('./annotations') is False and os.path.isdir('./images') is False:
+	    # Download and extract data
+	    print("Downloading...")
+	    file_id = '17a_Mw-9QmQXHwgv2__XDauMO-7JasgXm'
+	    destination = 'test.tar.gz'
+	    data_getter.download_file_from_google_drive(file_id, destination)
+	    # Unzip data
+	    print("Extracting")
+	    tar = tarfile.open(destination, "r:gz")
+	    tar.extractall()
+	    tar.close()
+	# Set up paths
+	img_dir = os.path.join(os.getcwd(), 'images')
+	ann_dir = os.path.join(os.getcwd(), 'annotations')
+	return [img_dir, ann_dir] 
+
+#@pytest.mark.skip
+def test_combine(get_data):
+	cas = COCO_Assistant(get_data[0], get_data[1])
+	cas.combine()
+	comb = COCO(os.path.join(cas.resann_dir, 'combined.json'))
+	# Get combined annotation count
+	combann = len(comb.anns)
+        # Get individual annotation counts
+	ann_counts = [len(_cfile.anns) for _cfile in cas.annfiles]
+        # Clean up
+	shutil.rmtree(cas.res_dir)
+	assert sum(ann_counts) == combann, "Failure in merging datasets"
+
+
+#@pytest.mark.skip
+def test_cat_removal(get_data):
+	cas = COCO_Assistant(get_data[0], get_data[1])
+
+	test_ann = "iiai.json"
+	test_rcats = sorted(['APC', 'Planes', 'Quay'])
+
+	cas.remove_cat(jc=test_ann, rcats=test_rcats)
+
+	orig = COCO(os.path.join(cas.ann_dir, cas.jc)) 
+	rmj = COCO(os.path.join(cas.resrm_dir, cas.jc))
+
+	orig_names = [list(orig.cats.values())[i]['name'] for i in range(len(orig.cats))] 
+	rmj_names = [list(rmj.cats.values())[i]['name'] for i in range(len(rmj.cats))]
+
+	diff_names = sorted(list(set(orig_names) - set(rmj_names)))
+	
+    # Clean up
+	shutil.rmtree(cas.resrm_dir)
+	assert diff_names == test_rcats, "Failure in removing following categories: {}".format(test_rcats)

@@ -20,9 +20,6 @@ Example:
 │   ├── train.json
 │   ├── val.json
 │   ├── test.json
-|── coco_assistant.py
-|── coco_stats.py
-|── coco_visualiser.py
 
 ``` 
 

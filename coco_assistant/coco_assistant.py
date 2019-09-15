@@ -9,11 +9,9 @@ import pdb
 from . import coco_stats as stats
 from . import coco_visualiser as cocovis
 
-#import coco_stats as stats
-#import coco_visualiser as cocovis
-
 logging.basicConfig(level=logging.ERROR)
-
+logging.getLogger().setLevel(logging.WARNING)
+logging.getLogger('parso.python.diff').disabled = True
 
 """
 Expected Directory Structure
@@ -34,15 +32,16 @@ Expected Directory Structure
 
 
 class COCO_Assistant():
-	def __init__(self, img_dir, ann_dir):
+	def __init__(self, img_dir=None, ann_dir=None):
 		"""
-		:param jsonfiles (list): list of annotation files
-		:param folders (list): list of img folders
+		:param img_dir (str): path to images folder
+		:param ann_dir (str): path to annotations folder
 		"""
 
-		self.img_dir = os.path.join(os.getcwd(), 'images')
-		self.ann_dir = os.path.join(os.getcwd(), 'annotations')
-		self.res_dir = os.path.join(os.getcwd(), 'results')
+		self.img_dir = img_dir
+		self.ann_dir = ann_dir
+		assert os.path.dirname(ann_dir) == os.path.dirname(img_dir)
+		self.res_dir = os.path.join(os.path.dirname(ann_dir), 'results')
 
 		# Create Results Directory
 		if os.path.exists(self.res_dir) is False:

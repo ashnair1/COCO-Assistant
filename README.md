@@ -35,6 +35,20 @@ git clone https://github.com/ashnair1/COCO-Assistant.git
 make
 ```
 
+## Usage
+
+Usage is identical to how you would use `pycocotools`
+
+```
+from coco_assistant.coco_assistant import COCO_Assistant
+
+# Specify image and annotation directories
+img_dir = os.path.join(os.getcwd(), 'images')
+ann_dir = os.path.join(os.getcwd(), 'annotations')
+
+# Create COCO_Assistant object
+cas = COCO_Assistant(img_dir, ann_dir)
+```
 ## So what can CASS do?:
 
 #### Merge datasets

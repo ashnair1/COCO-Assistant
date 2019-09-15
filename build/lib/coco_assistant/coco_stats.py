@@ -62,6 +62,38 @@ def cat_count(anns, names, show_count=False, save=False):
     plt.show()
 
 
+def cat_count1(anns, name="test", show_count=False):
+
+    # Prepare annotations dataframe
+    # This should be done at the start
+    
+    for ann in anns:
+        ann_df = pd.DataFrame(ann.anns).transpose()
+
+    plt.figure(figsize=(10, 10))
+    chart = sns.countplot(
+                data=ann_df,
+        x='category_name',
+        order=ann_df['category_name'].value_counts().index,
+        palette='Set1')
+    chart.set_title("Instances per category")
+    chart.set_xticklabels(chart.get_xticklabels(), rotation=90)
+
+    if show_count is True:
+        for p in chart.patches:
+            height = p.get_height()
+            chart.text(p.get_x() + p.get_width() / 2., height + 0.9, height, ha="center")
+
+    out_dir = os.path.join(os.getcwd(),'plots')
+    if os.path.exists(out_dir) is False:
+        os.mkdir(out_dir)
+
+    plt.savefig(os.path.join(out_dir, name + "_cat_dist" + ".jpg"))
+
+
+    plt.show()
+
+
 def get_areas(ann):
     obj_areas = []
     for key in ann.anns:

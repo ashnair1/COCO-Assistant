@@ -3,6 +3,7 @@ import shutil
 
 import json
 from pycocotools.coco import COCO
+from tqdm import tqdm
 import logging
 import pdb
 
@@ -34,8 +35,8 @@ Expected Directory Structure
 class COCO_Assistant():
 	def __init__(self, img_dir=None, ann_dir=None):
 		"""
-		:param jsonfiles (list): list of annotation files
-		:param folders (list): list of img folders
+		:param img_dir (str): path to images folder
+		:param ann_dir (str): path to annotations folder
 		"""
 
 		self.img_dir = img_dir
@@ -71,34 +72,35 @@ class COCO_Assistant():
 		Function for combining multiple coco datasets
 		"""
 
-		resim_dir = os.path.join(self.res_dir, 'combination', 'images')
-		resann_dir = os.path.join(self.res_dir, 'combination', 'annotations')
+		self.resim_dir = os.path.join(self.res_dir, 'combination', 'images')
+		self.resann_dir = os.path.join(self.res_dir, 'combination', 'annotations')
 
 		# Create directories for combination results and clear the previous ones
 		# The exist_ok is for dealing with combination folder
 		# TODO: Can be done better
-		if os.path.exists(resim_dir) is False:
-			os.makedirs(resim_dir, exist_ok=True)
+		if os.path.exists(self.resim_dir) is False:
+			os.makedirs(self.resim_dir, exist_ok=True)
 		else:
-			shutil.rmtree(resim_dir) 
-			os.makedirs(resim_dir, exist_ok=True)
-		if os.path.exists(resann_dir) is False:
-			os.makedirs(resann_dir, exist_ok=True)
+			shutil.rmtree(self.resim_dir) 
+			os.makedirs(self.resim_dir, exist_ok=True)
+		if os.path.exists(self.resann_dir) is False:
+			os.makedirs(self.resann_dir, exist_ok=True)
 		else:
-			shutil.rmtree(resann_dir) 
-			os.makedirs(resann_dir, exist_ok=True)
+			shutil.rmtree(self.resann_dir) 
+			os.makedirs(self.resann_dir, exist_ok=True)
 
 
 		# Combine images
+		print("Merging image dirs")
 		im_dirs = [os.path.join(self.img_dir, folder) for folder in self.imgfolders]
 		imext = [".png", ".jpg"]
 
 		logging.debug("Combining Images...")
 
-		for imdir in im_dirs:
+		for imdir in tqdm(im_dirs):
 			ims = [i for i in os.listdir(imdir) if i[-4:].lower() in imext]
 			for im in ims:
-				shutil.copyfile(os.path.join(imdir, im), os.path.join(resim_dir, im))
+				shutil.copyfile(os.path.join(imdir, im), os.path.join(self.resim_dir, im))
 
 
 		# Combine annotations
@@ -110,10 +112,10 @@ class COCO_Assistant():
 
 		logging.debug("Combining Annotations...")
 
-		dst_ann = os.path.join(resann_dir, 'combined.json')
+		dst_ann = os.path.join(self.resann_dir, 'combined.json')
 
-
-		for j in self.jsonfiles:
+		print("Merging annotations")
+		for j in tqdm(self.jsonfiles):
 			#c = COCO(os.path.join(ann_dir, each_ann))
 			with open(os.path.join(self.ann_dir, j)) as a:
 				c = json.load(a)
@@ -130,47 +132,57 @@ class COCO_Assistant():
 			json.dump(cann, aw)
 
 
-	def remove_cat(self):
+	def remove_cat(self, jc=None, rcats = None):
 		"""
 		Function for removing certain categories
 		"""
 
-		resrm_dir = os.path.join(self.res_dir, 'removal')
-		if os.path.exists(resrm_dir) is False:
-			os.makedirs(resrm_dir, exist_ok=True)
+		self.resrm_dir = os.path.join(self.res_dir, 'removal')
+		if os.path.exists(self.resrm_dir) is False:
+			os.makedirs(self.resrm_dir, exist_ok=True)
 		else:
-			shutil.rmtree(resrm_dir) 
-			os.makedirs(resrm_dir, exist_ok=True)
+			shutil.rmtree(self.resrm_dir) 
+			os.makedirs(self.resrm_dir, exist_ok=True)
 
-		print(self.jsonfiles)
-		print("Who needs a cat removal?")
-		jc = input()
-		assert jc.lower() in [item.lower() for item in self.jsonfiles], "Choice not in json file list"
-		#ann = self.anndict[jc]
-		ind = self.jsonfiles.index(jc.lower())
-		ann = self.annfiles[ind]
+		if jc == None or rcats == None:
+			###########################################################
+			print(self.jsonfiles)
+			print("Who needs a cat removal?")
+			self.jc = input()
+			assert self.jc.lower() in [item.lower() for item in self.jsonfiles], "Choice not in json file list"
+			#ann = self.anndict[jc]
+			ind = self.jsonfiles.index(self.jc.lower())
+			ann = self.annfiles[ind]
 
-		print("\nCategories present:")
-		cats = [i['name'] for i in ann.cats.values()]
-		print(cats)
+			print("\nCategories present:")
+			cats = [i['name'] for i in ann.cats.values()]
+			print(cats)
 
-		rcats = []
-		print("\nEnter categories you wish to remove:")
-		while True:
-			x = input()
-			if x.lower() in [cat.lower() for cat in cats]:
-				catind = [cat.lower() for cat in cats].index(x.lower())
-				rcats.append(cats[catind])
-				print(rcats)
-				print("Press n if you're done entering categories, else continue")
-			elif x == "n":
-				break
-			else:
-				print("Incorrect Entry. Enter either the category to be added or press 'n' to quit.")
+			self.rcats = []
+			print("\nEnter categories you wish to remove:")
+			while True:
+				x = input()
+				if x.lower() in [cat.lower() for cat in cats]:
+					catind = [cat.lower() for cat in cats].index(x.lower())
+					self.rcats.append(cats[catind])
+					print(self.rcats)
+					print("Press n if you're done entering categories, else continue")
+				elif x == "n":
+					break
+				else:
+					print("Incorrect Entry. Enter either the category to be added or press 'n' to quit.")
+			###############################################################
+
+		else:
+			self.jc = jc
+			ind = self.jsonfiles.index(self.jc.lower())
+			ann = self.annfiles[ind]
+			self.rcats = rcats
+
 		print("Removing specified categories...")
 
 		# Gives you a list of category ids of the categories to be removed
-		catids_remove = ann.getCatIds(catNms=rcats)
+		catids_remove = ann.getCatIds(catNms=self.rcats)
 		# Gives you a list of ids of annotations that contain those categories
 		annids_remove = ann.getAnnIds(catIds=catids_remove)
 
@@ -179,13 +191,13 @@ class COCO_Assistant():
 		# Remove from annotation list
 		anns = ann.loadAnns(annids_remove)
 
-		with open(os.path.join(self.ann_dir,jc)) as it:
+		with open(os.path.join(self.ann_dir,self.jc)) as it:
 			x = json.load(it)
 
 		x['categories'] = [i for i in x['categories'] if i not in cats]
 		x['annotations'] = [i for i in x['annotations'] if i not in anns]
 
-		with open(os.path.join(resrm_dir,jc), 'w') as oa:
+		with open(os.path.join(self.resrm_dir, self.jc), 'w') as oa:
 			json.dump(x, oa)
 
 

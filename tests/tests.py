@@ -16,7 +16,7 @@ def get_data():
 	if os.path.isdir('./annotations') is False and os.path.isdir('./images') is False:
 	    # Download and extract data
 	    print("Downloading...")
-	    file_id = '17a_Mw-9QmQXHwgv2__XDauMO-7JasgXm'
+	    file_id = '1lR7C--x4DMqKhX-4YujOyVKNoGuAVgOe'
 	    destination = 'test.tar.gz'
 	    data_getter.download_file_from_google_drive(file_id, destination)
 	    # Unzip data
@@ -38,6 +38,8 @@ def test_combine(get_data):
 	combann = len(comb.anns)
         # Get individual annotation counts
 	ann_counts = [len(_cfile.anns) for _cfile in cas.annfiles]
+	print(combann)
+	print(sum(ann_counts))
         # Clean up
 	shutil.rmtree(cas.res_dir)
 	assert sum(ann_counts) == combann, "Failure in merging datasets"
@@ -47,8 +49,8 @@ def test_combine(get_data):
 def test_cat_removal(get_data):
 	cas = COCO_Assistant(get_data[0], get_data[1])
 
-	test_ann = "iiai.json"
-	test_rcats = sorted(['APC', 'Planes', 'Quay'])
+	test_ann = "tiny2.json"
+	test_rcats = sorted(['plane', 'ship', 'Large_Vehicle'])
 
 	cas.remove_cat(jc=test_ann, rcats=test_rcats)
 

@@ -1,0 +1,8 @@
+include *.md
+include *.txt
+include Makefile
+recursive-include coco_assistant *.pyc
+recursive-include rep_stuff *.gif
+recursive-include rep_stuff *.png
+recursive-include tests *.py
+recursive-include tests *.pyc

@@ -60,6 +60,6 @@ def test_cat_removal(get_data):
 
 	diff_names = sorted(list(set(orig_names) - set(rmj_names)))
 	
-    # Clean up
+        # Clean up
 	shutil.rmtree(cas.resrm_dir)
 	assert diff_names == test_rcats, "Failure in removing following categories: {}".format(test_rcats)

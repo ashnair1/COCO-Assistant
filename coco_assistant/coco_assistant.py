@@ -114,19 +114,56 @@ class COCO_Assistant():
 
 		dst_ann = os.path.join(self.resann_dir, 'combined.json')
 
+		# TODO: Modify annotation and image ids to avoid overlap during the merge
+
 		print("Merging annotations")
 		for j in tqdm(self.jsonfiles):
 			#c = COCO(os.path.join(ann_dir, each_ann))
 			with open(os.path.join(self.ann_dir, j)) as a:
 				c = json.load(a)
 
-			cann['images'] = cann['images'] + c['images']
-			cann['annotations'] = cann['annotations'] + c['annotations']
-			if 'info' in list(c.keys()):
-				cann['info'] = c['info']
-			if 'licenses' in list(c.keys()):
-				cann['licenses'] = c['licenses']
-			cann['categories'] = c['categories']
+			ind = self.jsonfiles.index(j)
+			cocofile = self.annfiles[ind]
+			# Check if this is the 1st annotation.
+			# If it is, continue else modify current annotation
+			if ind == 0:
+				cann['images'] = cann['images'] + c['images']
+				cann['annotations'] = cann['annotations'] + c['annotations']
+				if 'info' in list(c.keys()):
+					cann['info'] = c['info']
+				if 'licenses' in list(c.keys()):
+					cann['licenses'] = c['licenses']
+				cann['categories'] = c['categories']
+
+				last_imid = cann['images'][-1]['id']#sorted(list(cocofile.imgs.keys()))[-1]
+				last_annid = cann['annotations'][-1]['id']#sorted(list(cocofile.anns.keys()))[-1]
+
+			else:
+				new_imids = [(last_imid + i + 1) for i in sorted(list(cocofile.imgs.keys()))]
+				new_annids = [(last_annid + i + 1) for i in sorted(list(cocofile.anns.keys()))]
+
+				def modify_ids(jf, imids, annids):
+					for img, newimid in zip(jf['images'], imids):
+						img['id'] = newimid
+					for ann, newannid in zip(jf['annotations'], annids):
+						ann['id'] = newannid
+					return jf
+
+
+				c = modify_ids(c, new_imids, new_annids)
+				cann['images'] = cann['images'] + c['images']
+				cann['annotations'] = cann['annotations'] + c['annotations']
+				if 'info' in list(c.keys()):
+					cann['info'] = c['info']
+				if 'licenses' in list(c.keys()):
+					cann['licenses'] = c['licenses']
+				cann['categories'] = c['categories']
+
+
+				last_imid = cann['images'][-1]['id']
+				last_annid = cann['annotations'][-1]['id']
+
+
 
 		with open(dst_ann, 'w') as aw:
 			json.dump(cann, aw)
@@ -232,15 +269,17 @@ class COCO_Assistant():
 
 if __name__ == "__main__":
 
-	img_dir = os.path.join(os.getcwd(), 'images')
-	ann_dir = os.path.join(os.getcwd(), 'annotations')
+	p = "/home/ashwin/Desktop/keras-retinanet/data/AirField/COCO-Assistant" # os.getcwd()
+
+	img_dir = os.path.join(p, 'images')
+	ann_dir = os.path.join(p, 'annotations')
 
 	# TODO: Create tiny dummy datasets and test these functions on them
 
 	cas = COCO_Assistant(img_dir,ann_dir)
 
-	#cas.combine()
+	cas.combine()
 	#cas.remove_cat()
-	cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)
-	cas.ann_stats(stat="cat", show_count=False, save=False)
+	#cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)
+	#cas.ann_stats(stat="cat", show_count=False, save=False)
 	#cas.visualise()

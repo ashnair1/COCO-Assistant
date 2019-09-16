@@ -1,6 +1,7 @@
-# COCO-Assistant<img src="rep_stuff/coco.png" height="40">
+# COCO-Assistant ![CircleCI](https://circleci.com/gh/ashnair1/COCO-Assistant/tree/master.svg?style=svg&circle-token=553c83e37198fe02a71743d42ee427c292336743) 
 
-Helper for dealing with MS-COCO annotations. 
+Helper for dealing with MS-COCO annotations. <img src="rep_stuff/coco.png" height="40">
+
 
 ## Overview
 The MS COCO annotation format along with the pycocotools library is quite popular among the computer vision community. Yet I for one found it difficult to play around with the annotations. Deleting a specific category, combining multiple mini datasets to generate a larger dataset, viewing distribution of classes in the annotation file are things I would like to do without writing a separate script for each. The COCO Assistant is designed (or being designed) to assist with this exact problem.

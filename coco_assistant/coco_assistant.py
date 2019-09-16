@@ -114,8 +114,6 @@ class COCO_Assistant():
 
 		dst_ann = os.path.join(self.resann_dir, 'combined.json')
 
-		# TODO: Modify annotation and image ids to avoid overlap during the merge
-
 		print("Merging annotations")
 		for j in tqdm(self.jsonfiles):
 			#c = COCO(os.path.join(ann_dir, each_ann))

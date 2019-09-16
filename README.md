@@ -1,4 +1,4 @@
-# COCO-Assistant ![CircleCI](https://circleci.com/gh/ashnair1/COCO-Assistant/tree/master.svg?style=shield&circle-token=553c83e37198fe02a71743d42ee427c292336743) 
+# COCO-Assistant ![CircleCI](https://circleci.com/gh/ashnair1/COCO-Assistant/tree/master.svg?style=shield&circle-token=553c83e37198fe02a71743d42ee427c292336743) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Helper for dealing with MS-COCO annotations. <img src="rep_stuff/coco.png" height="40">
 

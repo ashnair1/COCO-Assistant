@@ -50,7 +50,7 @@ cas = COCO_Assistant(img_dir, ann_dir)
 
 #### Merge datasets
 
-The `combine` function allows you to merge  multiple datasets. Note however, that the individiual annotations needs to have different annotation ids so that they can be seamlessly merged. In the future, functionality will be added to check annotation ids automatically.
+The `combine` function allows you to merge  multiple datasets.
 
 #### Remove_cat
 

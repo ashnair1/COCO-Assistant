@@ -3,7 +3,7 @@ import shutil
 
 import tarfile
 
-from coco_assistant.coco_assistant import COCO_Assistant
+from coco_assistant import COCO_Assistant
 
 import data_getter
 

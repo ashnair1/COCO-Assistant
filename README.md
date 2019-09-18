@@ -35,10 +35,10 @@ make
 
 ## Usage
 
-Usage is identical to how you would use `pycocotools`
+Usage is similar to how you would use `pycocotools`
 
 ```
-from coco_assistant.coco_assistant import COCO_Assistant
+from coco_assistant import COCO_Assistant
 
 # Specify image and annotation directories
 img_dir = os.path.join(os.getcwd(), 'images')

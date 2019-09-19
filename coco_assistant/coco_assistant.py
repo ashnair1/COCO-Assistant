@@ -9,6 +9,7 @@ import pdb
 
 from . import coco_stats as stats
 from . import coco_visualiser as cocovis
+from . import coco_converter as converter
 
 logging.basicConfig(level=logging.ERROR)
 logging.getLogger().setLevel(logging.WARNING)
@@ -263,6 +264,11 @@ class COCO_Assistant():
 		ann = self.annfiles[ind]
 		img_dir = os.path.join(self.img_dir,dir_choice)
 		cocovis.visualise_all(ann, img_dir)
+
+
+	def converter(self, to="TFRecord"):
+		cas.convert(_format=to)
+
 
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@ import pdb
 
 from . import coco_stats as stats
 from . import coco_visualiser as cocovis
-from . import coco_converter as converter
+from . import coco_converters as converter
 
 logging.basicConfig(level=logging.ERROR)
 logging.getLogger().setLevel(logging.WARNING)

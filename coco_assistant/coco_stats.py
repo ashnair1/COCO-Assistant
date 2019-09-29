@@ -19,6 +19,10 @@ def cat_count(anns, names, show_count=False, save=False):
     #plt.figure(figsize=(10, 10))
     fig, axes = plt.subplots(1, len(anns), sharey=False)
 
+    # Making axes iterable if only single annotation is present
+    if len(anns) == 1:
+        axes = [axes]
+
     # Prepare annotations dataframe
     # This should be done at the start
     for ann, name, ax  in zip(anns,names, axes):

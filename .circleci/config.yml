@@ -27,4 +27,12 @@ workflows:
   version: 2
   test-all:
     jobs:
-      - test_coco_assistant
+      - test_coco_assistant:
+           filters:
+              branches:
+                  only:
+                     - master
+                     - converters
+        
+      
+      

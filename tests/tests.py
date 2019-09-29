@@ -16,7 +16,7 @@ def get_data():
 	if os.path.isdir('./annotations') is False and os.path.isdir('./images') is False:
 	    # Download and extract data
 	    print("Downloading...")
-	    file_id = '1lR7C--x4DMqKhX-4YujOyVKNoGuAVgOe'
+	    file_id = '1WAFzdtIa56UL4wFVHg2TaBMhtzqRc0F-'
 	    destination = 'test.tar.gz'
 	    data_getter.download_file_from_google_drive(file_id, destination)
 	    # Unzip data

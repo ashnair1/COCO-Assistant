@@ -56,6 +56,7 @@ setup(
     description=DESCRIPTION,
     long_description=long_description,
     long_description_content_type='text/markdown',
+    dependency_links=['https://github.com/ashnair1/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI'],
     author=AUTHOR,
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,

@@ -31,6 +31,9 @@ def list_reqs(fname='requirements.txt'):
                 line.startswith('git:') or line.startswith('git+'):
             if EGG_MARK in line:
                 package_name = line[line.find(EGG_MARK) + len(EGG_MARK):]
+                # Ignore possible subdirectories
+                if '&' in package_name:
+                    package_name = package_name[0:package_name.find('&')]
                 required.append(package_name)
                 dependency_links.append(line)
             else:

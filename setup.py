@@ -19,8 +19,30 @@ REQUIRES_PYTHON = '>=3.6.0'
 
 # What packages are required for this module to be executed?
 def list_reqs(fname='requirements.txt'):
-    with open(fname) as fd:
-        return fd.read().splitlines()
+    with open(fname) as f:
+        requirements = f.read().splitlines()
+
+    required = []
+    dependency_links = []
+    # do not add to required lines pointing to git repositories
+    EGG_MARK = '#egg='
+    for line in requirements:
+        if line.startswith('-e git:') or line.startswith('-e git+') or \
+                line.startswith('git:') or line.startswith('git+'):
+            if EGG_MARK in line:
+                package_name = line[line.find(EGG_MARK) + len(EGG_MARK):]
+                # Ignore possible subdirectories
+                if '&' in package_name:
+                    package_name = package_name[0:package_name.find('&')]
+                required.append(package_name)
+                dependency_links.append(line)
+            else:
+                print('Dependency to a git repository should have the format:')
+                print('git+ssh://git@github.com/xxxxx/xxxxxx#egg=package_name')
+        else:
+            required.append(line)
+
+    return required, dependency_links
 
 
 # The rest you shouldn't have to touch too much :)
@@ -48,6 +70,7 @@ with open(PACKAGE_DIR / 'VERSION') as f:
     _version = f.read().strip()
     about['__version__'] = _version
 
+required, dependency_links = list_reqs()
 
 # Where the magic happens:
 setup(
@@ -62,7 +85,8 @@ setup(
     url=URL,
     packages=find_packages(exclude=('tests',)),
     package_data={'coco_assistant': ['VERSION']},
-    install_requires=list_reqs(),
+    install_requires=required,
+    dependency_links=dependency_links,
     extras_require={},
     include_package_data=True,
     license='MIT',

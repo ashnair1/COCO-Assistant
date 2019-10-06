@@ -1,12 +1,16 @@
-from pycocotools.coco import COCO
-from PIL import Image
-from random import shuffle
-import os, sys
-import numpy as np
-import tensorflow as tf
 import logging
+import os
+from random import shuffle
+
+from PIL import Image
+
+from pycocotools.coco import COCO
+
+import tensorflow as tf
 
 from .utils import dataset_util
+
+logging.basicConfig(level=logging.WARNING)
 
 # flags = tf.app.flags
 # flags.DEFINE_string('data_dir', '', 'Root directory to raw Microsoft COCO dataset.')
@@ -16,7 +20,7 @@ from .utils import dataset_util
 # FLAGS = flags.FLAGS
 
 
-def load_coco_detection_dataset(imgs_dir, annotations_filepath, shuffle_img=True):
+def load_coco_detection_dataset(imgs_dir, annotations, shuffle_img=True):
     """Load data from dataset by pycocotools. This tools can be download from "http://mscoco.org/dataset/#download"
     Args:
         imgs_dir: directories of coco images
@@ -25,9 +29,9 @@ def load_coco_detection_dataset(imgs_dir, annotations_filepath, shuffle_img=True
     Return:
         coco_data: list of dictionary format information of each image
     """
-    coco = COCO(annotations_filepath)
-    img_ids = coco.getImgIds() # totally 82783 images
-    cat_ids = coco.getCatIds() # totally 90 catagories, however, the number of categories is not continuous, \
+    coco = annotations
+    img_ids = coco.getImgIds()  # totally 82783 images
+    cat_ids = coco.getCatIds()  #totally 90 catagories, however, the number of categories is not continuous, \
                                # [0,12,26,29,30,45,66,68,69,71,83] are missing, this is the problem of coco dataset.
 
     if shuffle_img:
@@ -38,28 +42,34 @@ def load_coco_detection_dataset(imgs_dir, annotations_filepath, shuffle_img=True
     nb_imgs = len(img_ids)
     for index, img_id in enumerate(img_ids):
         if index % 100 == 0:
-            print("Readling images: %d / %d "%(index, nb_imgs))
+            print("Readling images: %d / %d " % (index, nb_imgs))
         img_info = {}
         bboxes = []
         labels = []
 
         img_detail = coco.loadImgs(img_id)[0]
-        pic_height = img_detail['height']
-        pic_width = img_detail['width']
+        try:
+            pic_height = img_detail['height']
+            pic_width = img_detail['width']
+        except:
+            logging.warning("Image dimension is missing from the image field."
+                            " Proceeding to read it manually")
+            im = Image.open(os.path.join(imgs_dir, img_detail['file_name']))
+            pic_height = im.size[1]
+            pic_width = im.size[0]
 
-        ann_ids = coco.getAnnIds(imgIds=img_id,catIds=cat_ids)
+        ann_ids = coco.getAnnIds(imgIds=img_id, catIds=cat_ids)
         anns = coco.loadAnns(ann_ids)
         for ann in anns:
             bboxes_data = ann['bbox']
-            bboxes_data = [bboxes_data[0]/float(pic_width), bboxes_data[1]/float(pic_height),\
-                                  bboxes_data[2]/float(pic_width), bboxes_data[3]/float(pic_height)]
-                         # the format of coco bounding boxs is [Xmin, Ymin, width, height]
+            # the format of coco bounding boxs is [Xmin, Ymin, width, height]
+            bboxes_data = [bboxes_data[0] / float(pic_width), bboxes_data[1] / float(pic_height),
+                           bboxes_data[2] / float(pic_width), bboxes_data[3] / float(pic_height)]
             bboxes.append(bboxes_data)
             labels.append(ann['category_id'])
 
-
         img_path = os.path.join(imgs_dir, img_detail['file_name'])
-        img_bytes = tf.gfile.FastGFile(img_path,'rb').read()
+        img_bytes = tf.gfile.FastGFile(img_path, 'rb').read()
 
         img_info['pixel_data'] = img_bytes
         img_info['height'] = pic_height
@@ -68,6 +78,7 @@ def load_coco_detection_dataset(imgs_dir, annotations_filepath, shuffle_img=True
         img_info['labels'] = labels
 
         coco_data.append(img_info)
+
     return coco_data
 
 
@@ -101,21 +112,15 @@ def dict_to_coco_example(img_data):
     return example
 
 
-def converter(src, dst, _set, _format):
+def convert(ann, img_dir, _format):
+
+    dst = os.path.join(os.path.dirname(os.path.dirname(img_dir)),
+                       'annotations',
+                       os.path.basename(img_dir) + ".tfrecord")
 
     if _format == "TFRecord":
-        if _set == "train":
-            imgs_dir = os.path.join(src, 'images', 'train')
-            annotations_filepath = os.path.join(src,'annotations','train.json')
-            print("Convert coco train file to tf record")
-        elif _set == "val":
-            imgs_dir = os.path.join(src, 'images', 'val')
-            annotations_filepath = os.path.join(src,'annotations','val.json')
-            print("Convert coco val file to tf record")
-        else:
-            raise ValueError("you must either convert train data or val data")
         # load total coco data
-        coco_data = load_coco_detection_dataset(imgs_dir,annotations_filepath,shuffle_img=True)
+        coco_data = load_coco_detection_dataset(img_dir, ann, shuffle_img=True)
         total_imgs = len(coco_data)
         # write coco data to tf record
         with tf.python_io.TFRecordWriter(dst) as tfrecord_writer:
@@ -128,7 +133,6 @@ def converter(src, dst, _set, _format):
 
 if __name__ == "__main__":
     _format = "TFRecord"
-    src = "/home/ashwin/Desktop/keras-retinanet/data/IIAI"
-    dst = os.path.join(src,os.path.basename(src)+".tfrecord")
-    _set = "train"
-    converter(src, dst, _set, _format)
+    ann = COCO("/home/ashwin/Desktop/keras-retinanet/data/IIAI/annotations/train.json")
+    img_dir = "/home/ashwin/Desktop/keras-retinanet/data/IIAI/images/train"
+    convert(ann, img_dir, _format)

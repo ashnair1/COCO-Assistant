@@ -1,20 +1,25 @@
 import os
+
 import matplotlib.patches
 import matplotlib.pyplot as plt
 import matplotlib.widgets
+
 import mpl_toolkits.axes_grid1
+
 from pycocotools.coco import COCO
+
 import skimage.io as io
+
 
 # Reference: https://stackoverflow.com/questions/41545664/view-3-dimensional-numpy-array-in-matplotlib-and-taking-arguments-from-keyboard/41552601#41552601
 # Need to make a minor change in the showAnns function in coco.py which involves passing in a matplotlib axes. Changes are as follows:
-# 1. def showAnns(self, anns) -> def showAnns(self,anns, ax=None) 
+# 1. def showAnns(self, anns) -> def showAnns(self,anns, ax=None)
 # 2. ax = plt.gca() -> if ax = None: ax = plt.gca()
 
 class ImageSlider(matplotlib.widgets.Slider):
 
-    def __init__(self, ax, label, numpages=10, valinit=0, valfmt='%1d', 
-                 closedmin=True, closedmax=True,  
+    def __init__(self, ax, label, numpages=10, valinit=0, valfmt='%1d',
+                 closedmin=True, closedmax=True,
                  dragging=True, **kwargs):
 
         self.facecolor = kwargs.get('facecolor', "w")
@@ -102,9 +107,8 @@ def get_imgid_dict(ann):
     return id_fn_dict
 
 
-
 def visualise_all(ann, img_dir):
-    
+
     # Get List of Images
     imgs = os.listdir(img_dir)
 
@@ -112,7 +116,7 @@ def visualise_all(ann, img_dir):
     id_fn_dict = get_imgid_dict(ann)
 
     num_pages = len(ann.imgs.keys())
-    
+
     # Visualise first image
 
     fig, ax = plt.subplots()
@@ -122,7 +126,7 @@ def visualise_all(ann, img_dir):
     imgid = id_fn_dict[imgs[0]]
     # Modification for string image ids
     if type(imgid) == str:
-    	imgid = [imgid]
+        imgid = [imgid]
     annids = ann.getAnnIds(imgIds=imgid, iscrowd=None)
     anns = ann.loadAnns(annids)
     ax.axis('off')
@@ -140,7 +144,7 @@ def visualise_all(ann, img_dir):
         imid = id_fn_dict[imgs[ind]]
         # Modification for string image ids
         if type(imid) == str:
-        	imid = [imid]
+            imid = [imid]
         img_annids = ann.getAnnIds(imgIds=imid, iscrowd=None)
         img_anns = ann.loadAnns(img_annids)
         ax.axis('off')
@@ -160,7 +164,7 @@ def visualise_single(ann, folder, img_filename):
     im = io.imread(img_path)
     annids = ann.getAnnIds(imgIds=id_fn_dict[img_filename], iscrowd=None)
     anns = ann.loadAnns(annids)
-    
+
     # load and display instance annotations
     plt.figure(figsize=(15, 15))
     plt.imshow(im)

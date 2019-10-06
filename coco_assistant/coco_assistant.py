@@ -263,14 +263,14 @@ class COCO_Assistant():
 
 if __name__ == "__main__":
 	p = "/home/ashwin/Desktop/keras-retinanet/data/AirField/COCO-Assistant"
-    img_dir = os.path.join(p, 'images')
-    ann_dir = os.path.join(p, 'annotations')
+        img_dir = os.path.join(p, 'images')
+        ann_dir = os.path.join(p, 'annotations')
 
-    # TODO: Create tiny dummy datasets and test these functions on them
+        # TODO: Create tiny dummy datasets and test these functions on them
 
-    cas = COCO_Assistant(img_dir, ann_dir)
+        cas = COCO_Assistant(img_dir, ann_dir)
 
-    #cas.remove_cat()
-    #cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)
-    #cas.ann_stats(stat="cat", show_count=False, save=False)
-    cas.visualise()
+        #cas.remove_cat()
+        #cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)
+        #cas.ann_stats(stat="cat", show_count=False, save=False)
+        cas.visualise()

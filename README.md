@@ -73,6 +73,3 @@ Couldn't `pycocotools` visualise annotations (via [showAnns](https://github.com/
 ### Todo: 
 1. COCO to YOLO Converter
 Converts COCO annotations to YOLO format (Try using modified version of ultralytics's [original repo](https://github.com/ultralytics/COCO2YOLO))
-
-2. COCO to TFRecord Converter
-Converts COCO annotations to TFRecord format 

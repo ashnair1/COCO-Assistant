@@ -23,7 +23,7 @@ Expected Directory Structure
 │   ├── train
 │   ├── val
 |   ├── test
-|   
+|
 ├── annotations
 │   ├── train.json
 │   ├── val.json
@@ -70,7 +70,7 @@ class COCO_Assistant():
         self.resim_dir = os.path.join(self.res_dir, 'combination', 'images')
         self.resann_dir = os.path.join(self.res_dir, 'combination', 'annotations')
 
-        # Create directories for combination results & clear the previous ones
+        # Create directories for combination results and clear the previous ones
         # The exist_ok is for dealing with combination folder
         # TODO: Can be done better
         if os.path.exists(self.resim_dir) is False:
@@ -125,8 +125,8 @@ class COCO_Assistant():
                     cann['licenses'] = c['licenses']
                 cann['categories'] = c['categories']
 
-                last_imid = cann['images'][-1]['id']#sorted(list(cocofile.imgs.keys()))[-1]
-                last_annid = cann['annotations'][-1]['id']#sorted(list(cocofile.anns.keys()))[-1]
+                last_imid = cann['images'][-1]['id']
+                last_annid = cann['annotations'][-1]['id']
 
             else:
                 new_imids = [(last_imid + i + 1) for i in sorted(list(cocofile.imgs.keys()))]
@@ -137,7 +137,7 @@ class COCO_Assistant():
                         img['id'] = newimid
                     for ann, newannid in zip(jf['annotations'], annids):
                         ann['id'] = newannid
-                        return jf
+                    return jf
 
                 c = modify_ids(c, new_imids, new_annids)
                 cann['images'] = cann['images'] + c['images']
@@ -240,7 +240,7 @@ class COCO_Assistant():
         assert dir_choice.lower() in [item.lower() for item in self.imgfolders], "Choice not in images folder"
         ind = self.imgfolders.index(dir_choice.lower())
         ann = self.annfiles[ind]
-        img_dir = os.path.join(self.img_dir,dir_choice)
+        img_dir = os.path.join(self.img_dir, dir_choice)
 
         converter.convert(ann, img_dir, _format=to)
 
@@ -262,15 +262,15 @@ class COCO_Assistant():
 
 
 if __name__ == "__main__":
-	p = "/home/ashwin/Desktop/keras-retinanet/data/AirField/COCO-Assistant"
-        img_dir = os.path.join(p, 'images')
-        ann_dir = os.path.join(p, 'annotations')
+    p = "/home/ashwin/Desktop/keras-retinanet/data/AirField/COCO-Assistant"
+    img_dir = os.path.join(p, 'images')
+    ann_dir = os.path.join(p, 'annotations')
 
-        # TODO: Create tiny dummy datasets and test these functions on them
+    # TODO: Create tiny dummy datasets and test these functions on them
 
-        cas = COCO_Assistant(img_dir, ann_dir)
+    cas = COCO_Assistant(img_dir, ann_dir)
 
-        #cas.remove_cat()
-        #cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)
-        #cas.ann_stats(stat="cat", show_count=False, save=False)
-        cas.visualise()
+    #cas.remove_cat()
+    #cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)
+    #cas.ann_stats(stat="cat", show_count=False, save=False)
+    cas.visualise()

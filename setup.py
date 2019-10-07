@@ -83,6 +83,7 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
+    download_url = 'https://github.com/ashnair1/COCO-Assistant/archive/v0.1.0.tar.gz'
     packages=find_packages(exclude=('tests',)),
     package_data={'coco_assistant': ['VERSION']},
     install_requires=required,

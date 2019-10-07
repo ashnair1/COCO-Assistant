@@ -32,6 +32,7 @@ Expected Directory Structure
 
 """
 
+
 class COCO_Assistant():
     def __init__(self, img_dir=None, ann_dir=None):
         """
@@ -253,7 +254,7 @@ class COCO_Assistant():
             stats.cat_count(self.annfiles, self.names, show_count=show_count, save=save)
 
     def converter(self, to="TFRecord"):
-    	"""
+        """
         Function for converting annotations to other formats
         """
         print("Choose directory:")

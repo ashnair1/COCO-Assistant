@@ -32,12 +32,11 @@ Expected Directory Structure
 
 """
 
-
 class COCO_Assistant():
     def __init__(self, img_dir=None, ann_dir=None):
         """
-        :param img_dir (str): path to images folder
-        :param ann_dir (str): path to annotations folder
+        :param img_dir (str): path to images folder.
+        :param ann_dir (str): path to annotations folder.
         """
         self.img_dir = img_dir
         self.ann_dir = ann_dir
@@ -128,15 +127,38 @@ class COCO_Assistant():
                 last_imid = cann['images'][-1]['id']
                 last_annid = cann['annotations'][-1]['id']
 
+                logging.debug("String Ids detected. Converting to int")
+
+                # If last imid or last_annid is a str, convert it to int
+                if type(last_imid) == str:
+                    id_dict = {}
+                    # Change image id in images field
+                    for i, im in enumerate(cann['images']):
+                       id_dict[im['id']] = i
+                       im['id'] = i
+
+                if type(last_annid) == str:
+                    # Change annotation id & image id in annotations field
+                    for i, im in enumerate(cann['annotations']):
+                        im['id'] = i
+                        if type(last_imid) == str:
+                            im['image_id'] = id_dict[im['image_id']]
+
+                last_imid = cann['images'][-1]['id']
+                last_annid = cann['annotations'][-1]['id']
+
             else:
                 new_imids = [(last_imid + i + 1) for i in sorted(list(cocofile.imgs.keys()))]
                 new_annids = [(last_annid + i + 1) for i in sorted(list(cocofile.anns.keys()))]
 
                 def modify_ids(jf, imids, annids):
+                    id_dict = {}
                     for img, newimid in zip(jf['images'], imids):
+                        id_dict[img['id']] = newimid
                         img['id'] = newimid
                     for ann, newannid in zip(jf['annotations'], annids):
                         ann['id'] = newannid
+                        ann['image_id'] = id_dict[ann['image_id']]
                     return jf
 
                 c = modify_ids(c, new_imids, new_annids)
@@ -223,7 +245,7 @@ class COCO_Assistant():
 
     def ann_stats(self, stat, show_count=False, arearng=[0, 32, 96, 1e5], save=False):
         """
-        Function for displaying statistics
+        Function for displaying statistics.
         """
         if stat == "area":
             stats.pi_area_split(self.annfiles, self.names, areaRng=arearng, save=save)
@@ -231,7 +253,9 @@ class COCO_Assistant():
             stats.cat_count(self.annfiles, self.names, show_count=show_count, save=save)
 
     def converter(self, to="TFRecord"):
-
+    	"""
+        Function for converting annotations to other formats
+        """
         print("Choose directory:")
         print(self.imgfolders)
 
@@ -246,9 +270,8 @@ class COCO_Assistant():
 
     def visualise(self):
         """
-        Function for visualising annotations
+        Function for visualising annotations.
         """
-
         print("Choose directory:")
         print(self.imgfolders)
 
@@ -262,7 +285,7 @@ class COCO_Assistant():
 
 
 if __name__ == "__main__":
-    p = "/home/ashwin/Desktop/keras-retinanet/data/AirField/COCO-Assistant"
+    p = "/home/ashwin/Desktop/Projects/COCO-Assistant"
     img_dir = os.path.join(p, 'images')
     ann_dir = os.path.join(p, 'annotations')
 
@@ -270,7 +293,8 @@ if __name__ == "__main__":
 
     cas = COCO_Assistant(img_dir, ann_dir)
 
+    cas.combine()
     #cas.remove_cat()
     #cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)
     #cas.ann_stats(stat="cat", show_count=False, save=False)
-    cas.visualise()
+    #cas.visualise()

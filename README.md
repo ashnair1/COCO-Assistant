@@ -55,18 +55,73 @@ cas = COCO_Assistant(img_dir, ann_dir)
 
 The `combine` function allows you to merge  multiple datasets.
 
+```
+cas = COCO_Assistant(img_dir, ann_dir)                                                                                                                                                              
+loading annotations into memory...
+Done (t=0.09s)
+creating index...
+index created!
+loading annotations into memory...
+Done (t=0.06s)
+creating index...
+index created!
+
+cas.combine()                                                                                                                                                                                       
+Merging image dirs
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00, 18.33it/s]
+Merging annotations
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00, 14.72it/s]
+
+```
+
 #### Remove_cat
 
 Removes a specific category from an annotation file.
 
+```
+cas = COCO_Assistant(img_dir, ann_dir)                                                                                                                                                              
+loading annotations into memory...
+Done (t=0.09s)
+creating index...
+index created!
+loading annotations into memory...
+Done (t=0.06s)
+creating index...
+index created!
+
+cas.remove_cat()
+['tiny.json', 'tiny2.json']
+Who needs a cat removal?
+tiny.json
+
+Categories present:
+['building', 'vehicles]
+
+Enter categories you wish to remove:
+building
+['building']
+Press n if you're done entering categories, else continue
+n
+Removing specified categories...
+
+```
+
 #### Generate annotation statistics
 
 1. Generate countplot of instances per category that occur in the annotation files.
+`cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)`
 2. Generate pie-chart that shows distribution of objects according to their size (as specified in areaRng).
+`cas.ann_stats(stat="cat", show_count=False, save=False)`
 
 #### Visualise annotations
 
 Couldn't `pycocotools` visualise annotations (via [showAnns](https://github.com/cocodataset/cocoapi/blob/636becdc73d54283b3aac6d4ec363cffbb6f9b20/PythonAPI/pycocotools/coco.py#L233)) as well? Sure it could, but I required a way to freely view all the annotations of a particular dataset so here we are.
+
+```
+cas.visualise()
+Choose directory:
+['tiny', 'tiny2']
+```
 
 ![](./rep_stuff/visualiser.gif)
 

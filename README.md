@@ -28,6 +28,11 @@ Example:
 
 ## Installation
 
+#### 1. Installation: pip </br>
+
+`pip install coco-assistant`
+
+#### 2. Installation: From Source
 ```
 # Clone the repository
 git clone https://github.com/ashnair1/COCO-Assistant.git

@@ -73,6 +73,8 @@ Merging annotations
 100%|█████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00, 14.72it/s]
 
 ```
+The merged dataset (images and annotation) can be found in `./results/combination`
+
 
 #### Remove_cat
 
@@ -103,8 +105,9 @@ building
 Press n if you're done entering categories, else continue
 n
 Removing specified categories...
-
 ```
+The modified annotation can be found in `./results/removal`
+
 
 #### Generate annotation statistics
 

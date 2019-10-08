@@ -130,5 +130,5 @@ Choose directory:
 
 
 ### Todo: 
-1. Converter for converting COCO annotations to YOLO format (Look into ultralytics's [original repo](https://github.com/ultralytics/COCO2YOLO))
+1. Converter for converting COCO annotations to YOLO format
 2. Write tests for stats, converters and visualiser.

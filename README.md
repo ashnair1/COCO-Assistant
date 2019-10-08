@@ -6,7 +6,7 @@ Helper for dealing with MS-COCO annotations. <img src="rep_stuff/coco.png" heigh
 
 
 ## Overview
-The MS COCO annotation format along with the pycocotools library is quite popular among the computer vision community. Yet I for one found it difficult to play around with the annotations. Deleting a specific category, combining multiple mini datasets to generate a larger dataset, viewing distribution of classes in the annotation file are things I would like to do without writing a separate script for each. The COCO Assistant is designed (or being designed) to assist with this exact problem.
+The MS COCO annotation format along with the pycocotools library is quite popular among the computer vision community. Yet I for one found it difficult to play around with the annotations. Deleting a specific category, combining multiple mini datasets to generate a larger dataset, viewing distribution of classes in the annotation file are things I would like to do without writing a separate script for each. The COCO Assistant is designed (or being designed) to assist with this problem. Any contributions and/or suggestions are welcome.
 
 ### Requirements
 Your data directory should look as follows:
@@ -125,6 +125,7 @@ Choose directory:
 
 ![](./rep_stuff/visualiser.gif)
 
+
 ### Todo: 
-1. COCO to YOLO Converter
-Converts COCO annotations to YOLO format (Try using modified version of ultralytics's [original repo](https://github.com/ultralytics/COCO2YOLO))
+1. Converter for converting COCO annotations to YOLO format (Look into ultralytics's [original repo](https://github.com/ultralytics/COCO2YOLO))
+2. Write tests for stats, converters and visualiser.

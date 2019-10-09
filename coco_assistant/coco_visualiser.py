@@ -143,7 +143,7 @@ def visualise_all(ann, img_dir):
         im = io.imread(os.path.join(img_dir, imgs[ind]))
         imid = id_fn_dict[imgs[ind]]
         # Modification for string image ids
-        if isinstance(imgid, str):
+        if isinstance(imid, str):
             imid = [imid]
         img_annids = ann.getAnnIds(imgIds=imid, iscrowd=None)
         img_anns = ann.loadAnns(img_annids)

@@ -32,7 +32,6 @@ Expected Directory Structure
 
 """
 
-
 class COCO_Assistant():
     def __init__(self, img_dir=None, ann_dir=None):
         """
@@ -131,18 +130,18 @@ class COCO_Assistant():
                 logging.debug("String Ids detected. Converting to int")
 
                 # If last imid or last_annid is a str, convert it to int
-                if type(last_imid) == str:
+                if isinstance(last_imid, str):
                     id_dict = {}
                     # Change image id in images field
                     for i, im in enumerate(cann['images']):
                        id_dict[im['id']] = i
                        im['id'] = i
 
-                if type(last_annid) == str:
+                if isinstance(last_annid, str):
                     # Change annotation id & image id in annotations field
                     for i, im in enumerate(cann['annotations']):
                         im['id'] = i
-                        if type(last_imid) == str:
+                        if isinstance(last_imid, str):
                             im['image_id'] = id_dict[im['image_id']]
 
                 last_imid = cann['images'][-1]['id']

@@ -79,7 +79,7 @@ Merging annotations
 ```
 The merged dataset (images and annotation) can be found in `./results/combination`
 
-### 2. Remove_cat
+### 2. Remove categories
 
 Removes a specific category from an annotation file.
 
@@ -100,7 +100,7 @@ Who needs a cat removal?
 tiny.json
 
 Categories present:
-['building', 'vehicles]
+['building', 'vehicles']
 
 Enter categories you wish to remove:
 building

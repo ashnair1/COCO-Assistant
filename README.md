@@ -55,7 +55,7 @@ cas = COCO_Assistant(img_dir, ann_dir)
 ```
 ## So what can this package do?
 
-### Merge datasets
+### 1. Merge datasets
 
 The `combine` function allows you to merge multiple datasets.
 
@@ -79,7 +79,7 @@ Merging annotations
 ```
 The merged dataset (images and annotation) can be found in `./results/combination`
 
-#### Remove_cat
+### 2. Remove_cat
 
 Removes a specific category from an annotation file.
 
@@ -111,7 +111,7 @@ Removing specified categories...
 ```
 The modified annotation can be found in `./results/removal`
 
-#### Generate annotation statistics
+### 3. Generate annotation statistics
 
 1. Generate countplot of instances per category that occur in the annotation files.
  `cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)`
@@ -119,7 +119,7 @@ The modified annotation can be found in `./results/removal`
 2. Generate pie-chart that shows distribution of objects according to their size (as specified in areaRng).
  `cas.ann_stats(stat="cat", show_count=False, save=False)`
 
-#### Visualise annotations
+### 4. Visualise annotations
 
 Couldn't `pycocotools` visualise annotations (via [showAnns](https://github.com/cocodataset/cocoapi/blob/636becdc73d54283b3aac6d4ec363cffbb6f9b20/PythonAPI/pycocotools/coco.py#L233)) as well? Sure it could, but I required a way to freely view all the annotations of a particular dataset so here we are.
 

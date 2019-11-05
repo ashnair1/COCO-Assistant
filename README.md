@@ -132,5 +132,5 @@ Choose directory:
 ![](./rep_stuff/visualiser.gif)
 
 ### Todo
-1.  Converter for converting COCO annotations to YOLO format
+1.  Converter for converting COCO annotations to YOLO format.
 2.  Write tests for stats, converters and visualiser.

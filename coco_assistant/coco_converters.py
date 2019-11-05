@@ -51,7 +51,7 @@ def load_coco_detection_dataset(imgs_dir, annotations, shuffle_img=True):
         try:
             pic_height = img_detail['height']
             pic_width = img_detail['width']
-        except:
+        except KeyError:
             logging.warning("Image dimension is missing from the image field."
                             " Proceeding to read it manually")
             im = Image.open(os.path.join(imgs_dir, img_detail['file_name']))

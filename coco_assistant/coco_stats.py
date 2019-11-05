@@ -108,7 +108,7 @@ def get_object_size_split(ann, areaRng):
 
 
 def pi_area_split_single(ann, areaRng):
-    
+
     # Pie chart
     small, medium, large, left_out = get_object_size_split(ann, areaRng)
 
@@ -129,7 +129,7 @@ def pi_area_split_single(ann, areaRng):
     fig = plt.gcf()
     fig.gca().add_artist(centre_circle)
     # Equal aspect ratio ensures that pie is drawn as a circle
-    ax1.axis('equal')  
+    ax1.axis('equal')
     plt.title('Object Size Distribution', fontsize=14, fontweight='bold', pad=20)
     plt.tight_layout()
     plt.show()

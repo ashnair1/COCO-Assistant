@@ -157,7 +157,8 @@ def visualise_all(ann, img_dir):
 
 
 def visualise_single(ann, folder, img_filename):
-    assert folder in ['train', 'val', 'test']
+    if folder not in ['train', 'val', 'test']:
+        raise AssertionError('Folder not in ["train", "val", "test"]')
     # Get image id and image filename mapping dict
     id_fn_dict = get_imgid_dict(ann)
     img_path = os.path.join(os.getcwd(), "images", folder, img_filename)

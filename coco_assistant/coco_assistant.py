@@ -40,7 +40,8 @@ class COCO_Assistant():
         """
         self.img_dir = img_dir
         self.ann_dir = ann_dir
-        assert os.path.dirname(ann_dir) == os.path.dirname(img_dir)
+        if os.path.dirname(ann_dir) != os.path.dirname(img_dir):
+            raise AssertionError('Directory not in expected format')
         self.res_dir = os.path.join(os.path.dirname(ann_dir), 'results')
 
         # Create Results Directory
@@ -55,8 +56,10 @@ class COCO_Assistant():
         logging.debug("Number of image folders = {}".format(len(self.imgfolders)))
         logging.debug("Number of annotation files = {}".format(len(self.jsonfiles)))
 
-        assert len(self.jsonfiles) >= 1, "Annotation files not passed"
-        assert len(self.imgfolders) >= 1, "Image folders not passed"
+        if len(self.jsonfiles) < 1:
+            raise AssertionError("Annotation files not passed")
+        if len(self.imgfolders) < 1:
+            raise AssertionError("Image folders not passed")
 
         self.annfiles = [COCO(os.path.join(ann_dir, i)) for i in self.jsonfiles]
         self.anndict = dict(zip(self.jsonfiles, self.annfiles))
@@ -193,7 +196,8 @@ class COCO_Assistant():
             print(self.jsonfiles)
             print("Who needs a cat removal?")
             self.jc = input()
-            assert self.jc.lower() in [item.lower() for item in self.jsonfiles], "Choice not in json file list"
+            if self.jc.lower() not in [item.lower() for item in self.jsonfiles]:
+                raise AssertionError("Choice not in json file list")
             ind = self.jsonfiles.index(self.jc.lower())
             ann = self.annfiles[ind]
 
@@ -277,7 +281,8 @@ class COCO_Assistant():
 
         dir_choice = input()
 
-        assert dir_choice.lower() in [item.lower() for item in self.imgfolders], "Choice not in images folder"
+        if dir_choice.lower() not in [item.lower() for item in self.imgfolders]:
+            raise AssertionError("Choice not in images folder")
         ind = self.imgfolders.index(dir_choice.lower())
         ann = self.annfiles[ind]
         img_dir = os.path.join(self.img_dir, dir_choice)

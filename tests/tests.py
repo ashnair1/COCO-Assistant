@@ -28,7 +28,7 @@ def get_data():
 	# Set up paths
 	img_dir = os.path.join(os.getcwd(), 'images')
 	ann_dir = os.path.join(os.getcwd(), 'annotations')
-	return [img_dir, ann_dir] 
+	return [img_dir, ann_dir]
 
 #@pytest.mark.skip
 def test_combine(get_data):
@@ -55,7 +55,7 @@ def test_cat_removal(get_data):
 
 	cas.remove_cat(jc=test_ann, rcats=test_rcats)
 
-	orig = COCO(os.path.join(cas.ann_dir, cas.jc)) 
+	orig = COCO(os.path.join(cas.ann_dir, cas.jc))
 	rmj = COCO(os.path.join(cas.resrm_dir, cas.jc))
 
 	orig_names = [list(orig.cats.values())[i]['name'] for i in range(len(orig.cats))]

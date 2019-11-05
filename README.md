@@ -1,6 +1,6 @@
 # COCO-Assistant 
 
-![CircleCI](https://circleci.com/gh/ashnair1/COCO-Assistant/tree/master.svg?style=shield&circle-token=553c83e37198fe02a71743d42ee427c292336743) [![PyPI version](https://badge.fury.io/py/coco-assistant.svg)](https://badge.fury.io/py/coco-assistant) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![CircleCI](https://circleci.com/gh/ashnair1/COCO-Assistant/tree/master.svg?style=shield&circle-token=553c83e37198fe02a71743d42ee427c292336743) ![Codacy Badge](https://api.codacy.com/project/badge/Grade/5299d18c95da4991b4f3a6ae6e8a0b7a) [![PyPI version](https://badge.fury.io/py/coco-assistant.svg)](https://badge.fury.io/py/coco-assistant) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Helper for dealing with MS-COCO annotations. <img src="rep_stuff/coco.png" height="40">
 
@@ -43,7 +43,7 @@ make
 
 Usage is similar to how you would use `pycocotools`
 
-```
+```shell script
 from coco_assistant import COCO_Assistant
 
 # Specify image and annotation directories
@@ -59,7 +59,7 @@ cas = COCO_Assistant(img_dir, ann_dir)
 
 The `combine` function allows you to merge multiple datasets.
 
-```
+```shell script
 cas = COCO_Assistant(img_dir, ann_dir)                                                                                                                                                              
 loading annotations into memory...
 Done (t=0.09s)
@@ -83,7 +83,7 @@ The merged dataset (images and annotation) can be found in `./results/combinatio
 
 Removes a specific category from an annotation file.
 
-```
+```shell script
 cas = COCO_Assistant(img_dir, ann_dir)                                                                                                                                                              
 loading annotations into memory...
 Done (t=0.09s)
@@ -113,10 +113,10 @@ The modified annotation can be found in `./results/removal`
 
 ### 3. Generate annotation statistics
 
-1. Generate countplot of instances per category that occur in the annotation files.
+1. Generate countplot of instances per category that occur in the annotation files. 
  `cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)`
 
-2. Generate pie-chart that shows distribution of objects according to their size (as specified in areaRng).
+2. Generate pie-chart that shows distribution of objects according to their size (as specified in areaRng). 
  `cas.ann_stats(stat="cat", show_count=False, save=False)`
 
 ### 4. Visualise annotations

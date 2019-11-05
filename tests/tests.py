@@ -58,7 +58,7 @@ def test_cat_removal(get_data):
 	orig = COCO(os.path.join(cas.ann_dir, cas.jc)) 
 	rmj = COCO(os.path.join(cas.resrm_dir, cas.jc))
 
-	orig_names = [list(orig.cats.values())[i]['name'] for i in range(len(orig.cats))] 
+	orig_names = [list(orig.cats.values())[i]['name'] for i in range(len(orig.cats))]
 	rmj_names = [list(rmj.cats.values())[i]['name'] for i in range(len(rmj.cats))]
 
 	diff_names = sorted(list(set(orig_names) - set(rmj_names)))

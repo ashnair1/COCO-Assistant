@@ -78,7 +78,6 @@ def get_areas(ann):
 
 def view_area_dist(ann):
     obj_areas = get_areas(ann)
-    import matplotlib.pyplot as plt
     plt.plot(range(len(obj_areas)), obj_areas)
     plt.xlabel("Objects")
     plt.ylabel("Areas")
@@ -167,7 +166,7 @@ def pi_area_split(anns, names, areaRng, save=False):
         # Equal aspect ratio ensures that pie is drawn as a circle
         #ax.axis('equal')
         #from matplotlib import rcParams
-        #rcParams['axes.titlepad'] = 100 
+        #rcParams['axes.titlepad'] = 100
         ax.set_title(name)
 
     #plt.title('Object Size Distribution', pad=20)

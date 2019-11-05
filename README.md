@@ -4,7 +4,6 @@
 
 Helper for dealing with MS-COCO annotations. <img src="rep_stuff/coco.png" height="40">
 
-
 ## Overview
 The MS COCO annotation format along with the pycocotools library is quite popular among the computer vision community. Yet I for one found it difficult to play around with the annotations. Deleting a specific category, combining multiple mini datasets to generate a larger dataset, viewing distribution of classes in the annotation file are things I would like to do without writing a separate script for each. The COCO Assistant is designed (or being designed) to assist with this problem. **Please note that currently, the Assistant can only help out with object detection datasets**. Any contributions and/or suggestions are welcome.
 
@@ -28,11 +27,11 @@ Example:
 
 ## Installation
 
-#### 1. Installation: pip </br>
+### 1. Installation: pip </br>
 
 `pip install coco-assistant`
 
-#### 2. Installation: From Source
+### 2. Installation: From Source
 ```
 # Clone the repository
 git clone https://github.com/ashnair1/COCO-Assistant.git
@@ -54,9 +53,9 @@ ann_dir = os.path.join(os.getcwd(), 'annotations')
 # Create COCO_Assistant object
 cas = COCO_Assistant(img_dir, ann_dir)
 ```
-## So what can this package do?:
+## So what can this package do?
 
-#### Merge datasets
+### Merge datasets
 
 The `combine` function allows you to merge multiple datasets.
 
@@ -79,7 +78,6 @@ Merging annotations
 
 ```
 The merged dataset (images and annotation) can be found in `./results/combination`
-
 
 #### Remove_cat
 
@@ -113,19 +111,19 @@ Removing specified categories...
 ```
 The modified annotation can be found in `./results/removal`
 
-
 #### Generate annotation statistics
 
 1. Generate countplot of instances per category that occur in the annotation files.
-`cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)`
+ `cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)`
+
 2. Generate pie-chart that shows distribution of objects according to their size (as specified in areaRng).
-`cas.ann_stats(stat="cat", show_count=False, save=False)`
+ `cas.ann_stats(stat="cat", show_count=False, save=False)`
 
 #### Visualise annotations
 
 Couldn't `pycocotools` visualise annotations (via [showAnns](https://github.com/cocodataset/cocoapi/blob/636becdc73d54283b3aac6d4ec363cffbb6f9b20/PythonAPI/pycocotools/coco.py#L233)) as well? Sure it could, but I required a way to freely view all the annotations of a particular dataset so here we are.
 
-```
+```shell script
 cas.visualise()
 Choose directory:
 ['tiny', 'tiny2']
@@ -133,7 +131,6 @@ Choose directory:
 
 ![](./rep_stuff/visualiser.gif)
 
-
-### Todo: 
-1. Converter for converting COCO annotations to YOLO format
-2. Write tests for stats, converters and visualiser.
+### Todo
+1.  Converter for converting COCO annotations to YOLO format
+2.  Write tests for stats, converters and visualiser.

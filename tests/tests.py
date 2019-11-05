@@ -15,16 +15,16 @@ import pytest
 @pytest.fixture
 def get_data():
 	if os.path.isdir('./annotations') is False and os.path.isdir('./images') is False:
-	    # Download and extract data
-	    print("Downloading...")
-	    file_id = '1WAFzdtIa56UL4wFVHg2TaBMhtzqRc0F-'
-	    destination = 'test.tar.gz'
-	    data_getter.download_file_from_google_drive(file_id, destination)
-	    # Unzip data
-	    print("Extracting")
-	    tar = tarfile.open(destination, "r:gz")
-	    tar.extractall()
-	    tar.close()
+		# Download and extract data
+		print("Downloading...")
+		file_id = '1WAFzdtIa56UL4wFVHg2TaBMhtzqRc0F-'
+		destination = 'test.tar.gz'
+		data_getter.download_file_from_google_drive(file_id, destination)
+		# Unzip data
+		print("Extracting")
+		tar = tarfile.open(destination, "r:gz")
+		tar.extractall()
+		tar.close()
 	# Set up paths
 	img_dir = os.path.join(os.getcwd(), 'images')
 	ann_dir = os.path.join(os.getcwd(), 'annotations')
@@ -37,13 +37,15 @@ def test_combine(get_data):
 	comb = COCO(os.path.join(cas.resann_dir, 'combined.json'))
 	# Get combined annotation count
 	combann = len(comb.anns)
-    # Get individual annotation counts
+	# Get individual annotation counts
 	ann_counts = [len(_cfile.anns) for _cfile in cas.annfiles]
 	print(combann)
 	print(sum(ann_counts))
-    # Clean up
+
+	# Clean up
 	shutil.rmtree(cas.res_dir)
-	assert sum(ann_counts) == combann, "Failure in merging datasets"
+	if sum(ann_counts) != combann:
+		raise AssertionError("Failure in merging datasets")
 
 
 #@pytest.mark.skip
@@ -63,6 +65,7 @@ def test_cat_removal(get_data):
 
 	diff_names = sorted(list(set(orig_names) - set(rmj_names)))
 
-        # Clean up
+	# Clean up
 	shutil.rmtree(cas.resrm_dir)
-	assert diff_names == test_rcats, "Failure in removing following categories: {}".format(test_rcats)
+	if diff_names != test_rcats:
+		raise AssertionError("Failure in removing following categories: {}".format(test_rcats))

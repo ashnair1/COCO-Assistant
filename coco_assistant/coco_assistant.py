@@ -265,7 +265,8 @@ class COCO_Assistant():
 
         dir_choice = input()
 
-        assert dir_choice.lower() in [item.lower() for item in self.imgfolders], "Choice not in images folder"
+        if dir_choice.lower() not in [item.lower() for item in self.imgfolders]:
+            raise AssertionError("Choice not in images folder")
         ind = self.imgfolders.index(dir_choice.lower())
         ann = self.annfiles[ind]
         img_dir = os.path.join(self.img_dir, dir_choice)

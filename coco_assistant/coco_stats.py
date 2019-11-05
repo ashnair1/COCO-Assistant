@@ -88,7 +88,8 @@ def get_object_size_split(ann, areaRng):
 
     obj_areas = get_areas(ann)
 
-    assert areaRng == sorted(areaRng), "Area ranges incorrectly provided"
+    if areaRng != sorted(areaRng):
+        raise AssertionError("Area ranges incorrectly provided")
 
     small    = len(ann.getAnnIds(areaRng=[(areaRng[0]**2), areaRng[1]**2]))
     medium   = len(ann.getAnnIds(areaRng=[(areaRng[1]**2), areaRng[2]**2]))
@@ -103,7 +104,8 @@ def get_object_size_split(ann, areaRng):
 
     logging.debug("Number of objects = {}".format(len(obj_areas)))
 
-    assert len(obj_areas) == small + medium + large + left_out, "Sum of objects in different area ranges != Total number of objects"
+    if len(obj_areas) != small + medium + large + left_out:
+        raise AssertionError("Sum of objects in different area ranges != Total number of objects")
     return small, medium, large, left_out
 
 

@@ -10,7 +10,7 @@ The MS COCO annotation format along with the pycocotools library is quite popula
 ### Requirements
 Your data directory should look as follows:
 
-```
+```shell script
 Example:
 .
 ├── images

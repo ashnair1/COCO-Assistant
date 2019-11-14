@@ -32,7 +32,6 @@ workflows:
               branches:
                   only:
                      - master
-                     - converters
         
       
       

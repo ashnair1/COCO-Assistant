@@ -250,7 +250,7 @@ class COCO_Assistant():
         with open(os.path.join(self.resrm_dir, self.jc), 'w') as oa:
             json.dump(x, oa)
 
-    def ann_stats(self, stat, show_count=False, arearng=[0, 32, 96, 1e5], save=False):
+    def ann_stats(self, stat, arearng, show_count=False, save=False):
         """
         Function for displaying statistics.
         """

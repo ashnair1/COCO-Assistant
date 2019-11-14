@@ -53,7 +53,7 @@ ann_dir = os.path.join(os.getcwd(), 'annotations')
 # Create COCO_Assistant object
 cas = COCO_Assistant(img_dir, ann_dir)
 ```
-## So what can this package do?
+## Package features
 
 ### 1. Merge datasets
 
@@ -113,10 +113,10 @@ The modified annotation can be found in `./results/removal`
 
 ### 3. Generate annotation statistics
 
-1. Generate countplot of instances per category that occur in the annotation files. 
+1.  Generate countplot of instances per category that occur in the annotation files. 
  `cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)`
 
-2. Generate pie-chart that shows distribution of objects according to their size (as specified in areaRng). 
+2.  Generate pie-chart that shows distribution of objects according to their size (as specified in areaRng). 
  `cas.ann_stats(stat="cat", show_count=False, save=False)`
 
 ### 4. Visualise annotations

@@ -124,7 +124,7 @@ def pi_area_split_single(ann, areaRng):
     	colors = ['#ff9999', '#66b3ff', '#ffcc99']
 
 
-    fig1, ax1 = plt.subplots()
+    _, ax1 = plt.subplots()
     ax1.pie(sizes, colors=colors, labels=labels, autopct='%1.2f%%', startangle=90)
     #draw circle
     centre_circle = plt.Circle((0, 0), 0.70, fc='white')
@@ -203,5 +203,5 @@ if __name__ == "__main__":
 
     #cat_count(ann, folder, show_count=True)
     #pi_area_split(ann, areaRng=[0, 144, 512, 1e5])
-    pi_area_split_multi([ann1, ann2, ann3], folders=[folder1, folder2, folder3], areaRng=[10, 144, 512, 1e5])
+    #pi_area_split_multi([ann1, ann2, ann3], folders=[folder1, folder2, folder3], areaRng=[10, 144, 512, 1e5])
     #view_area_dist(ann)

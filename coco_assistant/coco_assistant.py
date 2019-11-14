@@ -48,9 +48,12 @@ class COCO_Assistant():
         if os.path.exists(self.res_dir) is False:
             os.mkdir(self.res_dir)
 
-        self.imgfolders = [i for i in os.listdir(self.img_dir) if os.path.isdir(os.path.join(self.img_dir, i)) is True]
+        self.imgfolders = sorted([i for i in os.listdir(self.img_dir) if os.path.isdir(os.path.join(self.img_dir, i)) is True])
         self.jsonfiles = sorted([j for j in os.listdir(ann_dir) if j[-5:] == ".json"])
         self.names = [n[:-5] for n in self.jsonfiles]
+
+        if self.names != self.imgfolders:
+            raise AssertionError("Image dir and corresponding json file must have the same name")
 
         # Note: Add check for confirming these folders only contain .jpg and .json respectively
         logging.debug("Number of image folders = {}".format(len(self.imgfolders)))

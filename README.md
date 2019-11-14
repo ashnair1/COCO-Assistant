@@ -32,7 +32,7 @@ Example:
 `pip install coco-assistant`
 
 ### 2. Installation: From Source
-```
+```shell script
 # Clone the repository
 git clone https://github.com/ashnair1/COCO-Assistant.git
 # Build and install the library

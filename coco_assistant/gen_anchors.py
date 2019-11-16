@@ -104,9 +104,15 @@ def generate_anchors(cann, num_anchors):
     return centroids
 
 
+def format_anchors(centroids):
+    new_anchors = [[max(i)]*2 for i in centroids.round(0)]
+    return new_anchors
+
+
 if __name__ == "__main__":
-    x = "/media/ashwin/DATA/detectron2/projects/SiameseMaskRCNN/data/xview2/annotations/train.json"
+    x = "/home/ashwin/Desktop/Projects/detectron2/projects/SiameseMaskRCNN/data/xview2/annotations/train.json"
     xc = COCO(x)
     num_anchors = 4
     anchors = generate_anchors(xc, num_anchors)
-    print(anchors.round(0))
+    print(anchors)
+    print(format_anchors(anchors))

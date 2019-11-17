@@ -10,6 +10,7 @@ from tqdm import tqdm
 from . import coco_converters as converter
 from . import coco_stats as stats
 from . import coco_visualiser as cocovis
+from coco_assistant.utils import anchors
 
 logging.basicConfig(level=logging.ERROR)
 logging.getLogger().setLevel(logging.WARNING)
@@ -31,6 +32,7 @@ Expected Directory Structure
 
 
 """
+
 
 class COCO_Assistant():
     def __init__(self, img_dir=None, ann_dir=None):
@@ -66,6 +68,8 @@ class COCO_Assistant():
 
         self.annfiles = [COCO(os.path.join(ann_dir, i)) for i in self.jsonfiles]
         self.anndict = dict(zip(self.jsonfiles, self.annfiles))
+
+        self.ann_anchors = []
 
     def combine(self):
         """
@@ -259,6 +263,18 @@ class COCO_Assistant():
         elif stat == "cat":
             stats.cat_count(self.annfiles, self.names, show_count=show_count, save=save)
 
+    def anchors(self, num, fmt=None, recompute=False):
+        """
+        Function for generating top anchors
+        """
+        if recompute or not self.ann_anchors:
+            print("Calculating anchors...")
+            a = [anchors.generate_anchors(j, num, fmt) for j in self.annfiles]
+            self.ann_anchors = dict(zip(self.names, a))
+        else:
+            print("Loading pre-computed anchors")
+            print(self.ann_anchors)
+
     def converter(self, to="TFRecord"):
         """
         Function for converting annotations to other formats
@@ -302,8 +318,9 @@ if __name__ == "__main__":
 
     cas = COCO_Assistant(img_dir, ann_dir)
 
-    cas.combine()
+    #cas.combine()
     #cas.remove_cat()
     #cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)
     #cas.ann_stats(stat="cat", show_count=False, save=False)
     #cas.visualise()
+    #cas.anchors(2)

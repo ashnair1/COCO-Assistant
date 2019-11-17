@@ -52,6 +52,7 @@ def print_anchors(centroids):
     r += '%0.2f,%0.2f' % (anchors[sorted_indices[-1:],0], anchors[sorted_indices[-1:],1])
     r += "]"
     print(r)
+    print("")
 
 
 def run_kmeans(ann_dims, anchor_num):
@@ -92,27 +93,30 @@ def run_kmeans(ann_dims, anchor_num):
         old_distances = distances.copy()
 
 
-def generate_anchors(cann, num_anchors):
+def format_anchors(centroids):
+    new_anchors = [[max(i)]*2 for i in centroids.round(0)]
+    return sorted(new_anchors)
+
+
+def generate_anchors(cann, num_anchors, fmt=None):
     anns = cann.anns
     # dims is a list of tuples (w,h) for each bbox
     dims = [tuple(map(float, (anns[i]['bbox'][-2], anns[i]['bbox'][-1]))) for i in anns]
     dims = np.array(dims)
     centroids = run_kmeans(dims, num_anchors)
+
     # write anchors to file
     print('\naverage IOU for', num_anchors, 'anchors:', '%0.2f' % avg_iou(dims, centroids))
-    print_anchors(centroids)
-    return centroids
-
-
-def format_anchors(centroids):
-    new_anchors = [[max(i)]*2 for i in centroids.round(0)]
-    return new_anchors
+    if fmt == "square":
+        print("formatted anchors: {}\n".format(format_anchors(centroids)))
+        return format_anchors(centroids)
+    else:
+        print_anchors(centroids.round(0))
+        return centroids
 
 
 if __name__ == "__main__":
-    x = "/home/ashwin/Desktop/Projects/detectron2/projects/SiameseMaskRCNN/data/xview2/annotations/train.json"
+    x = "/home/ashwin/Desktop/Projects/COCO-Assistant/data/annotations/val.json"
     xc = COCO(x)
-    num_anchors = 4
-    anchors = generate_anchors(xc, num_anchors)
-    print(anchors)
-    print(format_anchors(anchors))
+    num_anchors = 2
+    generate_anchors(xc, num_anchors, 'square')

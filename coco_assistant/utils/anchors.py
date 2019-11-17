@@ -29,13 +29,13 @@ def iou(ann, centroids):
 
 
 def avg_iou(anns, centroids):
-    n, d = anns.shape
-    sum = 0.
+    n, _ = anns.shape
+    s = 0
 
     for i in range(anns.shape[0]):
-        sum += max(iou(anns[i], centroids))
+        s += max(iou(anns[i], centroids))
 
-    return sum/n
+    return s/n
 
 
 def print_anchors(centroids):
@@ -61,7 +61,8 @@ def run_kmeans(ann_dims, anchor_num):
     iteration = 0
     old_distances = np.zeros((ann_num, anchor_num))
 
-    indices = [random.randrange(ann_dims.shape[0]) for i in range(anchor_num)]
+    r = random.SystemRandom()
+    indices = [r.randrange(ann_dims.shape[0]) for i in range(anchor_num)]
     centroids = ann_dims[indices]
     anchor_dim = ann_dims.shape[1]
 

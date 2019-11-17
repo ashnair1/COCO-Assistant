@@ -57,7 +57,6 @@ def print_anchors(centroids):
 
 def run_kmeans(ann_dims, anchor_num):
     ann_num = ann_dims.shape[0]
-    iterations = 0
     prev_assignments = np.ones(ann_num)*(-1)
     iteration = 0
     old_distances = np.zeros((ann_num, anchor_num))

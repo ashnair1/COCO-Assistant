@@ -58,12 +58,12 @@ class COCO_Assistant():
             raise AssertionError("Image dir and corresponding json file must have the same name")
 
         # Note: Add check for confirming these folders only contain .jpg and .json respectively
-        logging.debug("Number of image folders = {}".format(len(self.imgfolders)))
-        logging.debug("Number of annotation files = {}".format(len(self.jsonfiles)))
+        logging.debug("Number of image folders = %s", len(self.imgfolders))
+        logging.debug("Number of annotation files = %s", len(self.jsonfiles))
 
-        if len(self.jsonfiles) < 1:
+        if not self.jsonfiles:
             raise AssertionError("Annotation files not passed")
-        if len(self.imgfolders) < 1:
+        if not self.imgfolders:
             raise AssertionError("Image folders not passed")
 
         self.annfiles = [COCO(os.path.join(ann_dir, i)) for i in self.jsonfiles]

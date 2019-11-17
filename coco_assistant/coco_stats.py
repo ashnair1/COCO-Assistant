@@ -84,6 +84,7 @@ def view_area_dist(ann):
     plt.title("Area Distribution")
     plt.show()
 
+
 def get_object_size_split(ann, areaRng):
 
     obj_areas = get_areas(ann)
@@ -96,13 +97,13 @@ def get_object_size_split(ann, areaRng):
     large    = len(ann.getAnnIds(areaRng=[(areaRng[2]**2), areaRng[3]**2]))
     left_out = len(ann.getAnnIds(areaRng=[0**2, (areaRng[0]**2)])) + len(ann.getAnnIds(areaRng=[areaRng[3]**2, (1e5**2)]))
 
-    logging.debug("Number of small objects in set = {}".format(small))
-    logging.debug("Number of medium objects in set = {}".format(medium))
-    logging.debug("Number of large objects in set = {}".format(large))
+    logging.debug("Number of small objects in set = %s", small)
+    logging.debug("Number of medium objects in set = %s".medium)
+    logging.debug("Number of large objects in set = %s".large)
     if left_out != 0:
-        logging.debug("Number of objects ignored in set = {}".format(left_out))
+        logging.debug("Number of objects ignored in set = %s", left_out)
 
-    logging.debug("Number of objects = {}".format(len(obj_areas)))
+    logging.debug("Number of objects = %s".len(obj_areas))
 
     if len(obj_areas) != small + medium + large + left_out:
         raise AssertionError("Sum of objects in different area ranges != Total number of objects")
@@ -115,13 +116,13 @@ def pi_area_split_single(ann, areaRng):
     small, medium, large, left_out = get_object_size_split(ann, areaRng)
 
     if left_out != 0:
-    	sizes = [small, large, left_out, medium]
-    	labels = 'Small', 'Large', 'Ignored', 'Medium'
-    	colors = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99']
+        sizes = [small, large, left_out, medium]
+        labels = 'Small', 'Large', 'Ignored', 'Medium'
+        colors = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99']
     else:
-    	sizes = [small, large, medium]
-    	labels = 'Small', 'Large', 'Medium'
-    	colors = ['#ff9999', '#66b3ff', '#ffcc99']
+        sizes = [small, large, medium]
+        labels = 'Small', 'Large', 'Medium'
+        colors = ['#ff9999', '#66b3ff', '#ffcc99']
 
 
     _, ax1 = plt.subplots()
@@ -135,7 +136,6 @@ def pi_area_split_single(ann, areaRng):
     plt.title('Object Size Distribution', fontsize=14, fontweight='bold', pad=20)
     plt.tight_layout()
     plt.show()
-
 
 
 def pi_area_split(anns, names, areaRng, save=False):

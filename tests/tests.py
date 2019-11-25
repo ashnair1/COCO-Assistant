@@ -55,7 +55,7 @@ def test_cat_removal(get_data):
 	test_ann = "tiny2.json"
 	test_rcats = sorted(['plane', 'ship', 'Large_Vehicle'])
 
-	cas.remove_cat(jc=test_ann, rcats=test_rcats)
+	cas.remove_cat(interactive=False, jc=test_ann, rcats=test_rcats)
 
 	orig = COCO(os.path.join(cas.ann_dir, cas.jc))
 	rmj = COCO(os.path.join(cas.resrm_dir, cas.jc))

@@ -1,3 +1,4 @@
+import ast
 import json
 import logging
 import os
@@ -186,9 +187,18 @@ class COCO_Assistant():
         with open(dst_ann, 'w') as aw:
             json.dump(cann, aw)
 
-    def remove_cat(self, jc=None, rcats=None):
+    def remove_cat(self, interactive=True, jc=None, rcats=None):
         """
-        Function for removing certain categories
+        Function for removing certain categories.
+        In interactive mode, you can input the json and the categories
+        to be removed (as a list, see README for example)
+        In non-interactive mode, you manually pass in json filename and
+        categories to be removed. Note that jc and
+        rcats cannot be None if run with interactive=False.
+
+        :param interactive: Run category removal in interactive mode
+        :param jc: Json choice
+        :param rcats: Categories to be removed
         """
 
         self.resrm_dir = os.path.join(self.res_dir, 'removal')
@@ -198,8 +208,7 @@ class COCO_Assistant():
             shutil.rmtree(self.resrm_dir)
             os.makedirs(self.resrm_dir, exist_ok=True)
 
-        if jc is None or rcats is None:
-            ###########################################################
+        if interactive:
             print(self.jsonfiles)
             print("Who needs a cat removal?")
             self.jc = input()
@@ -213,21 +222,19 @@ class COCO_Assistant():
             print(cats)
 
             self.rcats = []
-            print("\nEnter categories you wish to remove:")
-            while True:
-                x = input()
-                if x.lower() in [cat.lower() for cat in cats]:
-                    catind = [cat.lower() for cat in cats].index(x.lower())
-                    self.rcats.append(cats[catind])
-                    print(self.rcats)
-                    print("Press n if you're done entering categories, else continue")
-                elif x == "n":
-                    break
-                else:
-                    print("Incorrect Entry. Enter either the category to be added or press 'n' to quit.")
-            ###############################################################
+            print("\nEnter categories you wish to remove as a list:")
+            x = input()
+            x = ast.literal_eval(x)
+            if isinstance(x, list) is False:
+                raise AssertionError("Input must be a list of categories to be removed")
+            if all(elem in cats for elem in x):
+                self.rcats = x
+            else:
+                print("Incorrect entry.")
 
         else:
+            if jc is None or rcats is None:
+                raise AssertionError("Both json choice and rcats need to be provided in non-interactive mode")
             self.jc = jc
             ind = self.jsonfiles.index(self.jc.lower())
             ann = self.annfiles[ind]
@@ -263,13 +270,17 @@ class COCO_Assistant():
         elif stat == "cat":
             stats.cat_count(self.annfiles, self.names, show_count=show_count, save=save)
 
-    def anchors(self, num, fmt=None, recompute=False):
+    def anchors(self, n, fmt=None, recompute=False):
         """
-        Function for generating top anchors
+        Function for generating top 'n' anchors
+
+        :param n: Number of anchors
+        :param fmt: Format of anchors ['square', None]
+        :param recompute: Rerun k-means and recompute anchors
         """
         if recompute or not self.ann_anchors:
             print("Calculating anchors...")
-            a = [anchors.generate_anchors(j, num, fmt) for j in self.annfiles]
+            a = [anchors.generate_anchors(j, n, fmt) for j in self.annfiles]
             self.ann_anchors = dict(zip(self.names, a))
         else:
             print("Loading pre-computed anchors")
@@ -278,6 +289,8 @@ class COCO_Assistant():
     def converter(self, to="TFRecord"):
         """
         Function for converting annotations to other formats
+
+        :param to: Format to which annotations are to be converted
         """
         print("Choose directory:")
         print(self.imgfolders)

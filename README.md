@@ -93,8 +93,9 @@ loading annotations into memory...
 Done (t=0.06s)
 creating index...
 index created!
-
-cas.remove_cat()
+ 
+# In interactive mode
+cas.remove_cat(interactive=True)
 ['tiny.json', 'tiny2.json']
 Who needs a cat removal?
 tiny.json
@@ -102,11 +103,12 @@ tiny.json
 Categories present:
 ['building', 'vehicles']
 
-Enter categories you wish to remove:
-building
+Enter categories you wish to remove as a list:
 ['building']
-Press n if you're done entering categories, else continue
-n
+Removing specified categories...
+
+# In non-interactive mode
+cas.remove_cat(interactive=False, jc="tiny.json", rcats=['building'])
 Removing specified categories...
 ```
 The modified annotation can be found in `./results/removal`

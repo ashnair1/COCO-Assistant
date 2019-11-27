@@ -12,6 +12,7 @@ from . import coco_converters as converter
 from . import coco_stats as stats
 from . import coco_visualiser as cocovis
 from coco_assistant.utils import anchors
+from coco_assistant.utils import det2seg
 
 logging.basicConfig(level=logging.ERROR)
 logging.getLogger().setLevel(logging.WARNING)
@@ -285,6 +286,14 @@ class COCO_Assistant():
         else:
             print("Loading pre-computed anchors")
             print(self.ann_anchors)
+
+    def get_segmasks(self):
+        """
+        Function for generating segmentation masks.
+        """
+        for ann, name in zip(self.annfiles, self.names):
+            output_dir = os.path.join(self.res_dir, 'segmasks', name)
+            det2seg.det2seg(ann, output_dir)
 
     def converter(self, to="TFRecord"):
         """

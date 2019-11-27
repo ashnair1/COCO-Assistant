@@ -130,4 +130,5 @@ dmypy.json
 annotations/
 images/
 *tar.gz
-dummy.py
+.vscode/
+data/

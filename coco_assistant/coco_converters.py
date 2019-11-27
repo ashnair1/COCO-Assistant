@@ -62,14 +62,14 @@ def load_coco_detection_dataset(imgs_dir, annotations, shuffle_img=True):
         anns = coco.loadAnns(ann_ids)
         for ann in anns:
             bboxes_data = ann['bbox']
-            # the format of coco bounding boxs is [Xmin, Ymin, width, height]
+            # the format of coco bounding boxes are [Xmin, Ymin, width, height]
             bboxes_data = [bboxes_data[0] / float(pic_width), bboxes_data[1] / float(pic_height),
                            bboxes_data[2] / float(pic_width), bboxes_data[3] / float(pic_height)]
             bboxes.append(bboxes_data)
             labels.append(ann['category_id'])
 
         img_path = os.path.join(imgs_dir, img_detail['file_name'])
-        img_bytes = tf.gfile.FastGFile(img_path, 'rb').read()
+        img_bytes = tf.gfile.GFile(img_path, 'rb').read()
 
         img_info['pixel_data'] = img_bytes
         img_info['height'] = pic_height
@@ -133,6 +133,6 @@ def convert(ann, img_dir, _format):
 
 if __name__ == "__main__":
     _format = "TFRecord"
-    ann = COCO("/home/ashwin/Desktop/keras-retinanet/data/IIAI/annotations/train.json")
-    img_dir = "/home/ashwin/Desktop/keras-retinanet/data/IIAI/images/train"
+    ann = COCO("/home/ashwin/COCO-Assistant/data/annotations/coco.json")
+    img_dir = "/home/ashwin/COCO-Assistant/data/images/coco"
     convert(ann, img_dir, _format)

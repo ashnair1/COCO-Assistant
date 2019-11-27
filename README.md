@@ -60,7 +60,7 @@ cas = COCO_Assistant(img_dir, ann_dir)
 The `combine` function allows you to merge multiple datasets.
 
 ```shell script
-cas = COCO_Assistant(img_dir, ann_dir)                                                                                                                                                              
+In[1]: cas = COCO_Assistant(img_dir, ann_dir)                                                                                                                                                              
 loading annotations into memory...
 Done (t=0.09s)
 creating index...
@@ -70,7 +70,7 @@ Done (t=0.06s)
 creating index...
 index created!
 
-cas.combine()                                                                                                                                                                                       
+In[2]: cas.combine()                                                                                                                                                                                       
 Merging image dirs
 100%|█████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00, 18.33it/s]
 Merging annotations
@@ -84,7 +84,7 @@ The merged dataset (images and annotation) can be found in `./results/combinatio
 Removes a specific category from an annotation file.
 
 ```shell script
-cas = COCO_Assistant(img_dir, ann_dir)                                                                                                                                                              
+In[1]: cas = COCO_Assistant(img_dir, ann_dir)                                                                                                                                                              
 loading annotations into memory...
 Done (t=0.09s)
 creating index...
@@ -95,7 +95,7 @@ creating index...
 index created!
  
 # In interactive mode
-cas.remove_cat(interactive=True)
+In[2]: cas.remove_cat(interactive=True)
 ['tiny.json', 'tiny2.json']
 Who needs a cat removal?
 tiny.json
@@ -108,7 +108,7 @@ Enter categories you wish to remove as a list:
 Removing specified categories...
 
 # In non-interactive mode
-cas.remove_cat(interactive=False, jc="tiny.json", rcats=['building'])
+In[3]: cas.remove_cat(interactive=False, jc="tiny.json", rcats=['building'])
 Removing specified categories...
 ```
 The modified annotation can be found in `./results/removal`
@@ -126,13 +126,18 @@ The modified annotation can be found in `./results/removal`
 Couldn't `pycocotools` visualise annotations (via [showAnns](https://github.com/cocodataset/cocoapi/blob/636becdc73d54283b3aac6d4ec363cffbb6f9b20/PythonAPI/pycocotools/coco.py#L233)) as well? Sure it could, but I required a way to freely view all the annotations of a particular dataset so here we are.
 
 ```shell script
-cas.visualise()
+In[1]: cas.visualise()
 Choose directory:
 ['tiny', 'tiny2']
+tiny
 ```
 
 ![](./rep_stuff/visualiser.gif)
 
+### 5. Generate segmentation masks
+The `cas.get_segmasks()` function allows you to create segmentation masks from your MS COCO object detection datasets. Similar to the Pascal VOC dataset, the mask values are their classes and a colour palette is applied to enable visualisation. The generated masks are stroed in the `./results` folder.
+
+
 ### Todo
 1.  Converter for converting COCO annotations to YOLO format.
-2.  Write tests for stats, converters and visualiser.
+2.  Write tests for untested functions :)

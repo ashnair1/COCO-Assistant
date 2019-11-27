@@ -1,5 +1,4 @@
 import os
-from copy import deepcopy
 import numpy as np
 from PIL import Image, ImageDraw
 from pycocotools.coco import COCO
@@ -10,7 +9,7 @@ def det2seg(cann, output_dir):
     """
     Function for converting segmentation polygons in MS-COCO
     object detection dataset to segmentation masks. The seg-
-    mentation masks are stored with a colour pallete that's 
+    mentation masks are stored with a colour palette that's
     randomly assigned based on class. Change the seed if you
     want to change colours.
 
@@ -24,13 +23,13 @@ def det2seg(cann, output_dir):
     imids = cann.getImgIds()
     cats = cann.loadCats(cann.getCatIds())
 
-    cat_colours = {0: (0,0,0)}
-    
+    cat_colours = {0: (0, 0, 0)}
+
     # Set seed for palette colour
     np.random.seed(121)
 
     # Create category colourmap
-    for i, c in enumerate(cats):
+    for c in cats:
         cat_colours[c['id']] = (np.random.randint(0,256), np.random.randint(0,256), np.random.randint(0,256))
 
     colour_map = np.array(list(cat_colours.values()))
@@ -41,21 +40,22 @@ def det2seg(cann, output_dir):
         img = cann.loadImgs(imid)
         if len(img) > 1:
             raise AssertionError("Multiple images with same id")
-        H, W = img[0]['height'], img[0]['width']
+        h, w = img[0]['height'], img[0]['width']
         name = img[0]['file_name']
-        im = np.zeros((H,W), dtype=np.uint8)
+        if name[-4:] != ".png":
+            name = name[:-4] + ".png"
+        im = np.zeros((h, w), dtype=np.uint8)
         annids = cann.getAnnIds(imgIds=[imid])
         if not annids:
             # No annotations
             res = Image.fromarray(im)
             res.save(os.path.join(output_dir, '{}'.format(name)))
-            return
         else:
             anns = cann.loadAnns(annids)
             for ann in anns:
                 poly = ann['segmentation'][0]
                 cat = ann['category_id']
-                img = Image.new('L', (H, W))
+                img = Image.new('L', (w, h))
                 if len(poly) >= 6:
                     ImageDraw.Draw(img).polygon(poly, fill=cat)
                 else:
@@ -66,7 +66,8 @@ def det2seg(cann, output_dir):
             res.putpalette(colour_map.astype(np.uint8))
             res.save(os.path.join(output_dir, '{}'.format(name)))
 
+
 if __name__ == "__main__":
-    ann = COCO('./data/annotations/coco.json')
-    output_dir = "./data/annotations/seg"
+    ann = COCO('/home/ashwin/Desktop/Projects/COCO-Assistant/data/annotations/tiny2.json')
+    output_dir = "/home/ashwin/Desktop/Projects/COCO-Assistant/data/annotations/seg"
     det2seg(ann, output_dir)

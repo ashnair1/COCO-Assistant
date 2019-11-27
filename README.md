@@ -138,6 +138,13 @@ tiny
 The `cas.get_segmasks()` function allows you to create segmentation masks from your MS COCO object detection datasets. Similar to the Pascal VOC dataset, the mask values are their classes and a colour palette is applied to enable visualisation. The generated masks are stroed in the `./results` folder.
 
 
+<p align="center">
+   <img src="./rep_stuff/iSAID.png" alt="iSAID" width=275 />
+   <img src="./rep_stuff/iSAID_mask.png" alt="iSAID_mask" width=275 />
+   <img src="./rep_stuff/SpaceNet.png" alt="SpaceNet" width=275 />
+   <img src="./rep_stuff/SpaceNet_mask.png" alt="SpaceNet_mask" width=275 />
+</p>
+
 ### Todo
 1.  Converter for converting COCO annotations to YOLO format.
 2.  Write tests for untested functions :)

@@ -16,7 +16,7 @@ def det2seg(cann, output_dir):
     :param cann: COCO annotation object
     :param output_dir: Directory to store segmentation masks.
     """
-    
+
     if os.path.isdir(output_dir) is False:
         os.makedirs(output_dir, exist_ok=True)
 

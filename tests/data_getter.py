@@ -31,7 +31,7 @@ def save_response_content(response, destination):
                 f.write(chunk)
 
 if __name__ == "__main__":
-    file_id = '1WAFzdtIa56UL4wFVHg2TaBMhtzqRc0F-'
+    file_id = '1JJoeO9FQ9vAdmhALma7wpgqs3OTTPPwF'
     destination = 'test.tar.gz'
     download_file_from_google_drive(file_id, destination)
     # Unzip data

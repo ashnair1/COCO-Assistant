@@ -30,11 +30,12 @@ def get_data():
 	ann_dir = os.path.join(os.getcwd(), 'annotations')
 	return [img_dir, ann_dir]
 
+
 #@pytest.mark.skip
-def test_combine(get_data):
+def test_merge(get_data):
 	cas = COCO_Assistant(get_data[0], get_data[1])
-	cas.combine()
-	comb = COCO(os.path.join(cas.resann_dir, 'combined.json'))
+	cas.merge()
+	comb = COCO(os.path.join(cas.resann_dir, 'merged.json'))
 	# Get combined annotation count
 	combann = len(comb.anns)
 	# Get individual annotation counts

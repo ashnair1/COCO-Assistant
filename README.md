@@ -57,7 +57,7 @@ cas = COCO_Assistant(img_dir, ann_dir)
 
 ### 1. Merge datasets
 
-The `combine` function allows you to merge multiple datasets.
+The `merge` function allows you to merge multiple datasets.
 
 ```shell script
 In[1]: cas = COCO_Assistant(img_dir, ann_dir)                                                                                                                                                              
@@ -70,7 +70,7 @@ Done (t=0.06s)
 creating index...
 index created!
 
-In[2]: cas.combine()                                                                                                                                                                                       
+In[2]: cas.merge()                                                                                                                                                                                       
 Merging image dirs
 100%|█████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00, 18.33it/s]
 Merging annotations

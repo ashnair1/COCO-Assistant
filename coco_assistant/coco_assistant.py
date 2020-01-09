@@ -136,10 +136,9 @@ class COCO_Assistant():
                 last_imid = cann['images'][-1]['id']
                 last_annid = cann['annotations'][-1]['id']
 
-                logging.debug("String Ids detected. Converting to int")
-
                 # If last imid or last_annid is a str, convert it to int
                 if isinstance(last_imid, str) or isinstance(last_annid, str):
+                    logging.debug("String Ids detected. Converting to int")
                     id_dict = {}
                     # Change image id in images field
                     for i, im in enumerate(cann['images']):

@@ -73,7 +73,7 @@ class COCO_Assistant():
 
         self.ann_anchors = []
 
-    def merge(self):
+    def merge(self, merge_images=True):
         """
         Function for merging multiple coco datasets
         """
@@ -95,16 +95,20 @@ class COCO_Assistant():
             shutil.rmtree(self.resann_dir)
             os.makedirs(self.resann_dir, exist_ok=True)
 
-        print("Merging image dirs")
-        im_dirs = [os.path.join(self.img_dir, folder) for folder in self.imgfolders]
-        imext = [".png", ".jpg"]
+        if merge_images:
+            print("Merging image dirs")
+            im_dirs = [os.path.join(self.img_dir, folder) for folder in self.imgfolders]
+            imext = [".png", ".jpg"]
 
-        logging.debug("Merging Image Dirs...")
+            logging.debug("Merging Image Dirs...")
 
-        for imdir in tqdm(im_dirs):
-            ims = [i for i in os.listdir(imdir) if i[-4:].lower() in imext]
-            for im in ims:
-                shutil.copyfile(os.path.join(imdir, im), os.path.join(self.resim_dir, im))
+            for imdir in tqdm(im_dirs):
+                ims = [i for i in os.listdir(imdir) if i[-4:].lower() in imext]
+                for im in ims:
+                    shutil.copyfile(os.path.join(imdir, im), os.path.join(self.resim_dir, im))
+
+        else:
+            logging.debug("Not merging Image Dirs...")
 
         cann = {'images': [],
                 'annotations': [],

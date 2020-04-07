@@ -2,7 +2,7 @@
 
 ![CircleCI](https://circleci.com/gh/ashnair1/COCO-Assistant/tree/master.svg?style=shield&circle-token=553c83e37198fe02a71743d42ee427c292336743) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5299d18c95da4991b4f3a6ae6e8a0b7a)](https://www.codacy.com/manual/ashnair1/COCO-Assistant?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ashnair1/COCO-Assistant&amp;utm_campaign=Badge_Grade) [![PyPI version](https://badge.fury.io/py/coco-assistant.svg)](https://badge.fury.io/py/coco-assistant) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Helper for dealing with MS-COCO annotations. <img src="rep_stuff/coco.png" height="40">
+Helper for dealing with MS-COCO annotations. <img src=".github/coco.png" height="40">
 
 ## Overview
 The MS COCO annotation format along with the pycocotools library is quite popular among the computer vision community. Yet I for one found it difficult to play around with the annotations. Deleting a specific category, combining multiple mini datasets to generate a larger dataset, viewing distribution of classes in the annotation file are things I would like to do without writing a separate script for each. The COCO Assistant is designed (or being designed) to assist with this problem. **Please note that currently, the Assistant can only help out with object detection datasets**. Any contributions and/or suggestions are welcome.
@@ -132,15 +132,15 @@ Choose directory:
 tiny
 ```
 
-![](./rep_stuff/visualiser.gif)
+![](./.github/visualiser.gif)
 
 ### 5. Generate segmentation masks
-The `cas.get_segmasks()` function allows you to create segmentation masks from your MS COCO object detection datasets. Similar to the Pascal VOC dataset, the mask values are their classes and a colour palette is applied to enable visualisation. The generated masks are stroed in the `./results` folder. Samples are shown below.
+The `cas.get_segmasks()` function allows you to create segmentation masks from your MS COCO object detection datasets. Similar to the Pascal VOC dataset, the mask values are their classes and a colour palette is applied to enable visualisation. The generated masks are stored in the `./results` folder. Samples are shown below.
 
 |                |                            Detection                                             |                                               Segmentation                                       |   
 |----------------|----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
-| **SpaceNet**   | <img src="./rep_stuff/SpaceNet.png" alt="SpaceNet" alt="SpaceNet" width=310 />   |  <img src="./rep_stuff/SpaceNet_mask.png" alt="SpaceNet_mask" title="SpaceNet_mask" width=310 /> |
-| **iSAID**      | <img src="./rep_stuff/iSAID.png" alt="iSAID" title="iSAID" width=310 />          | <img src="./rep_stuff/iSAID_mask.png" alt="iSAID_mask" title="iSAID_mask" width=310 />           |
+| **SpaceNet**   | <img src="./.github/SpaceNet.png" alt="SpaceNet" alt="SpaceNet" width=310 />   |  <img src="./.github/SpaceNet_mask.png" alt="SpaceNet_mask" title="SpaceNet_mask" width=310 /> |
+| **iSAID**      | <img src="./.github/iSAID.png" alt="iSAID" title="iSAID" width=310 />          | <img src="./.github/iSAID_mask.png" alt="iSAID_mask" title="iSAID_mask" width=310 />           |
 
 ### Todo
 1.  Converter for converting COCO annotations to YOLO format.

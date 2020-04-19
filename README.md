@@ -2,7 +2,7 @@
 
 ![CircleCI](https://circleci.com/gh/ashnair1/COCO-Assistant/tree/master.svg?style=shield&circle-token=553c83e37198fe02a71743d42ee427c292336743) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5299d18c95da4991b4f3a6ae6e8a0b7a)](https://www.codacy.com/manual/ashnair1/COCO-Assistant?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ashnair1/COCO-Assistant&amp;utm_campaign=Badge_Grade) [![PyPI version](https://badge.fury.io/py/coco-assistant.svg)](https://badge.fury.io/py/coco-assistant) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Helper for dealing with MS-COCO annotations. <img src=".github/coco.png" height="40">
+Helper for dealing with MS-COCO annotations.
 
 ## Overview
 The MS COCO annotation format along with the pycocotools library is quite popular among the computer vision community. Yet I for one found it difficult to play around with the annotations. Deleting a specific category, combining multiple mini datasets to generate a larger dataset, viewing distribution of classes in the annotation file are things I would like to do without writing a separate script for each. The COCO Assistant is designed (or being designed) to assist with this problem. **Please note that currently, the Assistant can only help out with object detection datasets**. Any contributions and/or suggestions are welcome.
@@ -10,7 +10,7 @@ The MS COCO annotation format along with the pycocotools library is quite popula
 ### Requirements
 Your data directory should look as follows:
 
-```shell script
+```markdown
 Example:
 .
 ├── images
@@ -32,7 +32,7 @@ Example:
 `pip install coco-assistant`
 
 ### 2. Installation: From Source
-```shell script
+```markdown
 # Clone the repository
 git clone https://github.com/ashnair1/COCO-Assistant.git
 # Build and install the library
@@ -43,7 +43,7 @@ make
 
 Usage is similar to how you would use `pycocotools`
 
-```shell script
+```markdown
 from coco_assistant import COCO_Assistant
 
 # Specify image and annotation directories
@@ -59,7 +59,7 @@ cas = COCO_Assistant(img_dir, ann_dir)
 
 The `merge` function allows you to merge multiple datasets.
 
-```shell script
+```markdown
 In[1]: cas = COCO_Assistant(img_dir, ann_dir)                                                                                                                                                              
 loading annotations into memory...
 Done (t=0.09s)
@@ -83,7 +83,7 @@ The merged dataset (images and annotation) can be found in `./results/combinatio
 
 Removes a specific category from an annotation file.
 
-```shell script
+```markdown
 In[1]: cas = COCO_Assistant(img_dir, ann_dir)                                                                                                                                                              
 loading annotations into memory...
 Done (t=0.09s)
@@ -125,7 +125,7 @@ The modified annotation can be found in `./results/removal`
 
 Couldn't `pycocotools` visualise annotations (via [showAnns](https://github.com/cocodataset/cocoapi/blob/636becdc73d54283b3aac6d4ec363cffbb6f9b20/PythonAPI/pycocotools/coco.py#L233)) as well? Sure it could, but I required a way to freely view all the annotations of a particular dataset so here we are.
 
-```shell script
+```markdown
 In[1]: cas.visualise()
 Choose directory:
 ['tiny', 'tiny2']
@@ -142,6 +142,3 @@ The `cas.get_segmasks()` function allows you to create segmentation masks from y
 | **SpaceNet**   | <img src="./.github/SpaceNet.png" alt="SpaceNet" title="SpaceNet" width=310 />   |   <img src="./.github/SpaceNet_mask.png" alt="SpaceNet_mask" title="SpaceNet_mask" width=310 />  |
 | **iSAID**      | <img src="./.github/iSAID.png" alt="iSAID" title="iSAID" width=310 />            |   <img src="./.github/iSAID_mask.png" alt="iSAID_mask" title="iSAID_mask" width=310 />           |
 
-### Todo
-1.  Converter for converting COCO annotations to YOLO format.
-2.  Write tests for untested functions :)

@@ -7,7 +7,6 @@ Pillow>=6.2.2
 git+https://github.com/ashnair1/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI
 seaborn
 scikit-image
-tensorflow==1.12.0
 tqdm
 
 # packaging

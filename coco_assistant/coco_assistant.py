@@ -8,11 +8,9 @@ from pycocotools.coco import COCO
 
 from tqdm import tqdm
 
-from . import coco_converters as converter
 from . import coco_stats as stats
 from . import coco_visualiser as cocovis
-from coco_assistant.utils import anchors
-from coco_assistant.utils import det2seg
+from coco_assistant.utils import anchors, det2seg
 
 logging.basicConfig(level=logging.ERROR)
 logging.getLogger().setLevel(logging.WARNING)
@@ -291,25 +289,6 @@ class COCO_Assistant():
         for ann, name in zip(self.annfiles, self.names):
             output_dir = os.path.join(self.res_dir, 'segmasks', name)
             det2seg.det2seg(ann, output_dir)
-
-    def converter(self, to="TFRecord"):
-        """
-        Function for converting annotations to other formats
-
-        :param to: Format to which annotations are to be converted
-        """
-        print("Choose directory:")
-        print(self.imgfolders)
-
-        dir_choice = input()
-
-        if dir_choice.lower() not in [item.lower() for item in self.imgfolders]:
-            raise AssertionError("Choice not in images folder")
-        ind = self.imgfolders.index(dir_choice.lower())
-        ann = self.annfiles[ind]
-        img_dir = os.path.join(self.img_dir, dir_choice)
-
-        converter.convert(ann, img_dir, _format=to)
 
     def visualise(self):
         """

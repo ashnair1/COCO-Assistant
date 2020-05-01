@@ -301,7 +301,7 @@ class COCO_Assistant():
 
         if dir_choice.lower() not in [item.lower() for item in self.imgfolders]:
             raise AssertionError("Choice not in images folder")
-        ind = self.imgfolders.index(dir_choice.lower())
+        ind = self.imgfolders.index(dir_choice)
         ann = self.annfiles[ind]
         img_dir = os.path.join(self.img_dir, dir_choice)
         cocovis.visualise_all(ann, img_dir)

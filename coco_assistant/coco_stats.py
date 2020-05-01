@@ -98,12 +98,12 @@ def get_object_size_split(ann, areaRng):
     left_out = len(ann.getAnnIds(areaRng=[0**2, (areaRng[0]**2)])) + len(ann.getAnnIds(areaRng=[areaRng[3]**2, (1e5**2)]))
 
     logging.debug("Number of small objects in set = %s", small)
-    logging.debug("Number of medium objects in set = %s".medium)
-    logging.debug("Number of large objects in set = %s".large)
+    logging.debug("Number of medium objects in set = %s", medium)
+    logging.debug("Number of large objects in set = %s", large)
     if left_out != 0:
         logging.debug("Number of objects ignored in set = %s", left_out)
 
-    logging.debug("Number of objects = %s".len(obj_areas))
+    logging.debug("Number of objects = %s", len(obj_areas))
 
     if len(obj_areas) != small + medium + large + left_out:
         raise AssertionError("Sum of objects in different area ranges != Total number of objects")

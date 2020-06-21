@@ -73,55 +73,63 @@ def test_cat_removal(get_data):
         raise AssertionError("Failure in removing following categories: {}".format(test_rcats))
 
 
-def test_cat_remapper():
-    # Case 1: When categories overlap and cat2 has no new categories
-    cat1 = [{'id': 1, 'name': 'A'},
-            {'id': 2, 'name': 'B'},
-            {'id': 3, 'name': 'C'}]
+@pytest.mark.parametrize('cat1, cat2, result',
+                         [
+                             (
+                                     [{'id': 1, 'name': 'A'},
+                                      {'id': 2, 'name': 'B'},
+                                      {'id': 3, 'name': 'C'}],
 
-    cat2 = [{'id': 1, 'name': 'B'},
-            {'id': 2, 'name': 'C'},
-            {'id': 3, 'name': 'A'}]
+                                     [{'id': 1, 'name': 'B'},
+                                      {'id': 2, 'name': 'C'},
+                                      {'id': 3, 'name': 'A'}],
 
+                                     (
+                                             [{'id': 1, 'name': 'a'},
+                                              {'id': 2, 'name': 'b'},
+                                              {'id': 3, 'name': 'c'}],
+                                             {3: 1, 1: 2, 2: 3}, {}
+                                     )
+                             ),
+                             (
+                                     [{'id': 1, 'name': 'A'},
+                                      {'id': 2, 'name': 'B'},
+                                      {'id': 3, 'name': 'C'}],
+
+                                     [{'id': 1, 'name': 'B'},
+                                      {'id': 2, 'name': 'A'},
+                                      {'id': 3, 'name': 'F'}],
+
+                                     (
+                                             ([{'id': 1, 'name': 'a'},
+                                               {'id': 2, 'name': 'b'},
+                                               {'id': 3, 'name': 'c'},
+                                               {'id': 4, 'name': 'f'}],
+                                              {2: 1, 1: 2}, {3: 4})
+                                     )
+                             ),
+                             (
+                                     [{'id': 1, 'name': 'A'},
+                                      {'id': 2, 'name': 'B'},
+                                      {'id': 3, 'name': 'C'}],
+
+                                     [{'id': 1, 'name': 'D'},
+                                      {'id': 2, 'name': 'E'},
+                                      {'id': 3, 'name': 'F'}],
+
+                                     (
+                                             [{'id': 1, 'name': 'a'},
+                                              {'id': 2, 'name': 'b'},
+                                              {'id': 3, 'name': 'c'},
+                                              {'id': 4, 'name': 'd'},
+                                              {'id': 5, 'name': 'e'},
+                                              {'id': 6, 'name': 'f'}],
+                                             {}, {1: 4, 2: 5, 3: 6}
+                                     )
+                             )
+                         ], ids=['overlap', 'overlap & new', 'new'])
+def test_cat_remapper(cat1, cat2, result):
     cmapper = CatRemapper(cat1, cat2)
-    result = cmapper.remap_cats()
-
-    if result != ([{'id': 1, 'name': 'a'}, {'id': 2, 'name': 'b'},
-                   {'id': 3, 'name': 'c'}],
-                  {3: 1, 1: 2, 2: 3}, {}):
-        raise AssertionError('CatRemapper fails Case 1')
-
-    # Case 2: When categories overlap and cat2 has new categories
-    cat1 = [{'id': 1, 'name': 'A'},
-            {'id': 2, 'name': 'B'},
-            {'id': 3, 'name': 'C'}]
-
-    cat2 = [{'id': 1, 'name': 'B'},
-            {'id': 2, 'name': 'A'},
-            {'id': 3, 'name': 'F'}]
-
-    cmapper = CatRemapper(cat1, cat2)
-    result = cmapper.remap_cats()
-
-    if result != ([{'id': 1, 'name': 'a'}, {'id': 2, 'name': 'b'},
-                   {'id': 3, 'name': 'c'}, {'id': 4, 'name': 'f'}],
-                  {2: 1, 1: 2}, {3: 4}):
-        raise AssertionError('CatRemapper fails Case 2')
-
-    # Case 3: When categories don't overlap and cat2 has new categories
-    cat1 = [{'id': 1, 'name': 'A'},
-            {'id': 2, 'name': 'B'},
-            {'id': 3, 'name': 'C'}]
-
-    cat2 = [{'id': 1, 'name': 'D'},
-            {'id': 2, 'name': 'E'},
-            {'id': 3, 'name': 'F'}]
-
-    cmapper = CatRemapper(cat1, cat2)
-    result = cmapper.remap_cats()
-
-    if result != ([{'id': 1, 'name': 'a'}, {'id': 2, 'name': 'b'},
-                   {'id': 3, 'name': 'c'}, {'id': 4, 'name': 'd'},
-                   {'id': 5, 'name': 'e'}, {'id': 6, 'name': 'f'}],
-                  {}, {1: 4, 2: 5, 3: 6}):
-        raise AssertionError('CatRemapper fails Case 3')
+    res = cmapper.remap_cats()
+    if res != result:
+        raise AssertionError('CatRemapper failed')

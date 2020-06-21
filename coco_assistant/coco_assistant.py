@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 from . import coco_stats as stats
 from . import coco_visualiser as cocovis
-from coco_assistant.utils import anchors, det2seg
+from coco_assistant.utils import *
 
 logging.basicConfig(level=logging.ERROR)
 logging.getLogger().setLevel(logging.WARNING)
@@ -133,7 +133,7 @@ class COCO_Assistant():
                     cann['info'] = cj['info']
                 if 'licenses' in list(cj.keys()):
                     cann['licenses'] = cj['licenses']
-                cann['categories'] = cj['categories']
+                cann['categories'] = sorted(cj['categories'], key=lambda i: i['id'])
 
                 last_imid = cann['images'][-1]['id']
                 last_annid = cann['annotations'][-1]['id']
@@ -169,13 +169,16 @@ class COCO_Assistant():
                     ann['id'] = last_annid + i + 1
                     ann['image_id'] = id_dict[ann['image_id']]
 
+                # Remap categories
+                cmapper = CatRemapper(cann['categories'], cj['categories'])
+                cann['categories'], cj['annotations'] = cmapper.remap(cj['annotations'])
+
                 cann['images'] = cann['images'] + cj['images']
                 cann['annotations'] = cann['annotations'] + cj['annotations']
                 if 'info' in list(cj.keys()):
                     cann['info'] = cj['info']
                 if 'licenses' in list(cj.keys()):
                     cann['licenses'] = cj['licenses']
-                cann['categories'] = cj['categories']
 
                 last_imid = cann['images'][-1]['id']
                 last_annid = cann['annotations'][-1]['id']

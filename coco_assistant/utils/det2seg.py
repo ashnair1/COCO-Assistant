@@ -5,16 +5,17 @@ from pycocotools.coco import COCO
 from tqdm import tqdm
 
 
-def det2seg(cann, output_dir):
+def det2seg(cann, output_dir, palette=True):
     """
     Function for converting segmentation polygons in MS-COCO
     object detection dataset to segmentation masks. The seg-
     mentation masks are stored with a colour palette that's
-    randomly assigned based on class. Change the seed if you
-    want to change colours.
+    randomly assigned based on class if specified. Change
+    the seed if you want to change colours.
 
     :param cann: COCO annotation object
     :param output_dir: Directory to store segmentation masks.
+    :param palette: bool -> True (use palette)/ False (no palette)
     """
 
     if os.path.isdir(output_dir) is False:
@@ -63,7 +64,8 @@ def det2seg(cann, output_dir):
                 mask = np.array(img)
                 im = np.maximum(im, mask)
             res = Image.fromarray(im)
-            res.putpalette(colour_map.astype(np.uint8))
+            if palette:
+                res.putpalette(colour_map.astype(np.uint8))
             res.save(os.path.join(output_dir, '{}'.format(name)))
 
 

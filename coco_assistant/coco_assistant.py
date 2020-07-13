@@ -285,13 +285,13 @@ class COCO_Assistant():
             print("Loading pre-computed anchors")
             print(self.ann_anchors)
 
-    def get_segmasks(self):
+    def get_segmasks(self, palette=True):
         """
         Function for generating segmentation masks.
         """
         for ann, name in zip(self.annfiles, self.names):
             output_dir = os.path.join(self.res_dir, 'segmasks', name)
-            det2seg.det2seg(ann, output_dir)
+            det2seg.det2seg(ann, output_dir, palette)
 
     def visualise(self):
         """

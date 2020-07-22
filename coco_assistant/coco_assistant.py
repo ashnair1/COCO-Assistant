@@ -50,7 +50,7 @@ class COCO_Assistant():
         if os.path.exists(self.res_dir) is False:
             os.mkdir(self.res_dir)
 
-        self.imgfolders = sorted([i for i in os.listdir(self.img_dir) if os.path.isdir(os.path.join(self.img_dir, i)) is True])
+        self.imgfolders = sorted([i for i in os.listdir(self.img_dir) if (os.path.isdir(os.path.join(self.img_dir, i)) is True and not i.startswith('.'))])
         self.jsonfiles = sorted([j for j in os.listdir(ann_dir) if j[-5:] == ".json"])
         self.names = [n[:-5] for n in self.jsonfiles]
 

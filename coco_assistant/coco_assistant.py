@@ -10,11 +10,11 @@ from tqdm import tqdm
 
 from . import coco_stats as stats
 from . import coco_visualiser as cocovis
-from coco_assistant.utils import *
+from coco_assistant.utils import anchors, det2seg, CatRemapper
 
 logging.basicConfig(level=logging.ERROR)
 logging.getLogger().setLevel(logging.WARNING)
-logging.getLogger('parso.python.diff').disabled = True
+logging.getLogger("parso.python.diff").disabled = True
 
 """
 Expected Directory Structure
@@ -34,7 +34,7 @@ Expected Directory Structure
 """
 
 
-class COCO_Assistant():
+class COCO_Assistant:
     def __init__(self, img_dir=None, ann_dir=None):
         """
         :param img_dir (str): path to images folder.
@@ -43,14 +43,20 @@ class COCO_Assistant():
         self.img_dir = img_dir
         self.ann_dir = ann_dir
         if os.path.dirname(ann_dir) != os.path.dirname(img_dir):
-            raise AssertionError('Directory not in expected format')
-        self.res_dir = os.path.join(os.path.dirname(ann_dir), 'results')
+            raise AssertionError("Directory not in expected format")
+        self.res_dir = os.path.join(os.path.dirname(ann_dir), "results")
 
         # Create Results Directory
         if os.path.exists(self.res_dir) is False:
             os.mkdir(self.res_dir)
 
-        self.imgfolders = sorted([i for i in os.listdir(self.img_dir) if (os.path.isdir(os.path.join(self.img_dir, i)) is True and not i.startswith('.'))])
+        self.imgfolders = sorted(
+            [
+                i
+                for i in os.listdir(self.img_dir)
+                if (os.path.isdir(os.path.join(self.img_dir, i)) is True and not i.startswith("."))
+            ]
+        )
         self.jsonfiles = sorted([j for j in os.listdir(ann_dir) if j[-5:] == ".json"])
         self.names = [n[:-5] for n in self.jsonfiles]
 
@@ -76,8 +82,8 @@ class COCO_Assistant():
         Function for merging multiple coco datasets
         """
 
-        self.resim_dir = os.path.join(self.res_dir, 'merged', 'images')
-        self.resann_dir = os.path.join(self.res_dir, 'merged', 'annotations')
+        self.resim_dir = os.path.join(self.res_dir, "merged", "images")
+        self.resann_dir = os.path.join(self.res_dir, "merged", "annotations")
 
         # Create directories for merged results and clear the previous ones
         # The exist_ok is for dealing with merged folder
@@ -108,15 +114,11 @@ class COCO_Assistant():
         else:
             logging.debug("Not merging Image Dirs...")
 
-        cann = {'images': [],
-                'annotations': [],
-                'info': None,
-                'licenses': None,
-                'categories': None}
+        cann = {"images": [], "annotations": [], "info": None, "licenses": None, "categories": None}
 
         logging.debug("Merging Annotations...")
 
-        dst_ann = os.path.join(self.resann_dir, 'merged.json')
+        dst_ann = os.path.join(self.resann_dir, "merged.json")
 
         print("Merging annotations")
         for j in tqdm(self.jsonfiles):
@@ -127,63 +129,63 @@ class COCO_Assistant():
             # Check if this is the 1st annotation.
             # If it is, continue else modify current annotation
             if ind == 0:
-                cann['images'] = cann['images'] + cj['images']
-                cann['annotations'] = cann['annotations'] + cj['annotations']
-                if 'info' in list(cj.keys()):
-                    cann['info'] = cj['info']
-                if 'licenses' in list(cj.keys()):
-                    cann['licenses'] = cj['licenses']
-                cann['categories'] = sorted(cj['categories'], key=lambda i: i['id'])
+                cann["images"] = cann["images"] + cj["images"]
+                cann["annotations"] = cann["annotations"] + cj["annotations"]
+                if "info" in list(cj.keys()):
+                    cann["info"] = cj["info"]
+                if "licenses" in list(cj.keys()):
+                    cann["licenses"] = cj["licenses"]
+                cann["categories"] = sorted(cj["categories"], key=lambda i: i["id"])
 
-                last_imid = cann['images'][-1]['id']
-                last_annid = cann['annotations'][-1]['id']
+                last_imid = cann["images"][-1]["id"]
+                last_annid = cann["annotations"][-1]["id"]
 
                 # If last imid or last_annid is a str, convert it to int
                 if isinstance(last_imid, str) or isinstance(last_annid, str):
                     logging.debug("String Ids detected. Converting to int")
                     id_dict = {}
                     # Change image id in images field
-                    for i, im in enumerate(cann['images']):
-                        id_dict[im['id']] = i
-                        im['id'] = i
+                    for i, im in enumerate(cann["images"]):
+                        id_dict[im["id"]] = i
+                        im["id"] = i
 
                     # Change annotation id & image id in annotations field
-                    for i, im in enumerate(cann['annotations']):
-                        im['id'] = i
+                    for i, im in enumerate(cann["annotations"]):
+                        im["id"] = i
                         if isinstance(last_imid, str):
-                            im['image_id'] = id_dict[im['image_id']]
+                            im["image_id"] = id_dict[im["image_id"]]
 
-                last_imid = cann['images'][-1]['id']
-                last_annid = cann['annotations'][-1]['id']
+                last_imid = cann["images"][-1]["id"]
+                last_annid = cann["annotations"][-1]["id"]
 
             else:
 
                 id_dict = {}
                 # Change image id in images field
-                for i, im in enumerate(cj['images']):
-                    id_dict[im['id']] = last_imid + i + 1
-                    im['id'] = last_imid + i + 1
+                for i, im in enumerate(cj["images"]):
+                    id_dict[im["id"]] = last_imid + i + 1
+                    im["id"] = last_imid + i + 1
 
                 # Change annotation and image ids in annotations field
-                for i, ann in enumerate(cj['annotations']):
-                    ann['id'] = last_annid + i + 1
-                    ann['image_id'] = id_dict[ann['image_id']]
+                for i, ann in enumerate(cj["annotations"]):
+                    ann["id"] = last_annid + i + 1
+                    ann["image_id"] = id_dict[ann["image_id"]]
 
                 # Remap categories
-                cmapper = CatRemapper(cann['categories'], cj['categories'])
-                cann['categories'], cj['annotations'] = cmapper.remap(cj['annotations'])
+                cmapper = CatRemapper(cann["categories"], cj["categories"])
+                cann["categories"], cj["annotations"] = cmapper.remap(cj["annotations"])
 
-                cann['images'] = cann['images'] + cj['images']
-                cann['annotations'] = cann['annotations'] + cj['annotations']
-                if 'info' in list(cj.keys()):
-                    cann['info'] = cj['info']
-                if 'licenses' in list(cj.keys()):
-                    cann['licenses'] = cj['licenses']
+                cann["images"] = cann["images"] + cj["images"]
+                cann["annotations"] = cann["annotations"] + cj["annotations"]
+                if "info" in list(cj.keys()):
+                    cann["info"] = cj["info"]
+                if "licenses" in list(cj.keys()):
+                    cann["licenses"] = cj["licenses"]
 
-                last_imid = cann['images'][-1]['id']
-                last_annid = cann['annotations'][-1]['id']
+                last_imid = cann["images"][-1]["id"]
+                last_annid = cann["annotations"][-1]["id"]
 
-        with open(dst_ann, 'w') as aw:
+        with open(dst_ann, "w") as aw:
             json.dump(cann, aw)
 
     def remove_cat(self, interactive=True, jc=None, rcats=None):
@@ -200,7 +202,7 @@ class COCO_Assistant():
         :param rcats: Categories to be removed
         """
 
-        self.resrm_dir = os.path.join(self.res_dir, 'removal')
+        self.resrm_dir = os.path.join(self.res_dir, "removal")
         if os.path.exists(self.resrm_dir) is False:
             os.makedirs(self.resrm_dir, exist_ok=True)
         else:
@@ -217,7 +219,7 @@ class COCO_Assistant():
             ann = self.annfiles[ind]
 
             print("\nCategories present:")
-            cats = [i['name'] for i in ann.cats.values()]
+            cats = [i["name"] for i in ann.cats.values()]
             print(cats)
 
             self.rcats = []
@@ -233,7 +235,9 @@ class COCO_Assistant():
 
         else:
             if jc is None or rcats is None:
-                raise AssertionError("Both json choice and rcats need to be provided in non-interactive mode")
+                raise AssertionError(
+                    "Both json choice and rcats need to be provided in non-interactive mode"
+                )
             self.jc = jc
             ind = self.jsonfiles.index(self.jc.lower())
             ann = self.annfiles[ind]
@@ -254,10 +258,10 @@ class COCO_Assistant():
         with open(os.path.join(self.ann_dir, self.jc)) as it:
             x = json.load(it)
 
-        x['categories'] = [i for i in x['categories'] if i not in cats]
-        x['annotations'] = [i for i in x['annotations'] if i not in anns]
+        x["categories"] = [i for i in x["categories"] if i not in cats]
+        x["annotations"] = [i for i in x["annotations"] if i not in anns]
 
-        with open(os.path.join(self.resrm_dir, self.jc), 'w') as oa:
+        with open(os.path.join(self.resrm_dir, self.jc), "w") as oa:
             json.dump(x, oa)
 
     def ann_stats(self, stat, arearng, show_count=False, save=False):
@@ -290,7 +294,7 @@ class COCO_Assistant():
         Function for generating segmentation masks.
         """
         for ann, name in zip(self.annfiles, self.names):
-            output_dir = os.path.join(self.res_dir, 'segmasks', name)
+            output_dir = os.path.join(self.res_dir, "segmasks", name)
             det2seg.det2seg(ann, output_dir, palette)
 
     def visualise(self):
@@ -312,16 +316,16 @@ class COCO_Assistant():
 
 if __name__ == "__main__":
     p = "/home/ashwin/Desktop/Projects/COCO-Assistant/data/test"
-    img_dir = os.path.join(p, 'images')
-    ann_dir = os.path.join(p, 'annotations')
+    img_dir = os.path.join(p, "images")
+    ann_dir = os.path.join(p, "annotations")
 
     # TODO: Create tiny dummy datasets and test these functions on them
 
     cas = COCO_Assistant(img_dir, ann_dir)
 
-    #cas.merge()
-    #cas.remove_cat()
-    #cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)
-    #cas.ann_stats(stat="cat", show_count=False, save=False)
-    #cas.visualise()
-    #cas.anchors(2)
+    # cas.merge()
+    # cas.remove_cat()
+    # cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)
+    # cas.ann_stats(stat="cat", show_count=False, save=False)
+    # cas.visualise()
+    # cas.anchors(2)

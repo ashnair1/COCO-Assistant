@@ -1,4 +1,3 @@
-
 class CatRemapper:
     def __init__(self, cat1, cat2):
         """
@@ -81,7 +80,7 @@ class CatRemapper:
 
         self.refcat = cat1
         for c in self.refcat:
-            c['name'] = c['name'].lower()
+            c["name"] = c["name"].lower()
 
         self.cat1 = self.result = self.generate_id_map(cat1)
         self.cat2 = self.generate_id_map(cat2)
@@ -117,7 +116,7 @@ class CatRemapper:
                 del self.cat2[d]
 
             for k, v in self.result.items():
-                res.append({'id': v, 'name': k})
+                res.append({"id": v, "name": k})
 
         for k, v in self.cat1.items():
             try:
@@ -147,24 +146,17 @@ class CatRemapper:
         """
 
         for a in ann:
-            cat_id = a['category_id']
+            cat_id = a["category_id"]
             # The category is either new or exists in the reference annotation
             if cat_id in new_cats:
-                a['category_id'] = new_cats[a['category_id']]
+                a["category_id"] = new_cats[a["category_id"]]
             else:
-                a['category_id'] = overlaps[a['category_id']]
+                a["category_id"] = overlaps[a["category_id"]]
         return ann
 
     def generate_id_map(self, cat):
-        c = [[i['name'].lower(), i['id']] for i in cat]
+        c = [[i["name"].lower(), i["id"]] for i in cat]
         keys = [i[0] for i in c]
         values = [i[1] for i in c]
         idmap = dict(zip(keys, values))
         return idmap
-
-
-
-
-
-
-

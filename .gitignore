@@ -124,12 +124,12 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# PyCharm
+# IDE
 .idea/
+.vscode/
 
 # My stuff
 annotations/
 images/
 *tar.gz
-.vscode/
 data/

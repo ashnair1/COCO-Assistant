@@ -1,6 +1,10 @@
 # COCO-Assistant 
 
-![CircleCI](https://circleci.com/gh/ashnair1/COCO-Assistant/tree/master.svg?style=shield&circle-token=553c83e37198fe02a71743d42ee427c292336743) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5299d18c95da4991b4f3a6ae6e8a0b7a)](https://www.codacy.com/manual/ashnair1/COCO-Assistant?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ashnair1/COCO-Assistant&amp;utm_campaign=Badge_Grade) [![PyPI version](https://badge.fury.io/py/coco-assistant.svg)](https://badge.fury.io/py/coco-assistant) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![CircleCI](https://img.shields.io/circleci/build/github/ashnair1/COCO-Assistant?&label=Build&logo=CircleCI)
+![Codacy Badge](https://img.shields.io/codacy/grade/5299d18c95da4991b4f3a6ae6e8a0b7a?label=Code%20Quality&logo=Codacy)
+[![Code style: black](https://img.shields.io/badge/Code%20Style-black-000000.svg)](https://github.com/psf/black)
+[![PyPi License](https://img.shields.io/pypi/v/coco-assistant?branch=master&label=PyPi%20Version&logo=PyPi&logoColor=ffffff&labelColor=306998&color=FFD43B&style=flat)](https://pypi.org/project/coco-assistant/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://img.shields.io/github/license/ashnair1/COCO-Assistant?color=yellow&label=License&logo=MIT)
 
 Helper for dealing with MS-COCO annotations.
 

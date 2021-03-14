@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  snyk: snyk/snyk@0.0.13
 jobs:
   test_coco_assistant:
     working_directory: ~/project
@@ -6,27 +8,39 @@ jobs:
       - image: circleci/python:3.6.6
     steps:
       - checkout
+      # - restore_cache:
+      #    key: coco-{{ .Branch }}
+      - run:
+          name: Setup environment
+          command: |
+            sudo chown -R circleci:circleci /usr/local/
+            python -m pip install --upgrade pip
+            python -m pip install Cython numpy
+            python -m pip install -r requirements-dev.txt
+      # - save_cache:
+      #     key: coco-{{ .Branch }}
+      #     paths:
+      #       - "/home/circleci/.cache/pip"
+      - snyk/scan
       - run:
           name: Runnning tests
           command: |
-            virtualenv venv
-            . venv/bin/activate
-            pip install --upgrade pip
-            pip install Cython numpy==1.16.0
-            pip install -r requirements.txt
-            pip install pytest coverage codacy-coverage
-            make remove && make clean
+            make remove && sudo make clean
+            mkdir test-results
+            pytest --junitxml=test-results/junit.xml tests/tests.py
             coverage run tests/tests.py
             coverage report -m
             coverage html && coverage xml
             python-codacy-coverage -r coverage.xml
+      - store_test_results:
+          path: test-results
       - store_artifacts:
           path: coverage
-       
-            
+
+
 workflows:
-  version: 2
-  test-all:
+  version: 2.1
+  build_test:
     jobs:
       - test_coco_assistant:
            filters:
@@ -34,6 +48,4 @@ workflows:
                   only:
                      - master
                      - dev
-        
-      
-      
+

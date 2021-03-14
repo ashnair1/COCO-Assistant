@@ -13,3 +13,8 @@ tqdm
 setuptools>=40.6.3
 wheel>=0.32.3
 
+# testing
+requests
+pytest 
+coverage 
+codacy-coverage

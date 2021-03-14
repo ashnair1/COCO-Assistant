@@ -10,19 +10,19 @@ jobs:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
-      - restore_cache:
-      # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
-          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+      # - restore_cache:
+      # # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+      #     key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
           name: Setup environment
           command: |
-            sudo pip install pipenv
+            pip cache dir
             pip install --upgrade pip
-            pipenv install -r requirements-dev.txt
-      - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
-          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-          paths:
-            - "venv"
+            pip install -r requirements-dev.txt
+      # - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
+      #     key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+      #     paths:
+      #       - "venv"
       - snyk/scan
       - run:
           name: Runnning tests

@@ -3,10 +3,11 @@
 
 import io
 import os
+import sys
 from pathlib import Path
 
 from setuptools import find_packages, setup
-
+from setuptools.command.install import install
 
 # Package meta-data.
 NAME = "coco_assistant"
@@ -49,15 +50,29 @@ def list_reqs(fname="requirements.txt"):
     return required, dependency_links
 
 
-here = os.path.abspath(os.path.dirname(__file__))
+here = Path(__file__).cwd()
 
 # Import the README and use it as the long-description.
 # Note: this will only work if 'README.md' is present in your MANIFEST.in file!
 try:
-    with io.open(os.path.join(here, "README.md"), encoding="utf-8") as f:
+    with io.open(here / Path("README.md"), encoding="utf-8") as f:
         long_description = "\n" + f.read()
 except OSError:
     long_description = DESCRIPTION
+
+
+class VerifyVersionCommand(install):
+    """Custom command to verify that the git tag matches our version"""
+
+    description = "verify that the git tag matches our version"
+
+    def run(self):
+        tag = os.getenv("CIRCLE_TAG")
+        VERSION = about["__version__"]
+
+        if tag != VERSION:
+            info = "Git tag: {0} does not match the version of this app: {1}".format(tag, VERSION)
+            sys.exit(info)
 
 
 # Load the package's __version__.py module as a dictionary.
@@ -99,4 +114,7 @@ setup(
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
+    cmdclass={
+        "verify": VerifyVersionCommand,
+    },
 )

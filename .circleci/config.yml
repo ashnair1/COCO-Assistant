@@ -37,6 +37,38 @@ jobs:
       - store_artifacts:
           path: coverage
 
+  deploy:
+    working_directory: ~/project
+    docker:
+      - image: circleci/python:3.6.6
+    steps:
+      - checkout
+      - run:
+          name: Setup environment
+          command: |
+            sudo chown -R circleci:circleci /usr/local/
+            python -m pip install --upgrade pip
+            python -m pip install twine
+
+      - run:
+          name: Verify git tag vs version
+          command: |
+            python setup.py verify
+
+      - run:
+          name: Init .pypirc
+          command: |
+            echo -e "[pypi]" >> ~/.pypirc
+            echo -e "username = ashnair1" >> ~/.pypirc
+            echo -e "password = $TEST_PYPI_PASSWORD" >> ~/.pypirc
+
+      - run:
+          name: Build and upload to PyPI
+          command: |
+            python setup.py sdist bdist_wheel
+            twine upload dist/*
+
+
 
 workflows:
   version: 2.1
@@ -47,5 +79,17 @@ workflows:
               branches:
                   only:
                      - master
-                     - dev
+                     - deploy
+  build_deploy:
+    jobs:
+      - test_coco_assistant
+      - deploy:
+            requires:
+              - test_coco_assistant
+            filters:
+              tags:
+                only: /[0-9]+(\.[0-9]+)*/
+              branches:
+                ignore: /.*/
+
 

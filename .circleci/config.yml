@@ -12,15 +12,15 @@ jobs:
           name: Setup environment
           command: |
             echo 'export PATH=~$PATH:~/.local/bin' >> $BASH_ENV && source $BASH_ENV
-            pip install --user --upgrade pip
-            pip install --user Cython numpy
-            pip install --user -r requirements.txt
-            pip install --user pytest coverage codacy-coverage
+            sudo pip install --upgrade pip
+            sudo pip install Cython numpy
+            sudo pip install -r requirements.txt
+            sudo pip install pytest coverage codacy-coverage
       - snyk/scan
       - run:
           name: Runnning tests
           command: |
-            make remove && make clean
+            make remove && sudo make clean
             coverage run tests/tests.py
             coverage report -m
             coverage html && coverage xml

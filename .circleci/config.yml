@@ -67,7 +67,7 @@ jobs:
           name: Build and upload to PyPI
           command: |
             python setup.py sdist bdist_wheel
-            twine upload dist/*
+            twine upload --repository testpypi dist/*
 
 
 
@@ -80,7 +80,7 @@ workflows:
               branches:
                   only:
                      - master
-                     - deploy
+                     - dev
   build_deploy:
     jobs:
       - test_coco_assistant:

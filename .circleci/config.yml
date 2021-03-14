@@ -11,14 +11,21 @@ jobs:
       - run:
           name: Setup environment
           command: |
+            virtualenv venv
+            . venv/bin/activate
             pip install --upgrade pip
             pip install Cython numpy==1.16.0
             pip install -r requirements.txt
             pip install pytest coverage codacy-coverage
-      - snyk/scan
+      - run:
+          name: Scan environment
+          command: |
+            . venv/bin/activate
+            snyk test  --severity-threshold=low
       - run:
           name: Runnning tests
           command: |
+            . venv/bin/activate
             make remove && make clean
             coverage run tests/tests.py
             coverage report -m

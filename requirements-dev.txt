@@ -1,0 +1,20 @@
+# project requirements
+Cython
+matplotlib
+numpy
+pandas
+Pillow>=8.1.1
+git+https://github.com/ashnair1/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI
+seaborn
+scikit-image
+tqdm
+
+# packaging
+setuptools>=40.6.3
+wheel>=0.32.3
+
+# testing
+requests
+pytest 
+coverage 
+codacy-coverage

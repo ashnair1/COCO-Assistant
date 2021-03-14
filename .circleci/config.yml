@@ -11,16 +11,12 @@ jobs:
       - run:
           name: Setup environment
           command: |
+            echo 'export PATH=~$PATH:~/.local/bin' >> $BASH_ENV && source $BASH_ENV
             pip install --user --upgrade pip
-            pip install --user Cython numpy==1.16.0
+            pip install --user Cython numpy
             pip install --user -r requirements.txt
             pip install --user pytest coverage codacy-coverage
       - snyk/scan
-      - run:
-          name: Scan environment
-          command: |
-            . venv/bin/activate
-            snyk test  --severity-threshold=low
       - run:
           name: Runnning tests
           command: |

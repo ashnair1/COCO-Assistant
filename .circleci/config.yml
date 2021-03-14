@@ -11,12 +11,12 @@ jobs:
       - run:
           name: Setup environment
           command: |
-            virtualenv venv
-            . venv/bin/activate
+            echo 'export PATH=~$PATH:~/.local/bin' >> $BASH_ENV && source $BASH_ENV
             pip install --upgrade pip
             pip install Cython numpy==1.16.0
             pip install -r requirements.txt
             pip install pytest coverage codacy-coverage
+      - snyk/scan
       - run:
           name: Scan environment
           command: |

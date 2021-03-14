@@ -8,8 +8,8 @@ jobs:
       - image: circleci/python:3.6.6
     steps:
       - checkout
-      #- restore_cache:
-      #    key: coco-{{ .Branch }}
+      - restore_cache:
+         key: coco-{{ .Branch }}
       - run:
           name: Setup environment
           command: |

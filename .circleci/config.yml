@@ -59,6 +59,7 @@ jobs:
           name: Init .pypirc
           command: |
             echo -e "[testpypi]" >> ~/.pypirc
+            echo -e "repository: https://test.pypi.org/legacy/" >> ~/.pypirc
             echo -e "username = ashnair1" >> ~/.pypirc
             echo -e "password = $TEST_PYPI_PASSWORD" >> ~/.pypirc
 

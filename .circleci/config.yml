@@ -27,7 +27,7 @@ jobs:
           command: |
             make remove && sudo make clean
             mkdir test-results
-            pytest --junitxml=test-results/junit.xml
+            pytest --junitxml=test-results/junit.xml tests/tests.py
             coverage run tests/tests.py
             coverage report -m
             coverage html && coverage xml

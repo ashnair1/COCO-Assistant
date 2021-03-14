@@ -40,12 +40,12 @@ jobs:
 
 workflows:
   version: 2.1
-  test-all:
+  build_test:
     jobs:
       - test_coco_assistant:
            filters:
               branches:
                   only:
                      - master
-                     - ops
+                     - dev
 

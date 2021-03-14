@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   test_coco_assistant:
     working_directory: ~/project
@@ -22,10 +22,13 @@ jobs:
             python-codacy-coverage -r coverage.xml
       - store_artifacts:
           path: coverage
+
+      - store_test_results:
+          path: test-results 
        
             
 workflows:
-  version: 2
+  version: 2.1
   test-all:
     jobs:
       - test_coco_assistant:
@@ -33,7 +36,7 @@ workflows:
               branches:
                   only:
                      - master
-                     - dev
+                     - ops
         
       
       

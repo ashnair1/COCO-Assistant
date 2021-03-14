@@ -11,7 +11,6 @@ jobs:
           command: |
             virtualenv venv
             . venv/bin/activate
-            mkdir test-results
             pip install --upgrade pip
             pip install Cython numpy==1.16.0
             pip install -r requirements.txt
@@ -25,7 +24,7 @@ jobs:
           path: coverage
 
       - store_test_results:
-          path: test-results 
+          path: coverage
        
             
 workflows:

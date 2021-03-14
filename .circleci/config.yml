@@ -13,11 +13,12 @@ jobs:
       # - restore_cache:
       # # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
       #     key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+      # /home/circleci/.cache/pip
       - run:
           name: Setup environment
           command: |
             python -m pip install --upgrade pip
-            python -m pip cache dir
+            python -m pip install Cython numpy
             python -m pip install -r requirements-dev.txt
       # - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
       #     key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}

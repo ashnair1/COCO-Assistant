@@ -20,7 +20,6 @@ jobs:
       - run:
           name: Runnning tests
           command: |
-            . venv/bin/activate
             make remove && make clean
             coverage run tests/tests.py
             coverage report -m

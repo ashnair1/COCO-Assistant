@@ -8,8 +8,8 @@ jobs:
       - image: circleci/python:3.6.6
     steps:
       - checkout
-      - restore_cache:
-         key: coco-{{ .Branch }}
+      # - restore_cache:
+      #    key: coco-{{ .Branch }}
       - run:
           name: Setup environment
           command: |
@@ -17,19 +17,23 @@ jobs:
             python -m pip install --upgrade pip
             python -m pip install Cython numpy
             python -m pip install -r requirements-dev.txt
-      - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
-          key: coco-{{ .Branch }}
-          paths:
-            - "/home/circleci/.cache/pip"
+      # - save_cache:
+      #     key: coco-{{ .Branch }}
+      #     paths:
+      #       - "/home/circleci/.cache/pip"
       - snyk/scan
       - run:
           name: Runnning tests
           command: |
             make remove && sudo make clean
+            mkdir test-results
+            pytest --junitxml=test-results/junit.xml
             coverage run tests/tests.py
             coverage report -m
             coverage html && coverage xml
             python-codacy-coverage -r coverage.xml
+      - store_test_results:
+          path: test-results
       - store_artifacts:
           path: coverage
 

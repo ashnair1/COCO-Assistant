@@ -8,23 +8,19 @@ jobs:
       - image: circleci/python:3.6.6
     steps:
       - checkout
-      # - run: sudo chown -R circleci:circleci /usr/local/bin
-      # - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
-      - run: sudo chown -R circleci:circleci /usr/local/
-      # - restore_cache:
-      # # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
-      #     key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-      # /home/circleci/.cache/pip
+      #- restore_cache:
+      #    key: coco-{{ .Branch }}
       - run:
           name: Setup environment
           command: |
+            sudo chown -R circleci:circleci /usr/local/
             python -m pip install --upgrade pip
             python -m pip install Cython numpy
             python -m pip install -r requirements-dev.txt
-      # - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
-      #     key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-      #     paths:
-      #       - "venv"
+      - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
+          key: coco-{{ .Branch }}
+          paths:
+            - "/home/circleci/.cache/pip"
       - snyk/scan
       - run:
           name: Runnning tests

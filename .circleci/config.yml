@@ -11,8 +11,6 @@ jobs:
       - run:
           name: Setup environment
           command: |
-            virtualenv venv
-            . venv/bin/activate
             pip install --upgrade pip
             pip install Cython numpy==1.16.0
             pip install -r requirements.txt

@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  snyk: snyk/snyk@0.0.13
 jobs:
   test_coco_assistant:
     working_directory: ~/project
@@ -7,7 +9,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Runnning tests
+          name: Setup environment
           command: |
             virtualenv venv
             . venv/bin/activate
@@ -15,6 +17,10 @@ jobs:
             pip install Cython numpy==1.16.0
             pip install -r requirements.txt
             pip install pytest coverage codacy-coverage
+      - snyk/scan
+      - run:
+          name: Runnning tests
+          command: |
             make remove && make clean
             coverage run tests/tests.py
             coverage report -m
@@ -23,10 +29,7 @@ jobs:
       - store_artifacts:
           path: coverage
 
-      - store_test_results:
-          path: coverage
-       
-            
+
 workflows:
   version: 2.1
   test-all:
@@ -37,6 +40,4 @@ workflows:
                   only:
                      - master
                      - ops
-        
-      
-      
+

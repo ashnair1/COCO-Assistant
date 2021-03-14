@@ -16,8 +16,8 @@ jobs:
       - run:
           name: Setup environment
           command: |
-            python -m pip cache dir
             python -m pip install --upgrade pip
+            python -m pip cache dir
             python -m pip install -r requirements-dev.txt
       # - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
       #     key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}

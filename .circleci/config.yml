@@ -58,7 +58,7 @@ jobs:
       - run:
           name: Init .pypirc
           command: |
-            echo -e "[pypi]" >> ~/.pypirc
+            echo -e "[testpypi]" >> ~/.pypirc
             echo -e "username = ashnair1" >> ~/.pypirc
             echo -e "password = $TEST_PYPI_PASSWORD" >> ~/.pypirc
 
@@ -86,6 +86,8 @@ workflows:
             filters:
               tags:
                 only: /[0-9]+(\.[0-9]+)*/
+              branches:
+                ignore: /.*/
       - deploy:
             requires:
               - test_coco_assistant

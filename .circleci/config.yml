@@ -82,7 +82,10 @@ workflows:
                      - deploy
   build_deploy:
     jobs:
-      - test_coco_assistant
+      - test_coco_assistant:
+            filters:
+              tags:
+                only: /[0-9]+(\.[0-9]+)*/
       - deploy:
             requires:
               - test_coco_assistant

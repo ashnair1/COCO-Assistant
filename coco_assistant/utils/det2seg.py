@@ -1,6 +1,6 @@
-import os
 import numpy as np
-from PIL import Image, ImageDraw
+from pathlib import Path
+from PIL import Image
 from pycocotools.coco import COCO
 from tqdm import tqdm
 
@@ -18,8 +18,9 @@ def det2seg(cann, output_dir, palette=True):
     :param palette: bool -> True (use palette)/ False (no palette)
     """
 
-    if os.path.isdir(output_dir) is False:
-        os.makedirs(output_dir, exist_ok=True)
+    output_dir = Path(output_dir)
+    if not output_dir.is_dir():
+        output_dir.mkdir(parents=True, exist_ok=True)
 
     imids = cann.getImgIds()
     cats = cann.loadCats(cann.getCatIds())
@@ -47,30 +48,29 @@ def det2seg(cann, output_dir, palette=True):
             raise AssertionError("Multiple images with same id")
         h, w = img[0]["height"], img[0]["width"]
         name = img[0]["file_name"]
-        if name[-4:] != ".png":
-            name = name[:-4] + ".png"
+        name = Path(name)
+        if name.suffix.lower() != ".png":
+            name = name.stem + ".png"
         im = np.zeros((h, w), dtype=np.uint8)
         annids = cann.getAnnIds(imgIds=[imid])
         if not annids:
             # No annotations
             res = Image.fromarray(im)
-            res.save(os.path.join(output_dir, "{}".format(name)))
+            res.save(output_dir / f"{name}")
         else:
+            # TODO: Handle edge case when object with higher cat id
+            # overlaps one with a lower cat id - Test sample:000000143931.png
             anns = cann.loadAnns(annids)
+            # areas = [i["area"] for i in anns]
+            # area_ann_map = dict(zip(areas, anns))
             for ann in anns:
-                poly = ann["segmentation"][0]
-                cat = ann["category_id"]
-                img = Image.new("L", (w, h))
-                if len(poly) >= 6:
-                    ImageDraw.Draw(img).polygon(poly, fill=cat)
-                else:
-                    continue
-                mask = np.array(img)
-                im = np.maximum(im, mask)
+                bMask = cann.annToMask(ann)
+                cMask = bMask * ann["category_id"]
+                im = np.maximum(im, cMask)
             res = Image.fromarray(im)
             if palette:
                 res.putpalette(colour_map.astype(np.uint8))
-            res.save(os.path.join(output_dir, "{}".format(name)))
+            res.save(output_dir / f"{name}")
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ import tarfile
 
 from coco_assistant import COCO_Assistant
 from coco_assistant.utils import CatRemapper
+from pathlib import Path
 
 import data_getter
 
@@ -57,10 +58,10 @@ def test_cat_removal(get_data):
     test_ann = "tiny2.json"
     test_rcats = sorted(["plane", "ship", "Large_Vehicle"])
 
-    cas.remove_cat(interactive=False, jc=test_ann, rcats=test_rcats)
+    cas.remove_cat(interactive=False, jc=Path(get_data[1]) / test_ann, rcats=test_rcats)
 
     orig = COCO(os.path.join(cas.ann_dir, cas.jc))
-    rmj = COCO(os.path.join(cas.resrm_dir, cas.jc))
+    rmj = COCO(os.path.join(cas.res_dir / "removal", cas.jc))
 
     orig_names = [list(orig.cats.values())[i]["name"] for i in range(len(orig.cats))]
     rmj_names = [list(rmj.cats.values())[i]["name"] for i in range(len(rmj.cats))]
@@ -68,7 +69,7 @@ def test_cat_removal(get_data):
     diff_names = sorted(list(set(orig_names) - set(rmj_names)))
 
     # Clean up
-    shutil.rmtree(cas.resrm_dir)
+    shutil.rmtree(cas.res_dir / "removal")
     if diff_names != test_rcats:
         raise AssertionError("Failure in removing following categories: {}".format(test_rcats))
 

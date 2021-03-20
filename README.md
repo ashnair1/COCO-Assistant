@@ -86,7 +86,7 @@ Merging annotations
 
 ```
 
-The merged dataset (images and annotation) can be found in `./results/combination`
+The merged dataset (images and annotation) can be found in `./results/merged`
 
 ### 2. Remove categories
 
@@ -106,8 +106,8 @@ index created!
 # In interactive mode
 In[2]: cas.remove_cat(interactive=True)
 ['tiny.json', 'tiny2.json']
-Who needs a cat removal?
-tiny.json
+Choose directory index (1:first, 2: second ..):
+1
 
 Categories present:
 ['building', 'vehicles']
@@ -129,7 +129,7 @@ The modified annotation can be found in `./results/removal`
     `cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)`
 
 2.  Generate pie-chart that shows distribution of objects according to their size (as specified in areaRng). 
-    `cas.ann_stats(stat="cat", show_count=False, save=False)`
+    `cas.ann_stats(stat="cat", arearng=None, show_count=False, save=False)`
 
 ### 4. Visualise annotations
 
@@ -137,9 +137,9 @@ Couldn't `pycocotools` visualise annotations (via [showAnns](https://github.com/
 
 ```markdown
 In[1]: cas.visualise()
-Choose directory:
+Choose directory index (1:first, 2: second ..):
 ['tiny', 'tiny2']
-tiny
+1
 ```
 
 ![](./.github/visualiser.gif)

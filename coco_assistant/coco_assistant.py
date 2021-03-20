@@ -1,16 +1,16 @@
 import ast
 import json
 import logging
-import os
+import sys
 import shutil
 
+from pathlib import Path
 from pycocotools.coco import COCO
-
 from tqdm import tqdm
 
 from . import coco_stats as stats
 from . import coco_visualiser as cocovis
-from coco_assistant.utils import anchors, det2seg, CatRemapper
+from coco_assistant import utils
 
 logging.basicConfig(level=logging.ERROR)
 logging.getLogger().setLevel(logging.WARNING)
@@ -35,33 +35,35 @@ Expected Directory Structure
 
 
 class COCO_Assistant:
-    def __init__(self, img_dir=None, ann_dir=None):
+    def __init__(self, img_dir, ann_dir):
         """
         :param img_dir (str): path to images folder.
         :param ann_dir (str): path to annotations folder.
         """
-        self.img_dir = img_dir
-        self.ann_dir = ann_dir
-        if os.path.dirname(ann_dir) != os.path.dirname(img_dir):
+        self.img_dir = Path(img_dir)
+        self.ann_dir = Path(ann_dir)
+
+        # Parent dir should be the same
+        if self.ann_dir.parents[0] != self.img_dir.parents[0]:
             raise AssertionError("Directory not in expected format")
-        self.res_dir = os.path.join(os.path.dirname(ann_dir), "results")
+        self.res_dir = self.ann_dir.parents[0] / "results"
 
         # Create Results Directory
-        if os.path.exists(self.res_dir) is False:
-            os.mkdir(self.res_dir)
+        if not self.res_dir.exists():
+            self.res_dir.mkdir()
 
         self.imgfolders = sorted(
-            [
-                i
-                for i in os.listdir(self.img_dir)
-                if (os.path.isdir(os.path.join(self.img_dir, i)) is True and not i.startswith("."))
-            ]
+            [i for i in self.img_dir.iterdir() if i.is_dir() and not i.name.startswith(".")]
         )
-        self.jsonfiles = sorted([j for j in os.listdir(ann_dir) if j[-5:] == ".json"])
-        self.names = [n[:-5] for n in self.jsonfiles]
+        imnames = [n.stem for n in self.imgfolders]
 
-        if self.names != self.imgfolders:
+        self.jsonfiles = sorted([j for j in self.ann_dir.iterdir() if j.suffix == ".json"])
+        jnames = [n.stem for n in self.jsonfiles]
+
+        if imnames != jnames:
             raise AssertionError("Image dir and corresponding json file must have the same name")
+
+        self.names = imnames
 
         # Note: Add check for confirming these folders only contain .jpg and .json respectively
         logging.debug("Number of image folders = %s", len(self.imgfolders))
@@ -72,7 +74,7 @@ class COCO_Assistant:
         if not self.imgfolders:
             raise AssertionError("Image folders not passed")
 
-        self.annfiles = [COCO(os.path.join(ann_dir, i)) for i in self.jsonfiles]
+        self.annfiles = [COCO(i) for i in self.jsonfiles]
         self.anndict = dict(zip(self.jsonfiles, self.annfiles))
 
         self.ann_anchors = []
@@ -81,35 +83,23 @@ class COCO_Assistant:
         """
         Function for merging multiple coco datasets
         """
+        self.resim_dir = self.res_dir / "merged" / "images"
+        self.resann_dir = self.res_dir / "merged" / "annotations"
 
-        self.resim_dir = os.path.join(self.res_dir, "merged", "images")
-        self.resann_dir = os.path.join(self.res_dir, "merged", "annotations")
-
-        # Create directories for merged results and clear the previous ones
-        # The exist_ok is for dealing with merged folder
-        # TODO: Can be done better
-        if os.path.exists(self.resim_dir) is False:
-            os.makedirs(self.resim_dir, exist_ok=True)
-        else:
-            shutil.rmtree(self.resim_dir)
-            os.makedirs(self.resim_dir, exist_ok=True)
-        if os.path.exists(self.resann_dir) is False:
-            os.makedirs(self.resann_dir, exist_ok=True)
-        else:
-            shutil.rmtree(self.resann_dir)
-            os.makedirs(self.resann_dir, exist_ok=True)
+        utils.make_clean(self.resim_dir)
+        utils.make_clean(self.resann_dir)
 
         if merge_images:
             print("Merging image dirs")
-            im_dirs = [os.path.join(self.img_dir, folder) for folder in self.imgfolders]
-            imext = [".png", ".jpg"]
+            im_dirs = self.imgfolders
+            imext = [".png", ".jpg", ".jpeg"]
 
             logging.debug("Merging Image Dirs...")
 
             for imdir in tqdm(im_dirs):
-                ims = [i for i in os.listdir(imdir) if i[-4:].lower() in imext]
+                ims = [i for i in imdir.iterdir() if i.suffix.lower() in imext]
                 for im in ims:
-                    shutil.copyfile(os.path.join(imdir, im), os.path.join(self.resim_dir, im))
+                    shutil.copyfile(im, self.resim_dir / im.name)
 
         else:
             logging.debug("Not merging Image Dirs...")
@@ -118,11 +108,11 @@ class COCO_Assistant:
 
         logging.debug("Merging Annotations...")
 
-        dst_ann = os.path.join(self.resann_dir, "merged.json")
+        dst_ann = self.resann_dir / "merged.json"
 
         print("Merging annotations")
         for j in tqdm(self.jsonfiles):
-            with open(os.path.join(self.ann_dir, j)) as a:
+            with open(j) as a:
                 cj = json.load(a)
 
             ind = self.jsonfiles.index(j)
@@ -172,7 +162,7 @@ class COCO_Assistant:
                     ann["image_id"] = id_dict[ann["image_id"]]
 
                 # Remap categories
-                cmapper = CatRemapper(cann["categories"], cj["categories"])
+                cmapper = utils.CatRemapper(cann["categories"], cj["categories"])
                 cann["categories"], cj["annotations"] = cmapper.remap(cj["annotations"])
 
                 cann["images"] = cann["images"] + cj["images"]
@@ -201,22 +191,25 @@ class COCO_Assistant:
         :param jc: Json choice
         :param rcats: Categories to be removed
         """
-
-        self.resrm_dir = os.path.join(self.res_dir, "removal")
-        if os.path.exists(self.resrm_dir) is False:
-            os.makedirs(self.resrm_dir, exist_ok=True)
-        else:
-            shutil.rmtree(self.resrm_dir)
-            os.makedirs(self.resrm_dir, exist_ok=True)
+        resrm_dir = self.res_dir / "removal"
+        utils.make_clean(resrm_dir)
+        # jnames == imnames -> No extension
 
         if interactive:
-            print(self.jsonfiles)
-            print("Who needs a cat removal?")
-            self.jc = input()
-            if self.jc.lower() not in [item.lower() for item in self.jsonfiles]:
-                raise AssertionError("Choice not in json file list")
-            ind = self.jsonfiles.index(self.jc.lower())
-            ann = self.annfiles[ind]
+            print(self.names)
+            print("Choose directory index (1:first, 2: second ..)")
+
+            json_choice = input()
+            try:
+                json_choice = int(json_choice) - 1
+            except ValueError:
+                sys.exit("Please specify an index")
+
+            if json_choice > len(self.names):
+                raise AssertionError("Index exceeds number of datasets")
+            ann = self.annfiles[json_choice]
+            json_name = self.jsonfiles[json_choice].name
+            self.jc = json_name  # hack
 
             print("\nCategories present:")
             cats = [i["name"] for i in ann.cats.values()]
@@ -238,9 +231,11 @@ class COCO_Assistant:
                 raise AssertionError(
                     "Both json choice and rcats need to be provided in non-interactive mode"
                 )
-            self.jc = jc
-            ind = self.jsonfiles.index(self.jc.lower())
-            ann = self.annfiles[ind]
+            # If passed, json_choice needs to be full path
+            json_choice = Path(jc)  # Full path
+            json_name = json_choice.name  # abc.json
+            self.jc = json_name  # hack
+            ann = self.anndict[Path(json_choice)]
             self.rcats = rcats
 
         print("Removing specified categories...")
@@ -254,14 +249,13 @@ class COCO_Assistant:
         cats = ann.loadCats(catids_remove)
         # Remove from annotation list
         anns = ann.loadAnns(annids_remove)
-
-        with open(os.path.join(self.ann_dir, self.jc)) as it:
+        with open(self.ann_dir / json_name) as it:
             x = json.load(it)
 
         x["categories"] = [i for i in x["categories"] if i not in cats]
         x["annotations"] = [i for i in x["annotations"] if i not in anns]
 
-        with open(os.path.join(self.resrm_dir, self.jc), "w") as oa:
+        with open(resrm_dir / json_name, "w") as oa:
             json.dump(x, oa)
 
     def ann_stats(self, stat, arearng, show_count=False, save=False):
@@ -283,7 +277,7 @@ class COCO_Assistant:
         """
         if recompute or not self.ann_anchors:
             print("Calculating anchors...")
-            a = [anchors.generate_anchors(j, n, fmt) for j in self.annfiles]
+            a = [utils.generate_anchors(j, n, fmt) for j in self.annfiles]
             self.ann_anchors = dict(zip(self.names, a))
         else:
             print("Loading pre-computed anchors")
@@ -294,38 +288,42 @@ class COCO_Assistant:
         Function for generating segmentation masks.
         """
         for ann, name in zip(self.annfiles, self.names):
-            output_dir = os.path.join(self.res_dir, "segmasks", name)
-            det2seg.det2seg(ann, output_dir, palette)
+            output_dir = self.res_dir / "segmasks" / name
+            utils.det2seg(ann, output_dir, palette)
 
     def visualise(self):
         """
         Function for visualising annotations.
         """
-        print("Choose directory:")
-        print(self.imgfolders)
+        print("Choose directory index (1:first, 2: second ..):")
+        print([s.stem for s in self.imgfolders])
 
         dir_choice = input()
+        try:
+            dir_choice = int(dir_choice) - 1
+        except ValueError:
+            sys.exit("Please specify an index")
 
-        if dir_choice.lower() not in [item.lower() for item in self.imgfolders]:
-            raise AssertionError("Choice not in images folder")
-        ind = self.imgfolders.index(dir_choice)
-        ann = self.annfiles[ind]
-        img_dir = os.path.join(self.img_dir, dir_choice)
+        if dir_choice > len(self.imgfolders):
+            raise AssertionError("Index exceeds number of datasets")
+        ann = self.annfiles[dir_choice]
+        img_dir = self.imgfolders[dir_choice]
         cocovis.visualise_all(ann, img_dir)
 
 
 if __name__ == "__main__":
-    p = "/home/ashwin/Desktop/Projects/COCO-Assistant/data/test"
-    img_dir = os.path.join(p, "images")
-    ann_dir = os.path.join(p, "annotations")
+    p = Path("/Users/ashwinnair/Desktop/COCO-Assistant/data/test/")
+    img_dir = p / "images"
+    ann_dir = p / "annotations"
 
     # TODO: Create tiny dummy datasets and test these functions on them
 
     cas = COCO_Assistant(img_dir, ann_dir)
 
-    # cas.merge()
+    # cas.merge(False)
     # cas.remove_cat()
     # cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)
-    # cas.ann_stats(stat="cat", show_count=False, save=False)
+    # cas.ann_stats(stat="cat", arearng=None, show_count=False, save=False)
     # cas.visualise()
+    # cas.get_segmasks()
     # cas.anchors(2)

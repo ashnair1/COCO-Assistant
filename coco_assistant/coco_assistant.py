@@ -65,7 +65,7 @@ class COCO_Assistant:
 
         self.names = imnames
 
-        # Note: Add check for confirming these folders only contain .jpg and .json respectively
+        # TODO: Add check for confirming these folders only contain .jpg and .json respectively
         logging.debug("Number of image folders = %s", len(self.imgfolders))
         logging.debug("Number of annotation files = %s", len(self.jsonfiles))
 
@@ -312,7 +312,7 @@ class COCO_Assistant:
 
 
 if __name__ == "__main__":
-    p = Path("/Users/ashwinnair/Desktop/COCO-Assistant/data/test/")
+    p = Path("/home/ashwin/Desktop/Projects/COCO-Assistant/data/tiny_coco/")
     img_dir = p / "images"
     ann_dir = p / "annotations"
 

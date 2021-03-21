@@ -58,16 +58,28 @@ def det2seg(cann, output_dir, palette=True):
             res = Image.fromarray(im)
             res.save(output_dir / f"{name}")
         else:
-            # TODO: Handle edge case when object with higher cat id
-            # overlaps one with a lower cat id - Test sample:000000143931.png
             anns = cann.loadAnns(annids)
-            # areas = [i["area"] for i in anns]
-            # area_ann_map = dict(zip(areas, anns))
+            areas = [i["area"] for i in anns]
+            area_ids = [i for i in range(1, len(areas) + 1)][::-1]
+            area_id_map = dict(zip(sorted(areas), area_ids))
+            area_cat_map = {}
+
+            # Assumption: area of objects are unique
             for ann in anns:
+                aid = area_id_map[ann["area"]]
                 bMask = cann.annToMask(ann)
-                cMask = bMask * ann["category_id"]
-                im = np.maximum(im, cMask)
-            res = Image.fromarray(im)
+                aMask = bMask * aid
+                im = np.maximum(im, aMask)
+                area_cat_map[aid] = ann["category_id"]
+
+            # Ref: https://stackoverflow.com/questions/55949809/efficiently-replace-elements-in-array-based-on-dictionary-numpy-python/55950051#55950051
+            k = np.array(list(area_cat_map.keys()))
+            v = np.array(list(area_cat_map.values()))
+            mapping_ar = np.zeros(k.max() + 1, dtype=np.uint8)
+            mapping_ar[k] = v
+            res = mapping_ar[im]
+
+            res = Image.fromarray(res)
             if palette:
                 res.putpalette(colour_map.astype(np.uint8))
             res.save(output_dir / f"{name}")

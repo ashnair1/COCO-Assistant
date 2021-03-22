@@ -1,14 +1,10 @@
-import os
-
 import matplotlib.patches
 import matplotlib.pyplot as plt
 import matplotlib.widgets
-
 import mpl_toolkits.axes_grid1
 
 from pycocotools.coco import COCO
-
-import skimage.io as io
+from pathlib import Path
 
 
 # Reference: https://stackoverflow.com/questions/41545664/view-3-dimensional-numpy-array-in-matplotlib-and-taking-arguments-from-keyboard/41552601#41552601
@@ -133,7 +129,7 @@ def get_imgid_dict(ann):
 def visualise_all(ann, img_dir):
 
     # Get List of Images
-    imgs = os.listdir(img_dir)
+    imgs = [i for i in Path(img_dir).iterdir()]
 
     # Get image id and image filename mapping dict
     id_fn_dict = get_imgid_dict(ann)
@@ -141,19 +137,18 @@ def visualise_all(ann, img_dir):
     num_pages = len(ann.imgs.keys())
 
     # Visualise first image
-
     fig, ax = plt.subplots()
     fig.subplots_adjust(bottom=0.18)
+    im = plt.imread(imgs[0])
+    imgid = id_fn_dict[imgs[0].name]
 
-    im = io.imread(os.path.join(img_dir, imgs[0]))
-    imgid = id_fn_dict[imgs[0]]
     # Modification for string image ids
     if isinstance(imgid, str):
         imgid = [imgid]
     annids = ann.getAnnIds(imgIds=imgid, iscrowd=None)
     anns = ann.loadAnns(annids)
     ax.axis("off")
-    ax.set_title(imgs[0])
+    ax.set_title(imgs[0].name)
     ax.imshow(im)
     ann.showAnns(anns)
 
@@ -163,15 +158,15 @@ def visualise_all(ann, img_dir):
     def update(val):
         ax.clear()
         ind = int(slider.val)
-        im = io.imread(os.path.join(img_dir, imgs[ind]))
-        imid = id_fn_dict[imgs[ind]]
+        im = plt.imread(imgs[ind])
+        imid = id_fn_dict[imgs[ind].name]
         # Modification for string image ids
         if isinstance(imid, str):
             imid = [imid]
         img_annids = ann.getAnnIds(imgIds=imid, iscrowd=None)
         img_anns = ann.loadAnns(img_annids)
         ax.axis("off")
-        ax.set_title(imgs[ind])
+        ax.set_title(imgs[ind].name)
         ax.imshow(im)
         ann.showAnns(img_anns, ax=ax)
 
@@ -185,8 +180,8 @@ def visualise_single(ann, folder, img_filename):
         raise AssertionError('Folder not in ["train", "val", "test"]')
     # Get image id and image filename mapping dict
     id_fn_dict = get_imgid_dict(ann)
-    img_path = os.path.join(os.getcwd(), "images", folder, img_filename)
-    im = io.imread(img_path)
+    img_path = Path().cwd() / "images" / folder / img_filename
+    im = plt.imread(img_path)
     annids = ann.getAnnIds(imgIds=id_fn_dict[img_filename], iscrowd=None)
     anns = ann.loadAnns(annids)
 
@@ -202,7 +197,7 @@ def visualise_single(ann, folder, img_filename):
 if __name__ == "__main__":
     # Get Annotations Dir and Image folder
     folder = "test"
-    annFile = os.path.join(os.getcwd(), "annotations", "iSAID_{}.json".format(folder))
+    annFile = Path.cwd() / "annotations" / f"iSAID_{folder}.json"
     ann = COCO(annFile)
     # Visualisation Modes
     # visualise_all(ann, folder)

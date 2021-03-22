@@ -8,8 +8,6 @@ import mpl_toolkits.axes_grid1
 
 from pycocotools.coco import COCO
 
-import skimage.io as io
-
 
 # Reference: https://stackoverflow.com/questions/41545664/view-3-dimensional-numpy-array-in-matplotlib-and-taking-arguments-from-keyboard/41552601#41552601
 # Need to make a minor change in the showAnns function in coco.py which involves passing in a matplotlib axes. Changes are as follows:
@@ -145,7 +143,7 @@ def visualise_all(ann, img_dir):
     fig, ax = plt.subplots()
     fig.subplots_adjust(bottom=0.18)
 
-    im = io.imread(os.path.join(img_dir, imgs[0]))
+    im = plt.imread(os.path.join(img_dir, imgs[0]))
     imgid = id_fn_dict[imgs[0]]
     # Modification for string image ids
     if isinstance(imgid, str):
@@ -163,7 +161,7 @@ def visualise_all(ann, img_dir):
     def update(val):
         ax.clear()
         ind = int(slider.val)
-        im = io.imread(os.path.join(img_dir, imgs[ind]))
+        im = plt.imread(os.path.join(img_dir, imgs[ind]))
         imid = id_fn_dict[imgs[ind]]
         # Modification for string image ids
         if isinstance(imid, str):
@@ -186,7 +184,7 @@ def visualise_single(ann, folder, img_filename):
     # Get image id and image filename mapping dict
     id_fn_dict = get_imgid_dict(ann)
     img_path = os.path.join(os.getcwd(), "images", folder, img_filename)
-    im = io.imread(img_path)
+    im = plt.imread(img_path)
     annids = ann.getAnnIds(imgIds=id_fn_dict[img_filename], iscrowd=None)
     anns = ann.loadAnns(annids)
 

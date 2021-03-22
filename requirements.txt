@@ -6,7 +6,6 @@ pandas
 Pillow>=8.1.1
 git+https://github.com/ashnair1/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI
 seaborn
-scikit-image
 tqdm
 
 # packaging

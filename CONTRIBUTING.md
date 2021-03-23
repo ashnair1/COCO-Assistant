@@ -10,12 +10,11 @@ The rules are pretty simple:
 
 ## Pull Request Process
 
-1. Fork and clone the repo. 
-2. Install [pre-commit](https://pre-commit.com/) and setup hooks via the following steps. 
+1.  Fork and clone the repo. 
+2.  Install [pre-commit](https://pre-commit.com/) and setup hooks via the following steps. 
 
-   ```
-   $ pip install pre-commit
-   $ pre-commit install
-   ```
-   Now pre-commit will run on every git commit. Alternatively, you could just run `pre-commit run --all-files` after you're done. Please ensure you've run the pre-commit before submitting the PR.
-3. Submit PR to `dev` branch.
+        $ pip install pre-commit
+        $ pre-commit install
+
+    Now pre-commit will run on every git commit. Alternatively, you could just run `pre-commit run --all-files` after you're done. Please ensure you've run the pre-commit before submitting the PR.
+3.  Submit PR to `dev` branch.

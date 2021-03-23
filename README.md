@@ -154,4 +154,5 @@ The `cas.get_segmasks()` function allows you to create segmentation masks from y
 | **iSAID**    | <img src="./.github/iSAID.png" alt="iSAID" title="iSAID" width=310 />          | <img src="./.github/iSAID_mask.png" alt="iSAID_mask" title="iSAID_mask" width=310 />          |
 
 ## Contributing
+
 Refer [CONTRIBUTING.md](CONTRIBUTING.md)

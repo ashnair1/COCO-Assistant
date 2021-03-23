@@ -244,15 +244,15 @@ class COCO_Assistant:
         catids_remove = ann.getCatIds(catNms=self.rcats)
         # Gives you a list of ids of annotations that contain those categories
         annids_remove = ann.getAnnIds(catIds=catids_remove)
-        
+
         # Get keep category ids
         catids_keep = list(set(ann.getCatIds()) - set(catids_remove))
         # Get keep annotation ids
         annids_keep = list(set(ann.getAnnIds()) - set(annids_remove))
-        
+
         with open(self.ann_dir / json_name) as it:
             x = json.load(it)
-        
+
         del x["categories"]
         x["categories"] = ann.loadCats(catids_keep)
         del x["annotations"]

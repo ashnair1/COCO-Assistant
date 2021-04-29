@@ -5,8 +5,9 @@ Welcome contributors!
 Thank you for taking the time to contribute to this project. Your help is highly appreciated.
 
 The rules are pretty simple:
-- Use Discussions for major changes. 
-- This repo uses `black` & `flake8` for style and formatting via `pre-commit` hooks. Kindly make sure you run it before submitting a PR. Refer [Pull Request Process](#pull-request-process)
+
+-   Use Discussions for major changes. 
+-   This repo uses `black` & `flake8` for style and formatting via `pre-commit` hooks. Kindly make sure you run it before submitting a PR. Refer [Pull Request Process](#pull-request-process)
 
 ## Pull Request Process
 

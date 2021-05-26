@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import ast
 import json
 import logging
@@ -145,8 +146,8 @@ class COCO_Assistant:
                         if isinstance(last_imid, str):
                             im["image_id"] = id_dict[im["image_id"]]
 
-                last_imid = cann["images"][-1]["id"]
-                last_annid = cann["annotations"][-1]["id"]
+                last_imid = max([im["id"] for im in cann["images"]])
+                last_annid = max([ann["id"] for ann in cann["annotations"]])
 
             else:
 

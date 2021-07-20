@@ -25,27 +25,18 @@ def cat_count(anns, names, show_count=False, save=False):
     # This should be done at the start
     for ann, name, ax in zip(anns, names, axes):
         ann_df = pd.DataFrame(ann.anns).transpose()
-        if "category_name" in ann_df.columns:
-            chart = sns.countplot(
-                data=ann_df,
-                x="category_name",
-                order=ann_df["category_name"].value_counts().index,
-                palette="Set1",
-                ax=ax,
-            )
-        else:
+        if "category_name" not in ann_df.columns:
             # Add a new column -> category name
             ann_df["category_name"] = ann_df.apply(
                 lambda row: ann.cats[row.category_id]["name"], axis=1
             )
-            chart = sns.countplot(
-                data=ann_df,
-                x="category_name",
-                order=ann_df["category_name"].value_counts().index,
-                palette="Set1",
-                ax=ax,
-            )
-
+        chart = sns.countplot(
+            data=ann_df,
+            x="category_name",
+            order=ann_df["category_name"].value_counts().index,
+            palette="Set1",
+            ax=ax,
+        )
         chart.set_title(name)
         chart.set_xticklabels(chart.get_xticklabels(), rotation=90)
 
@@ -75,10 +66,7 @@ def cat_count(anns, names, show_count=False, save=False):
 
 
 def get_areas(ann):
-    obj_areas = []
-    for key in ann.anns:
-        obj_areas.append(ann.anns[key]["area"])
-    return obj_areas
+    return [ann.anns[key]["area"] for key in ann.anns]
 
 
 def view_area_dist(ann):

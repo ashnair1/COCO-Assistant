@@ -22,9 +22,9 @@ Expected Directory Structure
 
 .
 ├── images
-│   ├── train
-│   ├── val
-|   ├── test
+│   ├── train/
+│   ├── val/
+|   ├── test/
 |
 ├── annotations
 │   ├── train.json
@@ -146,8 +146,8 @@ class COCO_Assistant:
                         if isinstance(last_imid, str):
                             im["image_id"] = id_dict[im["image_id"]]
 
-                last_imid = max([im["id"] for im in cann["images"]])
-                last_annid = max([ann["id"] for ann in cann["annotations"]])
+                last_imid = max(im["id"] for im in cann["images"])
+                last_annid = max(ann["id"] for ann in cann["annotations"])
 
             else:
 

@@ -13,7 +13,7 @@ from setuptools.command.install import install
 NAME = "coco_assistant"
 DESCRIPTION = "Helper for dealing with MS-COCO annotations"
 URL = "https://github.com/ashnair1/COCO-Assistant"
-EMAIL = "ash1995@gmail.com"
+EMAIL = "ashnair0007@gmail.com"
 AUTHOR = "Ashwin Nair"
 REQUIRES_PYTHON = ">=3.6.0"
 

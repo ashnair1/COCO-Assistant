@@ -4,6 +4,7 @@ Link: https://github.com/experiencor/keras-yolo2/blob/master/gen_anchors.py
 """
 
 import random
+
 import numpy as np
 from pycocotools.coco import COCO
 

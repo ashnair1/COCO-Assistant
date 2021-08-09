@@ -1,5 +1,6 @@
-import requests
 import tarfile
+
+import requests
 
 
 def download_file_from_google_drive(fid, destination):

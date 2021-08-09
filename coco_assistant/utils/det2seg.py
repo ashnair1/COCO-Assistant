@@ -1,5 +1,6 @@
-import numpy as np
 from pathlib import Path
+
+import numpy as np
 from PIL import Image
 from pycocotools.coco import COCO
 from tqdm import tqdm

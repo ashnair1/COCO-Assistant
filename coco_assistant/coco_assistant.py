@@ -2,16 +2,17 @@
 import ast
 import json
 import logging
-import sys
 import shutil
-
+import sys
 from pathlib import Path
+
 from pycocotools.coco import COCO
 from tqdm import tqdm
 
+from coco_assistant import utils
+
 from . import coco_stats as stats
 from . import coco_visualiser as cocovis
-from coco_assistant import utils
 
 logging.basicConfig(level=logging.ERROR)
 logging.getLogger().setLevel(logging.WARNING)

@@ -2,13 +2,9 @@ import logging
 import os
 
 import matplotlib.pyplot as plt
-
 import pandas as pd
-
-from pycocotools.coco import COCO
-
 import seaborn as sns
-
+from pycocotools.coco import COCO
 
 logging.basicConfig(level=logging.DEBUG)
 

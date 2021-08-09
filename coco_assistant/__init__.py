@@ -1,11 +1,8 @@
-import os
-import pathlib
+"""Top-level package for COCO-Assistant."""
+
+__author__ = """Ashwin Nair"""
+__email__ = "ashnair0007@gmail.com"
+__version__ = "0.4.0"
+
 
 from .coco_assistant import COCO_Assistant
-import coco_assistant
-
-PACKAGE_ROOT = pathlib.Path(coco_assistant.__file__).resolve().parent
-# PACKAGE_ROOT = os.getcwd()
-
-with open(os.path.join(PACKAGE_ROOT, "VERSION")) as version_file:
-    __version__ = version_file.read().strip()

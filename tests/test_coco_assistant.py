@@ -1,17 +1,15 @@
 import os
 import shutil
-
 import tarfile
+from pathlib import Path
+
+import pytest
+from pycocotools.coco import COCO
 
 from coco_assistant import COCO_Assistant
 from coco_assistant.utils import CatRemapper
-from pathlib import Path
 
-import data_getter
-
-from pycocotools.coco import COCO
-
-import pytest
+from . import data_getter
 
 
 @pytest.fixture

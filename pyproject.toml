@@ -82,7 +82,7 @@ doc = [
     ]
 
 [tool.poetry.scripts]
-changedet = 'coco_assistant.cli:main'
+coco-assistant = 'coco_assistant.cli:main'
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

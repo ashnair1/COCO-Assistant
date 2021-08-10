@@ -32,10 +32,10 @@ jobs:
             make remove
             mkdir test-results
             poetry run pytest --junitxml=test-results/junit.xml tests/test_coco_assistant.py
-            coverage run tests/tests.py
-            coverage report -m
-            coverage html && coverage xml
-            python-codacy-coverage -r coverage.xml
+            poetry run coverage run tests/test_coco_assistant.py
+            poetry run coverage report -m
+            poetry run coverage html && poetry run coverage xml
+            poetry run python-codacy-coverage -r coverage.xml
       - store_test_results:
           path: test-results
       - store_artifacts:

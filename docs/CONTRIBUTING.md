@@ -6,7 +6,7 @@ Thank you for taking the time to contribute to this project. Your help is highly
 
 The rules are pretty simple:
 
--   Use Discussions for proposing major changes. 
+-   Use [Discussions](https://github.com/ashnair1/COCO-Assistant/discussions) for proposing major changes. 
 -   This repo uses `black` & `flake8` for style and formatting via `pre-commit` hooks. Kindly make sure you run it before submitting a PR. Refer [Pull Request Process](#pull-request-process)
 
 ## Pull Request Process

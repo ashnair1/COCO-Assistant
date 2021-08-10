@@ -3,25 +3,36 @@ site_name: COCO-Assistant
 repo_url: https://github.com/ashnair1/coco_assistant
 repo_name: coco_assistant
 #strict: true
-nav:
-  - home: index.md
-  - installation: installation.md
-  - usage: usage.md
-  - modules: api.md
-  - contributing: contributing.md
-  - authors: authors.md
-  - history: history.md
+
+
+# Configuration
 theme:
   name: material
   language: en
-  #logo: assets/logo.png
-  palette:
-    primary: light blue
   features:
-    - navigation.indexes
+    - content.tabs.link
+    # - navigation.instant
+    - navigation.sections
     - navigation.tabs
-    - navigation.instant
-    - navigation.tabs.sticky
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+  palette:
+    - scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+    - scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+
+
 markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
@@ -44,31 +55,26 @@ markdown_extensions:
       permalink: true
       slugify: !!python/name:pymdownx.slugs.uslugify
   - meta
+
 plugins:
   - include-markdown
   - search:
       lang: en
   - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+          - import sys
+          - sys.path.append("docs")
+          selection:
+            new_path_syntax: yes
+          rendering:
+            show_root_heading: true
       watch:
         - coco_assistant
-extra:
-  social:
-    - icon: fontawesome/brands/twitter
-      # replace with your own tweet link below
-      link: http://www.jieyu.ai
-      name: Tweet
-    - icon: fontawesome/brands/facebook
-      # replace with your own facebook link below
-      link: http://www.jieyu.ai
-      name: Facebook
-    - icon: fontawesome/brands/github
-      link: https://github.com/ashnair1/coco_assistant
-      name: Github
-    - icon: material/email
-      link: "mailto:ashnair0007@gmail.com"
-  # to enable disqus, uncomment the following and put your disqus id below
-  # disqus: disqus_id
-# uncomment the following and put your google tracking id below to enable GA
-#google_analytics:
-  #- UA-xxx
-  #- auto
+  - gen-files:
+      scripts:
+       - docs/gen_doc_stubs.py
+  - literate-nav:
+      nav_file: summary.md
+  - section-index

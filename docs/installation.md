@@ -1,4 +1,4 @@
-# Installation
+<h1> Installation </h1>
 
 ## Stable release
 
@@ -6,7 +6,7 @@ To install COCO-Assistant, run this command in your
 terminal:
 
 ``` console
-$ pip install coco_assistant
+$ pip install coco-assistant
 ```
 
 This is the preferred method to install COCO-Assistant, as it will always install the most recent stable release.
@@ -22,7 +22,7 @@ the [Github repo][].
 You can either clone the public repository:
 
 ``` console
-$ git clone git://github.com/ashnair1/coco_assistant
+$ git clone https://github.com/ashnair1/COCO-Assistant.git
 ```
 
 Or download the [tarball][]:
@@ -39,6 +39,6 @@ $ pip install .
 
   [pip]: https://pip.pypa.io
   [Python installation guide]: http://docs.python-guide.org/en/latest/starting/installation/
-  [Github repo]: https://github.com/%7B%7B%20cookiecutter.github_username%20%7D%7D/%7B%7B%20cookiecutter.project_slug%20%7D%7D
-  [tarball]: https://github.com/%7B%7B%20cookiecutter.github_username%20%7D%7D/%7B%7B%20cookiecutter.project_slug%20%7D%7D/tarball/master
+  [Github repo]: https://github.com/ashnair1/COCO-Assistant
+  [tarball]: https://github.com/ashnair1/COCO-Assistant/tarball/master
 

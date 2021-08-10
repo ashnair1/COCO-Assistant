@@ -5,7 +5,7 @@ jobs:
   test_coco_assistant:
     working_directory: ~/project
     docker:
-      - image: circleci/python:3.6.6
+      - image: cimg/python:3.7
     steps:
       - checkout
       # - restore_cache:
@@ -40,7 +40,7 @@ jobs:
   test_deploy:
     working_directory: ~/project
     docker:
-      - image: circleci/python:3.6.6
+      - image: cimg/python:3.7
     steps:
       - checkout
       - run:
@@ -72,7 +72,7 @@ jobs:
   deploy:
     working_directory: ~/project
     docker:
-      - image: circleci/python:3.6.6
+      - image: cimg/python:3.7
     steps:
       - checkout
       - run:

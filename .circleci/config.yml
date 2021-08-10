@@ -1,6 +1,8 @@
 version: 2.1
+
 orbs:
-  snyk: snyk/snyk@0.0.13
+  snyk: snyk/snyk@1.0.2
+
 jobs:
   test_coco_assistant:
     working_directory: ~/project
@@ -16,18 +18,20 @@ jobs:
             sudo chown -R circleci:circleci /usr/local/
             python -m pip install --upgrade pip
             python -m pip install poetry
-            poetry install
+            poetry install -E test
       # - save_cache:
       #     key: coco-{{ .Branch }}
       #     paths:
       #       - "/home/circleci/.cache/pip"
-      - snyk/scan
+      - snyk/scan:
+          severity-threshold: high
+          fail-on-issues: false
       - run:
           name: Runnning tests
           command: |
-            make remove && sudo make clean
+            make remove
             mkdir test-results
-            pytest --junitxml=test-results/junit.xml tests/test_coco_assistant.py
+            poetry run pytest --junitxml=test-results/junit.xml tests/test_coco_assistant.py
             coverage run tests/tests.py
             coverage report -m
             coverage html && coverage xml

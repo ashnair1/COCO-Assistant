@@ -2,6 +2,5 @@
 - [Installation](installation.md)
 - [Usage](usage.md)
 - [Contributing](CONTRIBUTING.md)
-- [Authors](authors.md)
 - [Changelog](CHANGELOG.md)
 - [API Reference](reference/)

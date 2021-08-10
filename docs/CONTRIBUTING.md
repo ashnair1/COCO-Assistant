@@ -18,4 +18,5 @@ The rules are pretty simple:
         $ pre-commit install
 
     Now pre-commit will run on every git commit. Alternatively, you could just run `pre-commit run --all-files` after you're done. Please ensure you've run the pre-commit before submitting the PR.
+    
 3.  Submit PR to `dev` branch.

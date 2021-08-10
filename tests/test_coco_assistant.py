@@ -8,8 +8,7 @@ from pycocotools.coco import COCO
 
 from coco_assistant import COCO_Assistant
 from coco_assistant.utils import CatRemapper
-
-from . import data_getter
+from tests import data_getter
 
 
 @pytest.fixture

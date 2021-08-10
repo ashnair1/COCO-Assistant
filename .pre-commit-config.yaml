@@ -12,6 +12,6 @@ repos:
 
         # Refer https://github.com/pre-commit/pre-commit/issues/1206#issuecomment-551000892
     -   repo: https://gitlab.com/pycqa/flake8.git
-        rev: 3.7.8
+        rev: 3.7.9
         hooks:
         - id: flake8

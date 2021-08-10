@@ -31,10 +31,11 @@ Or download the [tarball][]:
 $ curl -OJL https://github.com/ashnair1/coco_assistant/tarball/master
 ```
 
-Once you have a copy of the source, you can install it with:
+Once you have a copy of the source, you can install it by running `make`. 
 
-``` console
-$ pip install .
+```console
+cd COCO-Assistant/
+make
 ```
 
   [pip]: https://pip.pypa.io

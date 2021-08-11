@@ -36,7 +36,7 @@ def save_response_content(response, destination):
 
 
 if __name__ == "__main__":
-    file_id = "1JJoeO9FQ9vAdmhALma7wpgqs3OTTPPwF"
+    file_id = "1wvAnXDnMq2xDmYCZ6kUXIiMyHxYTigjy"
     destination = "test.tar.gz"
     download_file_from_google_drive(file_id, destination)
     # Unzip data

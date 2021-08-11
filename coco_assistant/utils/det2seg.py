@@ -57,7 +57,6 @@ def det2seg(cann, output_dir, palette=True):
         if not annids:
             # No annotations
             res = Image.fromarray(im)
-            res.save(output_dir / f"{name}")
         else:
             anns = cann.loadAnns(annids)
             areas = [i["area"] for i in anns]
@@ -83,7 +82,8 @@ def det2seg(cann, output_dir, palette=True):
             res = Image.fromarray(res)
             if palette:
                 res.putpalette(colour_map.astype(np.uint8))
-            res.save(output_dir / f"{name}")
+
+        res.save(output_dir / f"{name}")
 
 
 if __name__ == "__main__":

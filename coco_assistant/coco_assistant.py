@@ -46,9 +46,9 @@ class COCO_Assistant:
         self.ann_dir = Path(ann_dir)
 
         # Parent dir should be the same
-        if self.ann_dir.parents[0] != self.img_dir.parents[0]:
+        if self.ann_dir.parent != self.img_dir.parent:
             raise AssertionError("Directory not in expected format")
-        self.res_dir = self.ann_dir.parents[0] / "results"
+        self.res_dir = self.ann_dir.parent / "results"
 
         # Create Results Directory
         if not self.res_dir.exists():

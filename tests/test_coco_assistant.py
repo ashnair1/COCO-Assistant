@@ -16,7 +16,7 @@ def get_data():
     if os.path.isdir("./annotations") is False and os.path.isdir("./images") is False:
         # Download and extract data
         print("Downloading...")
-        file_id = "1WAFzdtIa56UL4wFVHg2TaBMhtzqRc0F-"
+        file_id = "1wvAnXDnMq2xDmYCZ6kUXIiMyHxYTigjy"
         destination = "test.tar.gz"
         data_getter.download_file_from_google_drive(file_id, destination)
         # Unzip data
@@ -59,8 +59,8 @@ def test_cat_removal(get_data):
     cas.remove_cat(interactive=False, jc=Path(get_data[1]) / test_ann, rcats=test_rcats)
 
     orig = cas.anndict[test_ann[:-5]]
-    rmj = COCO(cas.res_dir / "removal" /test_ann)
-    
+    rmj = COCO(cas.res_dir / "removal" / test_ann)
+
     orig_names = [list(orig.cats.values())[i]["name"] for i in range(len(orig.cats))]
     rmj_names = [list(rmj.cats.values())[i]["name"] for i in range(len(rmj.cats))]
 

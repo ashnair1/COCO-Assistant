@@ -9,17 +9,17 @@ from pycocotools.coco import COCO
 logging.basicConfig(level=logging.DEBUG)
 
 
-def cat_count(anns, names, show_count=False, save=False):
+def cat_count(anndict, show_count=False, save=False):
 
-    fig, axes = plt.subplots(1, len(anns), sharey=False)
+    fig, axes = plt.subplots(1, len(anndict), sharey=False)
 
     # Making axes iterable if only single annotation is present
-    if len(anns) == 1:
+    if len(anndict) == 1:
         axes = [axes]
 
     # Prepare annotations dataframe
     # This should be done at the start
-    for ann, name, ax in zip(anns, names, axes):
+    for ann, name, ax in zip(anndict.values(), anndict.keys(), axes):
         ann_df = pd.DataFrame(ann.anns).transpose()
         if "category_name" not in ann_df.columns:
             # Add a new column -> category name
@@ -81,9 +81,9 @@ def get_object_size_split(ann, areaRng):
     if areaRng != sorted(areaRng):
         raise AssertionError("Area ranges incorrectly provided")
 
-    small = len(ann.getAnnIds(areaRng=[(areaRng[0] ** 2), areaRng[1] ** 2]))
-    medium = len(ann.getAnnIds(areaRng=[(areaRng[1] ** 2), areaRng[2] ** 2]))
-    large = len(ann.getAnnIds(areaRng=[(areaRng[2] ** 2), areaRng[3] ** 2]))
+    small = len(ann.getAnnIds(areaRng=[(areaRng[0] ** 2), areaRng[1] ** 2 - 1]))
+    medium = len(ann.getAnnIds(areaRng=[(areaRng[1] ** 2), areaRng[2] ** 2 - 1]))
+    large = len(ann.getAnnIds(areaRng=[(areaRng[2] ** 2), areaRng[3] ** 2 - 1]))
     left_out = len(ann.getAnnIds(areaRng=[0 ** 2, (areaRng[0] ** 2)])) + len(
         ann.getAnnIds(areaRng=[areaRng[3] ** 2, (1e5 ** 2)])
     )
@@ -128,9 +128,12 @@ def pi_area_split_single(ann, areaRng):
     plt.show()
 
 
-def pi_area_split(anns, names, areaRng, save=False):
+def pi_area_split(anndict, areaRng, save=False):
 
     stuff = []
+
+    anns = anndict.values()
+    names = anndict.keys()
 
     for ann in anns:
         small, medium, large, left_out = get_object_size_split(ann, areaRng)

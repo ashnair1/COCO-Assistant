@@ -1,6 +1,7 @@
 # COCO-Assistant
 
 ![CircleCI](https://img.shields.io/circleci/build/github/ashnair1/COCO-Assistant?&label=Build&logo=CircleCI)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/5299d18c95da4991b4f3a6ae6e8a0b7a)](https://www.codacy.com/gh/ashnair1/COCO-Assistant/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ashnair1/COCO-Assistant&amp;utm_campaign=Badge_Grade)
 [![Code style: black](https://img.shields.io/badge/Code%20Style-black-000000.svg)](https://github.com/psf/black)
 [![PyPi License](https://img.shields.io/pypi/v/coco-assistant?branch=master&label=PyPi%20Version&logo=PyPi&logoColor=ffffff&labelColor=306998&color=FFD43B&style=flat)](https://pypi.org/project/coco-assistant/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://img.shields.io/github/license/ashnair1/COCO-Assistant?color=yellow&label=License&logo=MIT)

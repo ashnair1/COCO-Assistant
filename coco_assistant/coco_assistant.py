@@ -36,10 +36,15 @@ Expected Directory Structure
 
 
 class COCO_Assistant:
+    """COCO_Assistant object"""
+
     def __init__(self, img_dir, ann_dir):
         """
-        :param img_dir (str): path to images folder.
-        :param ann_dir (str): path to annotations folder.
+
+        Args:
+            img_dir (str): Path to images folder.
+            ann_dir (str): Path to images folder.
+
         """
         self.img_dir = Path(img_dir)
         self.ann_dir = Path(ann_dir)
@@ -47,36 +52,9 @@ class COCO_Assistant:
 
         self.dh = utils.DirectoryHandler(img_dir, ann_dir, self.res_dir)
 
-        # # Parent dir should be the same
-        # if self.ann_dir.parent != self.img_dir.parent:
-        #     raise AssertionError("Directory not in expected format")
-        # self.res_dir = self.ann_dir.parent / "results"
-
-        # Create Results Directory
-        # if not self.res_dir.exists():
-        #    self.res_dir.mkdir()
-
-        # self.imgfolders = sorted(
-        #     [i for i in self.img_dir.iterdir() if i.is_dir() and not i.name.startswith(".")]
-        # )
-        # imnames = [n.stem for n in self.imgfolders]
-
-        # self.jsonfiles = sorted([j for j in self.ann_dir.iterdir() if j.suffix == ".json"])
-        # jnames = [n.stem for n in self.jsonfiles]
-
-        # if imnames != jnames:
-        #     raise AssertionError("Image dir and corresponding json file must have the same name")
-
-        # self.names = imnames
-
         # TODO: Add check for confirming these folders only contain .jpg and .json respectively
         logging.debug("Number of image folders = %s", len(self.dh.names))
         logging.debug("Number of annotation files = %s", len(self.dh.names))
-
-        # if not self.jsonfiles:
-        #     raise AssertionError("Annotation files not passed")
-        # if not self.imgfolders:
-        #     raise AssertionError("Image folders not passed")
 
         self.annfiles = [COCO(self.ann_dir / (i + ".json")) for i in self.dh.names]
         self.anndict = dict(zip(self.dh.names, self.annfiles))
@@ -85,7 +63,7 @@ class COCO_Assistant:
 
     def merge(self):
         """
-        Function for merging multiple coco datasets
+        Merge multiple coco datasets
         """
 
         resann_dir = self.dh.create("merged/annotations")
@@ -164,17 +142,21 @@ class COCO_Assistant:
             json.dump(cann, aw)
 
     def remove_cat(self, interactive=True, jc=None, rcats=None):
-        """
-        Function for removing certain categories.
-        In interactive mode, you can input the json and the categories
-        to be removed (as a list, see README for example)
-        In non-interactive mode, you manually pass in json filename and
-        categories to be removed. Note that jc and
-        rcats cannot be None if run with interactive=False.
 
-        :param interactive: Run category removal in interactive mode
-        :param jc: Json choice
-        :param rcats: Categories to be removed
+        """
+        Remove categories.
+
+        In interactive mode, you can input the json and the categories to be
+        removed (as a list, see README for example)
+
+        In non-interactive mode, you manually pass in json filename and
+        categories to be removed. Note that jc and rcats cannot be None if run
+        with interactive=False.
+
+        Raises:
+            AssertionError: if specified index exceeds number of datasets
+            AssertionError: if rcats is not a list of strings
+            AssertionError: if jc = rcats = None
         """
 
         resrm_dir = self.dh.create("removal")
@@ -247,22 +229,29 @@ class COCO_Assistant:
             json.dump(x, oa)
 
     def ann_stats(self, stat, arearng, show_count=False, save=False):
-        """
-        Function for displaying statistics.
+        """Display statistics.
+
+        Args:
+            stat (str): Type of statistic to be shown. Supports ["area", "cat"]
+            arearng (list[float]): Area range list
+            show_count (bool, optional): Shows category countplot if True. Defaults to False.
+            save (bool, optional): Save stat plot to disk if True. Defaults to False.
         """
         if stat == "area":
             stats.pi_area_split(self.anndict, areaRng=arearng, save=save)
         elif stat == "cat":
             stats.cat_count(self.anndict, show_count=show_count, save=save)
 
-    def anchors(self, n, fmt=None, recompute=False):
+    def anchors(self, n, fmt="rect", recompute=False):
         """
-        Function for generating top 'n' anchors
+        Generate top N anchors
 
-        :param n: Number of anchors
-        :param fmt: Format of anchors ['square', None]
-        :param recompute: Rerun k-means and recompute anchors
+        Args:
+            n (int): Number of anchors
+            fmt (str): Anchor type i.e. square or rectangular. Defaults to "rect".
+            recompute (bool, optional): Recomputes the anchors if True. Defaults to False.
         """
+
         if recompute or not self.ann_anchors:
             print("Calculating anchors...")
             names, anns = self.anndict.keys(), self.anndict.values()
@@ -274,7 +263,10 @@ class COCO_Assistant:
 
     def get_segmasks(self, palette=True):
         """
-        Function for generating segmentation masks.
+        Generate segmentation masks
+
+        Args:
+            palette (bool, optional): Create masks with color palette if True. Defaults to True.
         """
         for name, ann in self.anndict.items():
             output_dir = self.res_dir / "segmasks" / name
@@ -282,7 +274,7 @@ class COCO_Assistant:
 
     def visualise(self):
         """
-        Function for visualising annotations.
+        Visualise annotations.
         """
         print("Choose directory index (1:first, 2: second ..):")
         print(self.dh.names)

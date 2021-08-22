@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   snyk: snyk/snyk@1.0.2
   codecov: codecov/codecov@1.0.2
+  codacy: codacy/coverage-reporter@13.3.0
 
 jobs:
   test_coco_assistant:
@@ -36,6 +37,8 @@ jobs:
             poetry run coverage run tests/test_coco_assistant.py
             poetry run coverage report -m
             poetry run coverage html && poetry run coverage xml
+      - codacy/send_report:
+          coverage-reports: coverage.xml
       - codecov/upload:
           file: coverage.xml
       - store_test_results:

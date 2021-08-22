@@ -8,7 +8,6 @@ authors = ["Ashwin Nair <ashnair0007@gmail.com>"]
 readme = "README.md"
 license =  "MIT"
 classifiers=[
-    'Development Status :: 2 - Pre-Alpha',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: MIT License',
     'Natural Language :: English',
@@ -29,8 +28,7 @@ python = ">=3.7.1,<4.0"
 # Mandatory 
 matplotlib = "^3.4.2"
 pandas = "^1.3.1"
-#pycocotools = {git = "https://github.com/ashnair1/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI", rev = "b683d7f" }
-pycocotools = "^2.0.2"
+pycocotools = {url = "https://github.com/ashnair1/coco-ash/archive/refs/tags/pycoco-ash.tar.gz"}
 seaborn = "^0.11.1"
 #termcolor = "^1.1.0"
 tqdm = "^4.62.0"

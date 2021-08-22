@@ -35,7 +35,7 @@ Once you have a copy of the source, you can install it by running `make`.
 
 ```console
 cd COCO-Assistant/
-make
+pip install .
 ```
 
   [pip]: https://pip.pypa.io

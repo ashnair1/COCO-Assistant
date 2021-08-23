@@ -14,9 +14,15 @@ def det2seg(cann, output_dir, palette=True):
     randomly assigned based on class if specified. Change
     the seed if you want to change colours.
 
-    :param cann: COCO annotation object
-    :param output_dir: Directory to store segmentation masks.
-    :param palette: bool -> True (use palette)/ False (no palette)
+
+    Args:
+        cann (dict): COCO annotation object
+        output_dir (str): Directory to store segmentation masks
+        palette (bool, optional): Use palette. Defaults to True.
+
+    Raises:
+        AssertionError: Incorrect shape for colour map array
+        AssertionError: Muliple images have same image id
     """
 
     output_dir = Path(output_dir)

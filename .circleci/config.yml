@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Building documentation
           command: |
-            poetry run mkdocs gh-deploy -m "[ci skip] Deployed {sha} with MkDocs version: {version}"
+            poetry run mkdocs gh-deploy -m "[skip ci] Deployed {sha} with MkDocs version: {version}"
       - run:
           name: Runnning tests
           command: |

@@ -62,27 +62,13 @@ jobs:
           name: Setup environment
           command: |
             sudo chown -R circleci:circleci /usr/local/
-            python -m pip install --upgrade pip
-            python -m pip install twine
-
-      - run:
-          name: Verify git tag vs version
-          command: |
-            python setup.py verify
-
-      - run:
-          name: Init .pypirc
-          command: |
-            echo -e "[testpypi]" >> ~/.pypirc
-            echo -e "repository: https://test.pypi.org/legacy/" >> ~/.pypirc
-            echo -e "username = ashnair1" >> ~/.pypirc
-            echo -e "password = $TEST_PYPI_PASSWORD" >> ~/.pypirc
+            poetry install -E dev
 
       - run:
           name: Build and upload to Test PyPI
           command: |
-            python setup.py sdist bdist_wheel
-            twine upload --repository testpypi dist/*
+            poetry config repositories.testpypi https://test.pypi.org/legacy/
+            poetry publish --build -r testpypi -u ashnair1 -p $TEST_PYPI_PASSWORD
 
   deploy:
     working_directory: ~/project
@@ -97,27 +83,12 @@ jobs:
           name: Setup environment
           command: |
             sudo chown -R circleci:circleci /usr/local/
-            python -m pip install --upgrade pip
-            python -m pip install twine
-
-      - run:
-          name: Verify git tag vs version
-          command: |
-            python setup.py verify
-
-      - run:
-          name: Init .pypirc
-          command: |
-            echo -e "[pypi]" >> ~/.pypirc
-            echo -e "username = ashnair1" >> ~/.pypirc
-            echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
+            poetry install -E dev
 
       - run:
           name: Build and upload to PyPI
           command: |
-            python setup.py sdist bdist_wheel
-            twine upload dist/*
-
+            poetry publish --build -u ashnair1 -p $PYPI_PASSWORD
 
 
 workflows:
@@ -130,6 +101,8 @@ workflows:
                   only:
                      - master
                      - dev
+                  ignore:
+                     - gh-pages
   build_deploy:
     jobs:
       - test_coco_assistant:

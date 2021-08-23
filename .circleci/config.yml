@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Building documentation
           command: |
-            poetry run mkdocs build
+            poetry run mkdocs gh-deploy
       - run:
           name: Runnning tests
           command: |

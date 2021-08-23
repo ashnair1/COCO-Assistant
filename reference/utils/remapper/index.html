@@ -1,0 +1,1283 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.2">
+    
+    
+      
+        <title>Remapper - COCO-Assistant</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.1118c9be.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ba0d045b.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="purple">
+  
+    
+    <script>function __prefix(e){return new URL("../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+      <script>var palette=__get("__palette");if(null!==palette&&"object"==typeof palette.color)for(var key in palette.color)document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#coco_assistant.utils.remapper" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="COCO-Assistant" class="md-header__button md-logo" aria-label="COCO-Assistant" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            COCO-Assistant
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Remapper
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="purple" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 10a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m10-3a5 5 0 0 1 5 5 5 5 0 0 1-5 5H7a5 5 0 0 1-5-5 5 5 0 0 1 5-5h10M7 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3h10a3 3 0 0 0 3-3 3 3 0 0 0-3-3H7z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/ashnair1/coco_assistant/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    coco_assistant
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../.." class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../../installation/" class="md-tabs__link">
+      Installation
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../../usage/" class="md-tabs__link">
+      Usage
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../../CONTRIBUTING/" class="md-tabs__link">
+      Contributing
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../../CHANGELOG/" class="md-tabs__link">
+      Changelog
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../SUMMARY/" class="md-tabs__link md-tabs__link--active">
+      API Reference
+    </a>
+  </li>
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="COCO-Assistant" class="md-nav__button md-logo" aria-label="COCO-Assistant" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    COCO-Assistant
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ashnair1/coco_assistant/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    coco_assistant
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/" class="md-nav__link">
+        Usage
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CONTRIBUTING/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CHANGELOG/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      <label class="md-nav__link" for="__nav_6">
+        <span class="md-nav__icon md-icon"></span>
+        
+          <a href="../../SUMMARY/" class="md-nav__link"
+            style="margin: initial; padding: initial; pointer-events: initial">
+        
+          API Reference
+        </a>
+      </label>
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          
+            <a href="../../SUMMARY/" class="md-nav__link"
+              style="margin: initial; padding: initial; pointer-events: initial">
+          
+            API Reference
+          </a>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coco_assistant/" class="md-nav__link">
+        Coco assistant
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coco_stats/" class="md-nav__link">
+        Coco stats
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coco_visualiser/" class="md-nav__link">
+        Coco visualiser
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4" type="checkbox" id="__nav_6_4" checked>
+      
+      <label class="md-nav__link" for="__nav_6_4">
+        <span class="md-nav__icon md-icon"></span>
+        
+          <a href="../anchors/" class="md-nav__link"
+            style="margin: initial; padding: initial; pointer-events: initial">
+        
+          Utils
+        </a>
+      </label>
+      <nav class="md-nav" aria-label="Utils" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_4">
+          <span class="md-nav__icon md-icon"></span>
+          
+            <a href="../anchors/" class="md-nav__link"
+              style="margin: initial; padding: initial; pointer-events: initial">
+          
+            Utils
+          </a>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../det2seg/" class="md-nav__link">
+        Det2seg
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../logger/" class="md-nav__link">
+        Logger
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../misc/" class="md-nav__link">
+        Misc
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-nav__icon md-icon"></span>
+          
+            <a href="./" class="md-nav__link md-nav__link--active"
+              style="margin: initial; padding: initial; pointer-events: initial">
+          
+            Remapper
+          </a>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Remapper
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#coco_assistant.utils.remapper" class="md-nav__link">
+    remapper
+  </a>
+  
+    <nav class="md-nav" aria-label="remapper">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coco_assistant.utils.remapper.CatRemapper" class="md-nav__link">
+    CatRemapper
+  </a>
+  
+    <nav class="md-nav" aria-label="CatRemapper">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coco_assistant.utils.remapper.CatRemapper.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coco_assistant.utils.remapper.CatRemapper.generate_id_map" class="md-nav__link">
+    generate_id_map()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coco_assistant.utils.remapper.CatRemapper.remap_annotations" class="md-nav__link">
+    remap_annotations()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coco_assistant.utils.remapper.CatRemapper.remap_cats" class="md-nav__link">
+    remap_cats()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#coco_assistant.utils.remapper" class="md-nav__link">
+    remapper
+  </a>
+  
+    <nav class="md-nav" aria-label="remapper">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coco_assistant.utils.remapper.CatRemapper" class="md-nav__link">
+    CatRemapper
+  </a>
+  
+    <nav class="md-nav" aria-label="CatRemapper">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coco_assistant.utils.remapper.CatRemapper.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coco_assistant.utils.remapper.CatRemapper.generate_id_map" class="md-nav__link">
+    generate_id_map()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coco_assistant.utils.remapper.CatRemapper.remap_annotations" class="md-nav__link">
+    remap_annotations()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coco_assistant.utils.remapper.CatRemapper.remap_cats" class="md-nav__link">
+    remap_cats()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ashnair1/coco_assistant/edit/master/docs/coco_assistant/utils/remapper.py" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  <h1>Remapper</h1>
+                
+                <div class="doc doc-object doc-module">
+<h3 class="doc doc-heading" id="coco_assistant.utils.remapper">
+
+        <code>coco_assistant.utils.remapper</code>
+
+
+      <a class="headerlink" href="#coco_assistant.utils.remapper" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents first">
+<div class="doc doc-children">
+<div class="doc doc-object doc-class">
+<h4 class="doc doc-heading" id="coco_assistant.utils.remapper.CatRemapper">
+
+        <code>CatRemapper</code>
+
+
+      <a class="headerlink" href="#coco_assistant.utils.remapper.CatRemapper" title="Permanent link">&para;</a></h4>
+<div class="doc doc-contents ">
+<div class="doc doc-children">
+<div class="doc doc-object doc-method">
+<h5 class="doc doc-heading" id="coco_assistant.utils.remapper.CatRemapper.__init__">
+
+        <code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cat1</span><span class="p">,</span> <span class="n">cat2</span><span class="p">)</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+      <a class="headerlink" href="#coco_assistant.utils.remapper.CatRemapper.__init__" title="Permanent link">&para;</a></h5>
+<div class="doc doc-contents ">
+<p>Target category list needs to be remapped to
+reference category list.</p>
+<p>The following are the three cases to be considered:</p>
+<div class="tabbed-set" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Case 1</label><div class="tabbed-content">
+<p>When cat1 and cat2 overlap and cat2 has no new categories</p>
+<div class="highlight">
+<pre><span></span><code>cat1: [{'id': 1, 'name': 'A'},
+       {'id': 2, 'name': 'B'},
+       {'id': 3, 'name': 'C'}]
+
+cat2: [{'id': 1, 'name': 'B'},
+       {'id': 2, 'name': 'C'},
+       {'id': 3, 'name': 'A'}]
+
+result: [{'id': 1, 'name': 'A'},
+         {'id': 2, 'name': 'B'},
+         {'id': 3, 'name': 'C'}]
+
+with
+
+overlap: {1:2, 2:3, 3:1}
+newcat : {}
+</code></pre>
+</div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Case 2</label><div class="tabbed-content">
+<p>When cat1 and cat2 overlap &amp; cat2 has new categories.</p>
+<div class="highlight">
+<pre><span></span><code>cat1: [{'id': 1, 'name': 'A'},
+       {'id': 2, 'name': 'B'},
+       {'id': 3, 'name': 'C'}]
+
+cat2: [{'id': 1, 'name': 'B'},
+       {'id': 2, 'name': 'A'},
+       {'id': 3, 'name': 'F'}]
+
+result: [{'id': 1, 'name': 'A'},
+         {'id': 2, 'name': 'B'},
+         {'id': 3, 'name': 'C'},
+         {'id': 4, 'name': 'F'}]
+
+with
+
+overlap: {1:2, 2:1}
+newcat : {3:4}
+</code></pre>
+</div>
+</div>
+<input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><label for="__tabbed_1_3">Case 3</label><div class="tabbed-content">
+<p>When cat1 and cat2 don't overlap</p>
+<div class="highlight">
+<pre><span></span><code>cat1: [{'id': 1, 'name': 'A'},
+       {'id': 2, 'name': 'B'},
+       {'id': 3, 'name': 'C'}]
+
+cat2: [{'id': 1, 'name': 'D'},
+       {'id': 2, 'name': 'E'},
+       {'id': 3, 'name': 'F'}]
+
+result: [{'id': 1, 'name': 'A'},
+         {'id': 2, 'name': 'B'},
+         {'id': 3, 'name': 'C'},
+         {'id': 4, 'name': 'D'},
+         {'id': 5, 'name': 'E'},
+         {'id': 6, 'name': 'F'}]
+
+with
+
+overlap: {}
+newcat : {1:4, 2:5, 3:6}
+</code></pre>
+</div>
+</div>
+</div>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cat1</code></td>
+<td><code>list[dict]</code></td>
+<td>
+<p>Reference category list of dicts</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>cat2</code></td>
+<td><code>list[dict]</code></td>
+<td>
+<p>Target category list of dicts</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+          <summary>Source code in <code>coco_assistant/utils/remapper.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cat1</span><span class="p">,</span> <span class="n">cat2</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Target category list needs to be remapped to</span>
+<span class="sd">    reference category list.</span>
+
+<span class="sd">    The following are the three cases to be considered:</span>
+
+
+<span class="sd">    === "Case 1"</span>
+
+<span class="sd">        When cat1 and cat2 overlap and cat2 has no new categories</span>
+
+<span class="sd">        ```</span>
+
+<span class="sd">        cat1: [{'id': 1, 'name': 'A'},</span>
+<span class="sd">               {'id': 2, 'name': 'B'},</span>
+<span class="sd">               {'id': 3, 'name': 'C'}]</span>
+
+<span class="sd">        cat2: [{'id': 1, 'name': 'B'},</span>
+<span class="sd">               {'id': 2, 'name': 'C'},</span>
+<span class="sd">               {'id': 3, 'name': 'A'}]</span>
+
+<span class="sd">        result: [{'id': 1, 'name': 'A'},</span>
+<span class="sd">                 {'id': 2, 'name': 'B'},</span>
+<span class="sd">                 {'id': 3, 'name': 'C'}]</span>
+
+<span class="sd">        with</span>
+
+<span class="sd">        overlap: {1:2, 2:3, 3:1}</span>
+<span class="sd">        newcat : {}</span>
+<span class="sd">        ```</span>
+
+
+
+<span class="sd">    === "Case 2"</span>
+
+<span class="sd">        When cat1 and cat2 overlap &amp; cat2 has new categories.</span>
+
+<span class="sd">        ```</span>
+<span class="sd">        cat1: [{'id': 1, 'name': 'A'},</span>
+<span class="sd">               {'id': 2, 'name': 'B'},</span>
+<span class="sd">               {'id': 3, 'name': 'C'}]</span>
+
+<span class="sd">        cat2: [{'id': 1, 'name': 'B'},</span>
+<span class="sd">               {'id': 2, 'name': 'A'},</span>
+<span class="sd">               {'id': 3, 'name': 'F'}]</span>
+
+<span class="sd">        result: [{'id': 1, 'name': 'A'},</span>
+<span class="sd">                 {'id': 2, 'name': 'B'},</span>
+<span class="sd">                 {'id': 3, 'name': 'C'},</span>
+<span class="sd">                 {'id': 4, 'name': 'F'}]</span>
+
+<span class="sd">        with</span>
+
+<span class="sd">        overlap: {1:2, 2:1}</span>
+<span class="sd">        newcat : {3:4}</span>
+<span class="sd">        ```</span>
+
+<span class="sd">    === "Case 3"</span>
+<span class="sd">        When cat1 and cat2 don't overlap</span>
+
+<span class="sd">        ```</span>
+<span class="sd">        cat1: [{'id': 1, 'name': 'A'},</span>
+<span class="sd">               {'id': 2, 'name': 'B'},</span>
+<span class="sd">               {'id': 3, 'name': 'C'}]</span>
+
+<span class="sd">        cat2: [{'id': 1, 'name': 'D'},</span>
+<span class="sd">               {'id': 2, 'name': 'E'},</span>
+<span class="sd">               {'id': 3, 'name': 'F'}]</span>
+
+<span class="sd">        result: [{'id': 1, 'name': 'A'},</span>
+<span class="sd">                 {'id': 2, 'name': 'B'},</span>
+<span class="sd">                 {'id': 3, 'name': 'C'},</span>
+<span class="sd">                 {'id': 4, 'name': 'D'},</span>
+<span class="sd">                 {'id': 5, 'name': 'E'},</span>
+<span class="sd">                 {'id': 6, 'name': 'F'}]</span>
+
+<span class="sd">        with</span>
+
+<span class="sd">        overlap: {}</span>
+<span class="sd">        newcat : {1:4, 2:5, 3:6}</span>
+<span class="sd">        ```</span>
+<span class="sd">    Args:</span>
+<span class="sd">        cat1 (list[dict]): Reference category list of dicts</span>
+<span class="sd">        cat2 (list[dict]): Target category list of dicts</span>
+<span class="sd">    """</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">refcat</span> <span class="o">=</span> <span class="n">cat1</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">refcat</span><span class="p">:</span>
+        <span class="n">c</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">cat1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_id_map</span><span class="p">(</span><span class="n">cat1</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cat2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_id_map</span><span class="p">(</span><span class="n">cat2</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h5 class="doc doc-heading" id="coco_assistant.utils.remapper.CatRemapper.generate_id_map">
+
+        <code class="highlight language-python">
+generate_id_map<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cat</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#coco_assistant.utils.remapper.CatRemapper.generate_id_map" title="Permanent link">&para;</a></h5>
+<div class="doc doc-contents ">
+<p>Generate category id name mapping</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cat</code></td>
+<td><code>list[dict]</code></td>
+<td>
+<p>Category list</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dict</code></td>
+<td>
+<p>Category id name mapping</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+          <summary>Source code in <code>coco_assistant/utils/remapper.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">generate_id_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cat</span><span class="p">):</span>
+    <span class="sd">"""Generate category id name mapping</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cat (list[dict]): Category list</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Category id name mapping</span>
+<span class="sd">    """</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="p">[[</span><span class="n">i</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">i</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cat</span><span class="p">]</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">c</span><span class="p">]</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">c</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h5 class="doc doc-heading" id="coco_assistant.utils.remapper.CatRemapper.remap_annotations">
+
+        <code class="highlight language-python">
+remap_annotations<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ann</span><span class="p">,</span> <span class="n">overlaps</span><span class="p">,</span> <span class="n">new_cats</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#coco_assistant.utils.remapper.CatRemapper.remap_annotations" title="Permanent link">&para;</a></h5>
+<div class="doc doc-contents ">
+<p>Remaps the annotation where overlapping category ids
+are mapped to reference category ids and new categories
+are given new ids.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ann</code></td>
+<td><code>dict</code></td>
+<td>
+<p>Annotation being modified</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>overlaps</code></td>
+<td><code>dict</code></td>
+<td>
+<p>Mapping of overlapping categories</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>new_cats</code></td>
+<td><code>dict</code></td>
+<td>
+<p>Mapping of new categories</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ann</code></td>
+<td>
+<p>Remapped annotation</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+          <summary>Source code in <code>coco_assistant/utils/remapper.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">remap_annotations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ann</span><span class="p">,</span> <span class="n">overlaps</span><span class="p">,</span> <span class="n">new_cats</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Remaps the annotation where overlapping category ids</span>
+<span class="sd">    are mapped to reference category ids and new categories</span>
+<span class="sd">    are given new ids.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ann (dict): Annotation being modified</span>
+<span class="sd">        overlaps (dict): Mapping of overlapping categories</span>
+<span class="sd">        new_cats (dict): Mapping of new categories</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ann: Remapped annotation</span>
+<span class="sd">    """</span>
+
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">ann</span><span class="p">:</span>
+        <span class="n">cat_id</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="s2">"category_id"</span><span class="p">]</span>
+        <span class="c1"># The category is either new or exists in the reference annotation</span>
+        <span class="k">if</span> <span class="n">cat_id</span> <span class="ow">in</span> <span class="n">new_cats</span><span class="p">:</span>
+            <span class="n">a</span><span class="p">[</span><span class="s2">"category_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_cats</span><span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="s2">"category_id"</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">a</span><span class="p">[</span><span class="s2">"category_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">overlaps</span><span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="s2">"category_id"</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">ann</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h5 class="doc doc-heading" id="coco_assistant.utils.remapper.CatRemapper.remap_cats">
+
+        <code class="highlight language-python">
+remap_cats<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#coco_assistant.utils.remapper.CatRemapper.remap_cats" title="Permanent link">&para;</a></h5>
+<div class="doc doc-contents ">
+<p>Check if the reference and target category lists overlap
+and remap them as necessary.</p>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tuple</code></td>
+<td>
+<ul>
+<li>result (list[dict]): New category list</li>
+<li>overlap_dict (dict): Mapping of overlapping categories</li>
+<li>newcat_dict (dict): Mapping of new categories</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+          <summary>Source code in <code>coco_assistant/utils/remapper.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">remap_cats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Check if the reference and target category lists overlap</span>
+<span class="sd">    and remap them as necessary.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple:</span>
+<span class="sd">        - result (list[dict]): New category list</span>
+<span class="sd">        - overlap_dict (dict): Mapping of overlapping categories</span>
+<span class="sd">        - newcat_dict (dict): Mapping of new categories</span>
+<span class="sd">    """</span>
+    <span class="n">c1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cat1</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">c2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cat2</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">c2</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">c1</span><span class="p">)))</span>
+
+    <span class="n">newcat_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">overlap_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">diff</span><span class="p">:</span>
+        <span class="c1"># New categories</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">diff</span><span class="p">):</span>
+            <span class="n">newcat_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cat2</span><span class="p">[</span><span class="n">d</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">c1</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">c1</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">cat2</span><span class="p">[</span><span class="n">d</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"id"</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="n">k</span><span class="p">})</span>
+
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cat1</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">overlap_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cat2</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">refcat</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">overlap_dict</span><span class="p">,</span> <span class="n">newcat_dict</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../misc/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Misc" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Misc
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.tabs.link", "navigation.sections", "navigation.tabs", "navigation.tracking", "search.highlight", "search.share", "search.suggest"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.709b4209.min.js", "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.2b46852b.min.js"></script>
+      
+    
+  </body>
+</html>

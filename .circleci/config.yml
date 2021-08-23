@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Building documentation
           command: |
-            poetry run mkdocs gh-deploy
+            poetry run mkdocs gh-deploy -m "[ci skip] Deployed {sha} with MkDocs version: {version}"
       - run:
           name: Runnning tests
           command: |
@@ -101,8 +101,7 @@ workflows:
                   only:
                      - master
                      - dev
-                  ignore:
-                     - gh-pages
+
   build_deploy:
     jobs:
       - test_coco_assistant:

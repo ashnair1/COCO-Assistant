@@ -1,6 +1,9 @@
 """
-Modified version of gen_anchors.py by Ngoc Anh Huynh (@experiencor)
+Modified version of gen_anchors.py by Ngoc Anh Huynh ([@experiencor](https://github.com/experiencor))
+
 Link: https://github.com/experiencor/keras-yolo2/blob/master/gen_anchors.py
+
+In progress
 """
 
 import random

@@ -147,7 +147,7 @@ class COCO_Assistant:
         Remove categories.
 
         In interactive mode, you can input the json and the categories to be
-        removed (as a list, see README for example)
+        removed (as a list, see Usage for example)
 
         In non-interactive mode, you manually pass in json filename and
         categories to be removed. Note that jc and rcats cannot be None if run
@@ -245,6 +245,9 @@ class COCO_Assistant:
     def anchors(self, n, fmt="rect", recompute=False):
         """
         Generate top N anchors
+
+        !!! attention
+            Experimental feature
 
         Args:
             n (int): Number of anchors

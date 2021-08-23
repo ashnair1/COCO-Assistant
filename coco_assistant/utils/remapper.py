@@ -107,8 +107,8 @@ class CatRemapper:
         Returns:
             tuple:
             - result (list[dict]): New category list
-            - overlap_dict (list[dict]): Mapping of overlapping categories
-            - newcat_dict (list[dict]): Mapping of new categories
+            - overlap_dict (dict): Mapping of overlapping categories
+            - newcat_dict (dict): Mapping of new categories
         """
         c1 = list(self.cat1.keys())
         c2 = list(self.cat2.keys())
@@ -144,8 +144,8 @@ class CatRemapper:
 
         Args:
             ann (dict): Annotation being modified
-            overlaps (list[dict]): Mapping of overlapping categories
-            new_cats (list[dict]): Mapping of new categories
+            overlaps (dict): Mapping of overlapping categories
+            new_cats (dict): Mapping of new categories
 
         Returns:
             ann: Remapped annotation

@@ -144,6 +144,18 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 importlib-metadata = {version = "*", markers = "python_version < \"3.8\""}
 
 [[package]]
+name = "coco-ash"
+version = "2.0.2"
+description = "Fork of pycocotools"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+cython = ">=0.27.3"
+matplotlib = ">=2.1.0"
+
+[[package]]
 name = "colorama"
 version = "0.4.4"
 description = "Cross-platform colored terminal text."
@@ -692,21 +704,6 @@ optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
-name = "pycocotools"
-version = "2.0.2"
-description = ""
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-cython = ">=0.27.3"
-matplotlib = ">=2.1.0"
-
-[package.source]
-type = "url"
-url = "https://github.com/ashnair1/coco-ash/archive/refs/tags/pycoco-ash.tar.gz"
-[[package]]
 name = "pycodestyle"
 version = "2.6.0"
 description = "Python style guide checker"
@@ -1154,7 +1151,7 @@ test = ["pytest", "black", "isort", "flake8", "flake8-docstrings", "pytest-cov",
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7.1,<4.0"
-content-hash = "06ce862f54aa579d307dbce3e36c191d2a2db6e3459c7dc82c7e65938250c28b"
+content-hash = "19c76d9ea3732f12c069daa9d8a294c2d95341f29c8ad58de9132a5d3d366565"
 
 [metadata.files]
 appdirs = [
@@ -1247,6 +1244,30 @@ charset-normalizer = [
 click = [
     {file = "click-8.0.1-py3-none-any.whl", hash = "sha256:fba402a4a47334742d782209a7c79bc448911afe1149d07bdabdf480b3e2f4b6"},
     {file = "click-8.0.1.tar.gz", hash = "sha256:8c04c11192119b1ef78ea049e0a6f0463e4c48ef00a30160c704337586f3ad7a"},
+]
+coco-ash = [
+    {file = "coco-ash-2.0.2.tar.gz", hash = "sha256:48a2f74c74df6bd33980cb6e32b4f17a1547b668c6f029d0019657d80f0320da"},
+    {file = "coco_ash-2.0.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:fe37a554065b707c731831a1b69d7190d2fb1346b48bb88b328c7cb4ca8402ce"},
+    {file = "coco_ash-2.0.2-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:b617612f341275d10a5d2ea0e508b6060def38f134fa8f24eae635a235156adc"},
+    {file = "coco_ash-2.0.2-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:4e49b3c4ba8a0c72ada61a9589c34f6dbf404540f0ece18db1d5c92cdfbf966d"},
+    {file = "coco_ash-2.0.2-cp37-cp37m-manylinux2010_i686.whl", hash = "sha256:35b66600ad4f2580c344ae013a3ee2805e31e35446116a80da78226cd993e451"},
+    {file = "coco_ash-2.0.2-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:65110d5d1690cd0542012c9d2851ad8feb5ea646aa22640729707a4f99ff5c86"},
+    {file = "coco_ash-2.0.2-cp37-cp37m-win32.whl", hash = "sha256:27f557a7ac3ed5a01000385955a2a9b4e14774329127b21af1c10e2558a35af5"},
+    {file = "coco_ash-2.0.2-cp37-cp37m-win_amd64.whl", hash = "sha256:c6eb09e481a9c6f39725faa0aae97e8b6377b5013e026c06e663afb64a915c00"},
+    {file = "coco_ash-2.0.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:2dbf8cc8c74db1d1f43d9c24e35abc78fa0bac6ddb95160946327d9c76db6bb9"},
+    {file = "coco_ash-2.0.2-cp38-cp38-manylinux1_i686.whl", hash = "sha256:254b8ca339fb5af5b2a0cd770ecf937f1a116ba8da2c690eb461f275f672d5c0"},
+    {file = "coco_ash-2.0.2-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:af89996ab86aa487f998139f16d9e791f796fff88c1abccafea9ee69bb681086"},
+    {file = "coco_ash-2.0.2-cp38-cp38-manylinux2010_i686.whl", hash = "sha256:8bd388fcad76ce7072226cd8a0fda0b610a0ec31cf40c1720c38a849750ae771"},
+    {file = "coco_ash-2.0.2-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:3ccab2ad6775c34e1505cf0617d1a33f84ec0b3a601a4a3fa547b165d84e9969"},
+    {file = "coco_ash-2.0.2-cp38-cp38-win32.whl", hash = "sha256:060b0a58fca6d4031fe68e175d1d64d504a312cb491123abbafde5e829a72840"},
+    {file = "coco_ash-2.0.2-cp38-cp38-win_amd64.whl", hash = "sha256:3817c70569dbf122f2bf6b94b4068aa6fb01cb1ea06931b11fe677cbfe6207b4"},
+    {file = "coco_ash-2.0.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:5c1fdc97828de4b1ac8b4b213462e15c6553982022108df3b3d59d47658492cf"},
+    {file = "coco_ash-2.0.2-cp39-cp39-manylinux1_i686.whl", hash = "sha256:687d034602bbb900455b8654243f4a35af9c3159e88dbbafe4be7ac9206d03ca"},
+    {file = "coco_ash-2.0.2-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:9c32aef4a1ce04d2d01283c455295ac4bc7facc5084587fb2b50ede0cea6bdd8"},
+    {file = "coco_ash-2.0.2-cp39-cp39-manylinux2010_i686.whl", hash = "sha256:610ad001fa611faf283497b28f4c5f007bcf45dba29218ac62b97efa5406a0b3"},
+    {file = "coco_ash-2.0.2-cp39-cp39-manylinux2010_x86_64.whl", hash = "sha256:276e4f5f1ea0570f7348440a065ec2d32018fa01e73a0889191c3d01b7540e73"},
+    {file = "coco_ash-2.0.2-cp39-cp39-win32.whl", hash = "sha256:df308668034012ad526691786494df5364ef8e246d46214a45b5a38274c5605c"},
+    {file = "coco_ash-2.0.2-cp39-cp39-win_amd64.whl", hash = "sha256:58436d11b2c0e06831ca0ca9085610203ef01b555e68e76134cb84872b8c8d45"},
 ]
 colorama = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
@@ -1712,7 +1733,6 @@ py = [
     {file = "py-1.10.0-py2.py3-none-any.whl", hash = "sha256:3b80836aa6d1feeaa108e046da6423ab8f6ceda6468545ae8d02d9d58d18818a"},
     {file = "py-1.10.0.tar.gz", hash = "sha256:21b81bda15b66ef5e1a777a21c4dcd9c20ad3efd0b3f817e7a809035269e1bd3"},
 ]
-pycocotools = []
 pycodestyle = [
     {file = "pycodestyle-2.6.0-py2.py3-none-any.whl", hash = "sha256:2295e7b2f6b5bd100585ebcb1f616591b652db8a741695b3d8f5d28bdc934367"},
     {file = "pycodestyle-2.6.0.tar.gz", hash = "sha256:c58a7d2815e0e8d7972bf1803331fb0152f867bd89adf8a01dfd55085434192e"},

@@ -1,0 +1,80 @@
+site_name: COCO-Assistant
+# site_url: http://www.jieyu.ai
+repo_url: https://github.com/ashnair1/coco_assistant
+repo_name: coco_assistant
+#strict: true
+
+
+# Configuration
+theme:
+  name: material
+  language: en
+  features:
+    - content.tabs.link
+    # - navigation.instant
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+  palette:
+    - scheme: slate
+      primary: deep-purple
+      accent: purple
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+    - scheme: default
+      primary: purple
+      accent: deep-purple
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+
+
+markdown_extensions:
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.tabbed
+  - attr_list
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight:
+      linenums: false
+  - pymdownx.superfences
+  - pymdownx.details
+  - admonition
+  - toc:
+      baselevel: 2
+      permalink: true
+      slugify: !!python/name:pymdownx.slugs.uslugify
+  - meta
+
+plugins:
+  - include-markdown
+  - search:
+      lang: en
+  - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+          - import sys
+          - sys.path.append("docs")
+          selection:
+            new_path_syntax: yes
+          rendering:
+            show_root_heading: true
+      watch:
+        - coco_assistant
+  - gen-files:
+      scripts:
+       - docs/gen_doc_stubs.py
+  - literate-nav:
+      nav_file: summary.md
+  - section-index

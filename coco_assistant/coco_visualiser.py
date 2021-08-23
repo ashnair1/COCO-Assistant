@@ -1,11 +1,10 @@
+from pathlib import Path
+
 import matplotlib.patches
 import matplotlib.pyplot as plt
 import matplotlib.widgets
 import mpl_toolkits.axes_grid1
-
 from pycocotools.coco import COCO
-from pathlib import Path
-
 
 # Reference: https://stackoverflow.com/questions/41545664/view-3-dimensional-numpy-array-in-matplotlib-and-taking-arguments-from-keyboard/41552601#41552601
 # Need to make a minor change in the showAnns function in coco.py which involves passing in a matplotlib axes. Changes are as follows:
@@ -120,10 +119,7 @@ def get_imgid_dict(ann):
     """
     Returns a dictionary with img ids as keys and img filenames as values
     """
-    id_fn_dict = {}
-    for item in ann.imgs.items():
-        id_fn_dict[item[1]["file_name"]] = item[0]
-    return id_fn_dict
+    return {item[1]["file_name"]: item[0] for item in ann.imgs.items()}
 
 
 def visualise_all(ann, img_dir):

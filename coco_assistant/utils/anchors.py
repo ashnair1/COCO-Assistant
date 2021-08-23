@@ -1,9 +1,13 @@
 """
-Modified version of gen_anchors.py by Ngoc Anh Huynh (@experiencor)
+Modified version of gen_anchors.py by Ngoc Anh Huynh ([@experiencor](https://github.com/experiencor))
+
 Link: https://github.com/experiencor/keras-yolo2/blob/master/gen_anchors.py
+
+In progress
 """
 
 import random
+
 import numpy as np
 from pycocotools.coco import COCO
 
@@ -30,10 +34,7 @@ def iou(ann, centroids):
 
 def avg_iou(anns, centroids):
     n, _ = anns.shape
-    s = 0
-
-    for i in range(anns.shape[0]):
-        s += max(iou(anns[i], centroids))
+    s = sum(max(iou(anns[i], centroids)) for i in range(anns.shape[0]))
 
     return s / n
 
@@ -100,7 +101,7 @@ def format_anchors(centroids):
     return sorted(new_anchors)
 
 
-def generate_anchors(cann, num_anchors, fmt=None):
+def generate_anchors(cann, num_anchors, fmt="rect"):
     anns = cann.anns
     # dims is a list of tuples (w,h) for each bbox
     dims = [tuple(map(float, (anns[i]["bbox"][-2], anns[i]["bbox"][-1]))) for i in anns]

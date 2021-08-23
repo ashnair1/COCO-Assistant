@@ -3,15 +3,15 @@ import ast
 import json
 import logging
 import sys
-import shutil
-
 from pathlib import Path
+
 from pycocotools.coco import COCO
 from tqdm import tqdm
 
+from coco_assistant import utils
+
 from . import coco_stats as stats
 from . import coco_visualiser as cocovis
-from coco_assistant import utils
 
 logging.basicConfig(level=logging.ERROR)
 logging.getLogger().setLevel(logging.WARNING)
@@ -22,9 +22,9 @@ Expected Directory Structure
 
 .
 ├── images
-│   ├── train
-│   ├── val
-|   ├── test
+│   ├── train/
+│   ├── val/
+|   ├── test/
 |
 ├── annotations
 │   ├── train.json
@@ -36,87 +36,49 @@ Expected Directory Structure
 
 
 class COCO_Assistant:
+    """COCO_Assistant object"""
+
     def __init__(self, img_dir, ann_dir):
         """
-        :param img_dir (str): path to images folder.
-        :param ann_dir (str): path to annotations folder.
+
+        Args:
+            img_dir (str): Path to images folder.
+            ann_dir (str): Path to images folder.
+
         """
         self.img_dir = Path(img_dir)
         self.ann_dir = Path(ann_dir)
+        self.res_dir = self.ann_dir.parent / "results"
 
-        # Parent dir should be the same
-        if self.ann_dir.parents[0] != self.img_dir.parents[0]:
-            raise AssertionError("Directory not in expected format")
-        self.res_dir = self.ann_dir.parents[0] / "results"
-
-        # Create Results Directory
-        if not self.res_dir.exists():
-            self.res_dir.mkdir()
-
-        self.imgfolders = sorted(
-            [i for i in self.img_dir.iterdir() if i.is_dir() and not i.name.startswith(".")]
-        )
-        imnames = [n.stem for n in self.imgfolders]
-
-        self.jsonfiles = sorted([j for j in self.ann_dir.iterdir() if j.suffix == ".json"])
-        jnames = [n.stem for n in self.jsonfiles]
-
-        if imnames != jnames:
-            raise AssertionError("Image dir and corresponding json file must have the same name")
-
-        self.names = imnames
+        self.dh = utils.DirectoryHandler(img_dir, ann_dir, self.res_dir)
 
         # TODO: Add check for confirming these folders only contain .jpg and .json respectively
-        logging.debug("Number of image folders = %s", len(self.imgfolders))
-        logging.debug("Number of annotation files = %s", len(self.jsonfiles))
+        logging.debug("Number of image folders = %s", len(self.dh.names))
+        logging.debug("Number of annotation files = %s", len(self.dh.names))
 
-        if not self.jsonfiles:
-            raise AssertionError("Annotation files not passed")
-        if not self.imgfolders:
-            raise AssertionError("Image folders not passed")
-
-        self.annfiles = [COCO(i) for i in self.jsonfiles]
-        self.anndict = dict(zip(self.jsonfiles, self.annfiles))
+        self.annfiles = [COCO(self.ann_dir / (i + ".json")) for i in self.dh.names]
+        self.anndict = dict(zip(self.dh.names, self.annfiles))
 
         self.ann_anchors = []
 
-    def merge(self, merge_images=True):
+    def merge(self):
         """
-        Function for merging multiple coco datasets
+        Merge multiple coco datasets
         """
-        self.resim_dir = self.res_dir / "merged" / "images"
-        self.resann_dir = self.res_dir / "merged" / "annotations"
 
-        utils.make_clean(self.resim_dir)
-        utils.make_clean(self.resann_dir)
-
-        if merge_images:
-            print("Merging image dirs")
-            im_dirs = self.imgfolders
-            imext = [".png", ".jpg", ".jpeg"]
-
-            logging.debug("Merging Image Dirs...")
-
-            for imdir in tqdm(im_dirs):
-                ims = [i for i in imdir.iterdir() if i.suffix.lower() in imext]
-                for im in ims:
-                    shutil.copyfile(im, self.resim_dir / im.name)
-
-        else:
-            logging.debug("Not merging Image Dirs...")
+        resann_dir = self.dh.create("merged/annotations")
 
         cann = {"images": [], "annotations": [], "info": None, "licenses": None, "categories": None}
 
         logging.debug("Merging Annotations...")
 
-        dst_ann = self.resann_dir / "merged.json"
+        dst_ann = resann_dir / "merged.json"
 
         print("Merging annotations")
-        for j in tqdm(self.jsonfiles):
-            with open(j) as a:
-                cj = json.load(a)
+        for j in tqdm(self.dh.names):
+            cj = self.anndict[j].dataset
 
-            ind = self.jsonfiles.index(j)
+            ind = self.dh.names.index(j)
             # Check if this is the 1st annotation.
             # If it is, continue else modify current annotation
             if ind == 0:
@@ -146,8 +108,8 @@ class COCO_Assistant:
                         if isinstance(last_imid, str):
                             im["image_id"] = id_dict[im["image_id"]]
 
-                last_imid = max([im["id"] for im in cann["images"]])
-                last_annid = max([ann["id"] for ann in cann["annotations"]])
+                last_imid = max(im["id"] for im in cann["images"])
+                last_annid = max(ann["id"] for ann in cann["annotations"])
 
             else:
 
@@ -180,24 +142,27 @@ class COCO_Assistant:
             json.dump(cann, aw)
 
     def remove_cat(self, interactive=True, jc=None, rcats=None):
-        """
-        Function for removing certain categories.
-        In interactive mode, you can input the json and the categories
-        to be removed (as a list, see README for example)
-        In non-interactive mode, you manually pass in json filename and
-        categories to be removed. Note that jc and
-        rcats cannot be None if run with interactive=False.
 
-        :param interactive: Run category removal in interactive mode
-        :param jc: Json choice
-        :param rcats: Categories to be removed
         """
-        resrm_dir = self.res_dir / "removal"
-        utils.make_clean(resrm_dir)
-        # jnames == imnames -> No extension
+        Remove categories.
+
+        In interactive mode, you can input the json and the categories to be
+        removed (as a list, see Usage for example)
+
+        In non-interactive mode, you manually pass in json filename and
+        categories to be removed. Note that jc and rcats cannot be None if run
+        with interactive=False.
+
+        Raises:
+            AssertionError: if specified index exceeds number of datasets
+            AssertionError: if rcats is not a list of strings
+            AssertionError: if jc = rcats = None
+        """
+
+        resrm_dir = self.dh.create("removal")
 
         if interactive:
-            print(self.names)
+            print(self.dh.names)
             print("Choose directory index (1:first, 2: second ..)")
 
             json_choice = input()
@@ -206,11 +171,12 @@ class COCO_Assistant:
             except ValueError:
                 sys.exit("Please specify an index")
 
-            if json_choice > len(self.names):
+            if json_choice > len(self.dh.names):
                 raise AssertionError("Index exceeds number of datasets")
-            ann = self.annfiles[json_choice]
-            json_name = self.jsonfiles[json_choice].name
-            self.jc = json_name  # hack
+            # ann = self.annfiles[json_choice]
+            name = self.dh.names[json_choice]
+            json_name = name + ".json"
+            ann = self.anndict[name]
 
             print("\nCategories present:")
             cats = [i["name"] for i in ann.cats.values()]
@@ -234,9 +200,9 @@ class COCO_Assistant:
                 )
             # If passed, json_choice needs to be full path
             json_choice = Path(jc)  # Full path
-            json_name = json_choice.name  # abc.json
-            self.jc = json_name  # hack
-            ann = self.anndict[Path(json_choice)]
+            name = json_choice.stem
+            json_name = json_choice.name  # abc
+            ann = self.anndict[name]
             self.rcats = rcats
 
         print("Removing specified categories...")
@@ -263,44 +229,58 @@ class COCO_Assistant:
             json.dump(x, oa)
 
     def ann_stats(self, stat, arearng, show_count=False, save=False):
-        """
-        Function for displaying statistics.
+        """Display statistics.
+
+        Args:
+            stat (str): Type of statistic to be shown. Supports ["area", "cat"]
+            arearng (list[float]): Area range list
+            show_count (bool, optional): Shows category countplot if True. Defaults to False.
+            save (bool, optional): Save stat plot to disk if True. Defaults to False.
         """
         if stat == "area":
-            stats.pi_area_split(self.annfiles, self.names, areaRng=arearng, save=save)
+            stats.pi_area_split(self.anndict, areaRng=arearng, save=save)
         elif stat == "cat":
-            stats.cat_count(self.annfiles, self.names, show_count=show_count, save=save)
+            stats.cat_count(self.anndict, show_count=show_count, save=save)
 
-    def anchors(self, n, fmt=None, recompute=False):
+    def anchors(self, n, fmt="rect", recompute=False):
         """
-        Function for generating top 'n' anchors
+        Generate top N anchors
 
-        :param n: Number of anchors
-        :param fmt: Format of anchors ['square', None]
-        :param recompute: Rerun k-means and recompute anchors
+        !!! attention
+            Experimental feature
+
+        Args:
+            n (int): Number of anchors
+            fmt (str): Anchor type i.e. square or rectangular. Defaults to "rect".
+            recompute (bool, optional): Recomputes the anchors if True. Defaults to False.
         """
+
         if recompute or not self.ann_anchors:
             print("Calculating anchors...")
-            a = [utils.generate_anchors(j, n, fmt) for j in self.annfiles]
-            self.ann_anchors = dict(zip(self.names, a))
+            names, anns = self.anndict.keys(), self.anndict.values()
+            a = [utils.generate_anchors(j, n, fmt) for j in anns]
+            self.ann_anchors = dict(zip(names, a))
         else:
             print("Loading pre-computed anchors")
             print(self.ann_anchors)
 
     def get_segmasks(self, palette=True):
         """
-        Function for generating segmentation masks.
+        Generate segmentation masks
+
+        Args:
+            palette (bool, optional): Create masks with color palette if True. Defaults to True.
         """
-        for ann, name in zip(self.annfiles, self.names):
+        for name, ann in self.anndict.items():
             output_dir = self.res_dir / "segmasks" / name
             utils.det2seg(ann, output_dir, palette)
 
     def visualise(self):
         """
-        Function for visualising annotations.
+        Visualise annotations.
         """
         print("Choose directory index (1:first, 2: second ..):")
-        print([s.stem for s in self.imgfolders])
+        print(self.dh.names)
 
         dir_choice = input()
         try:
@@ -308,15 +288,16 @@ class COCO_Assistant:
         except ValueError:
             sys.exit("Please specify an index")
 
-        if dir_choice > len(self.imgfolders):
+        if dir_choice > len(self.dh.names):
             raise AssertionError("Index exceeds number of datasets")
-        ann = self.annfiles[dir_choice]
-        img_dir = self.imgfolders[dir_choice]
+        dir_choice = self.dh.names[dir_choice]
+        ann = self.anndict[dir_choice]
+        img_dir = self.img_dir / dir_choice
         cocovis.visualise_all(ann, img_dir)
 
 
 if __name__ == "__main__":
-    p = Path("/home/ashwin/Desktop/Projects/COCO-Assistant/data/tiny_coco/")
+    p = Path("/media/ashwin/DATA1/COCO-Assistant/")
     img_dir = p / "images"
     ann_dir = p / "annotations"
 
@@ -326,6 +307,7 @@ if __name__ == "__main__":
 
     # cas.merge(False)
     # cas.remove_cat()
+    # cas.remove_cat(interactive=False, jc=ann_dir / "tiny2.json", rcats=['Large_Vehicle', 'Small_Vehicle'])
     # cas.ann_stats(stat="area",arearng=[10,144,512,1e5],save=False)
     # cas.ann_stats(stat="cat", arearng=None, show_count=False, save=False)
     # cas.visualise()

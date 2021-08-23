@@ -1,17 +1,14 @@
 import os
 import shutil
-
 import tarfile
+from pathlib import Path
+
+import pytest
+from pycocotools.coco import COCO
 
 from coco_assistant import COCO_Assistant
 from coco_assistant.utils import CatRemapper
-from pathlib import Path
-
-import data_getter
-
-from pycocotools.coco import COCO
-
-import pytest
+from tests import data_getter
 
 
 @pytest.fixture
@@ -19,7 +16,7 @@ def get_data():
     if os.path.isdir("./annotations") is False and os.path.isdir("./images") is False:
         # Download and extract data
         print("Downloading...")
-        file_id = "1WAFzdtIa56UL4wFVHg2TaBMhtzqRc0F-"
+        file_id = "1wvAnXDnMq2xDmYCZ6kUXIiMyHxYTigjy"
         destination = "test.tar.gz"
         data_getter.download_file_from_google_drive(file_id, destination)
         # Unzip data
@@ -37,11 +34,12 @@ def get_data():
 def test_merge(get_data):
     cas = COCO_Assistant(get_data[0], get_data[1])
     cas.merge()
-    comb = COCO(os.path.join(cas.resann_dir, "merged.json"))
+    comb = COCO(cas.res_dir / "merged/annotations/merged.json")
     # Get combined annotation count
     combann = len(comb.anns)
     # Get individual annotation counts
-    ann_counts = [len(_cfile.anns) for _cfile in cas.annfiles]
+    anns = cas.anndict.values()
+    ann_counts = [len(_cfile.anns) for _cfile in anns]
     print(combann)
     print(sum(ann_counts))
 
@@ -60,8 +58,8 @@ def test_cat_removal(get_data):
 
     cas.remove_cat(interactive=False, jc=Path(get_data[1]) / test_ann, rcats=test_rcats)
 
-    orig = COCO(os.path.join(cas.ann_dir, cas.jc))
-    rmj = COCO(os.path.join(cas.res_dir / "removal", cas.jc))
+    orig = cas.anndict[test_ann[:-5]]
+    rmj = COCO(cas.res_dir / "removal" / test_ann)
 
     orig_names = [list(orig.cats.values())[i]["name"] for i in range(len(orig.cats))]
     rmj_names = [list(rmj.cats.values())[i]["name"] for i in range(len(rmj.cats))]

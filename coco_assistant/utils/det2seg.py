@@ -1,5 +1,6 @@
-import numpy as np
 from pathlib import Path
+
+import numpy as np
 from PIL import Image
 from pycocotools.coco import COCO
 from tqdm import tqdm
@@ -13,9 +14,15 @@ def det2seg(cann, output_dir, palette=True):
     randomly assigned based on class if specified. Change
     the seed if you want to change colours.
 
-    :param cann: COCO annotation object
-    :param output_dir: Directory to store segmentation masks.
-    :param palette: bool -> True (use palette)/ False (no palette)
+
+    Args:
+        cann (dict): COCO annotation object
+        output_dir (str): Directory to store segmentation masks
+        palette (bool, optional): Use palette. Defaults to True.
+
+    Raises:
+        AssertionError: Incorrect shape for colour map array
+        AssertionError: Muliple images have same image id
     """
 
     output_dir = Path(output_dir)
@@ -56,7 +63,6 @@ def det2seg(cann, output_dir, palette=True):
         if not annids:
             # No annotations
             res = Image.fromarray(im)
-            res.save(output_dir / f"{name}")
         else:
             anns = cann.loadAnns(annids)
             areas = [i["area"] for i in anns]
@@ -82,7 +88,8 @@ def det2seg(cann, output_dir, palette=True):
             res = Image.fromarray(res)
             if palette:
                 res.putpalette(colour_map.astype(np.uint8))
-            res.save(output_dir / f"{name}")
+
+        res.save(output_dir / f"{name}")
 
 
 if __name__ == "__main__":

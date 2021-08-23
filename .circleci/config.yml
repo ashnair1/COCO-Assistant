@@ -1,11 +1,15 @@
 version: 2.1
+
 orbs:
-  snyk: snyk/snyk@0.0.13
+  snyk: snyk/snyk@1.0.2
+  #codecov: codecov/codecov@1.0.2
+  codacy: codacy/coverage-reporter@13.3.0
+
 jobs:
   test_coco_assistant:
     working_directory: ~/project
     docker:
-      - image: circleci/python:3.6.6
+      - image: cimg/python:3.7
     steps:
       - checkout
       # - restore_cache:
@@ -15,23 +19,27 @@ jobs:
           command: |
             sudo chown -R circleci:circleci /usr/local/
             python -m pip install --upgrade pip
-            python -m pip install Cython numpy
-            python -m pip install -r requirements-dev.txt
+            python -m pip install poetry
+            poetry install -E test
       # - save_cache:
       #     key: coco-{{ .Branch }}
       #     paths:
       #       - "/home/circleci/.cache/pip"
-      - snyk/scan
+      - snyk/scan:
+          severity-threshold: high
+          fail-on-issues: false
       - run:
           name: Runnning tests
           command: |
-            make remove && sudo make clean
             mkdir test-results
-            pytest --junitxml=test-results/junit.xml tests/tests.py
-            coverage run tests/tests.py
-            coverage report -m
-            coverage html && coverage xml
-            python-codacy-coverage -r coverage.xml
+            poetry run pytest --junitxml=test-results/junit.xml tests/test_coco_assistant.py
+            poetry run coverage run tests/test_coco_assistant.py
+            poetry run coverage report -m
+            poetry run coverage html && poetry run coverage xml
+      - codacy/send_report:
+          coverage-reports: coverage.xml
+      #- codecov/upload:
+      #    file: coverage.xml
       - store_test_results:
           path: test-results
       - store_artifacts:
@@ -40,7 +48,7 @@ jobs:
   test_deploy:
     working_directory: ~/project
     docker:
-      - image: circleci/python:3.6.6
+      - image: cimg/python:3.7
     steps:
       - checkout
       - run:
@@ -72,7 +80,7 @@ jobs:
   deploy:
     working_directory: ~/project
     docker:
-      - image: circleci/python:3.6.6
+      - image: cimg/python:3.7
     steps:
       - checkout
       - run:

@@ -5,77 +5,85 @@ class CatRemapper:
         reference category list.
 
         The following are the three cases to be considered:
-        *******************************************************
 
-        Case 1: When cat1 and cat2 overlap and cat2 has no new
-                categories
 
-        cat1: [{'id': 1, 'name': 'A'},
-               {'id': 2, 'name': 'B'},
-               {'id': 3, 'name': 'C'}]
+        === "Case 1"
 
-        cat2: [{'id': 1, 'name': 'B'},
-               {'id': 2, 'name': 'C'},
-               {'id': 3, 'name': 'A'}]
+            When cat1 and cat2 overlap and cat2 has no new categories
 
-        result: [{'id': 1, 'name': 'A'},
-                 {'id': 2, 'name': 'B'},
-                 {'id': 3, 'name': 'C'}]
+            ```
 
-         with
+            cat1: [{'id': 1, 'name': 'A'},
+                   {'id': 2, 'name': 'B'},
+                   {'id': 3, 'name': 'C'}]
 
-        overlap: {1:2, 2:3, 3:1}
-        newcat : {}
+            cat2: [{'id': 1, 'name': 'B'},
+                   {'id': 2, 'name': 'C'},
+                   {'id': 3, 'name': 'A'}]
 
-        *******************************************************
+            result: [{'id': 1, 'name': 'A'},
+                     {'id': 2, 'name': 'B'},
+                     {'id': 3, 'name': 'C'}]
 
-        Case 2: When cat1 and cat2 overlap & cat2 has new
-                categories.
+            with
 
-        cat1: [{'id': 1, 'name': 'A'},
-               {'id': 2, 'name': 'B'},
-               {'id': 3, 'name': 'C'}]
+            overlap: {1:2, 2:3, 3:1}
+            newcat : {}
+            ```
 
-        cat2: [{'id': 1, 'name': 'B'},
-               {'id': 2, 'name': 'A'},
-               {'id': 3, 'name': 'F'}]
 
-        result: [{'id': 1, 'name': 'A'},
-                 {'id': 2, 'name': 'B'},
-                 {'id': 3, 'name': 'C'},
-                 {'id': 4, 'name': 'F'}]
 
-        with
+        === "Case 2"
 
-        overlap: {1:2, 2:1}
-        newcat : {3:4}
+            When cat1 and cat2 overlap & cat2 has new categories.
 
-        *******************************************************
+            ```
+            cat1: [{'id': 1, 'name': 'A'},
+                   {'id': 2, 'name': 'B'},
+                   {'id': 3, 'name': 'C'}]
 
-        Case 3: When cat1 and cat2 don't overlap
+            cat2: [{'id': 1, 'name': 'B'},
+                   {'id': 2, 'name': 'A'},
+                   {'id': 3, 'name': 'F'}]
 
-        cat1: [{'id': 1, 'name': 'A'},
-               {'id': 2, 'name': 'B'},
-               {'id': 3, 'name': 'C'}]
+            result: [{'id': 1, 'name': 'A'},
+                     {'id': 2, 'name': 'B'},
+                     {'id': 3, 'name': 'C'},
+                     {'id': 4, 'name': 'F'}]
 
-        cat2: [{'id': 1, 'name': 'D'},
-               {'id': 2, 'name': 'E'},
-               {'id': 3, 'name': 'F'}]
+            with
 
-        result: [{'id': 1, 'name': 'A'},
-                 {'id': 2, 'name': 'B'},
-                 {'id': 3, 'name': 'C'},
-                 {'id': 4, 'name': 'D'},
-                 {'id': 5, 'name': 'E'},
-                 {'id': 6, 'name': 'F'}]
+            overlap: {1:2, 2:1}
+            newcat : {3:4}
+            ```
 
-        with
+        === "Case 3"
+            When cat1 and cat2 don't overlap
 
-        overlap: {}
-        newcat : {1:4, 2:5, 3:6}
+            ```
+            cat1: [{'id': 1, 'name': 'A'},
+                   {'id': 2, 'name': 'B'},
+                   {'id': 3, 'name': 'C'}]
 
-        :param cat1: Reference category list of dicts
-        :param cat2: Target category list of dicts
+            cat2: [{'id': 1, 'name': 'D'},
+                   {'id': 2, 'name': 'E'},
+                   {'id': 3, 'name': 'F'}]
+
+            result: [{'id': 1, 'name': 'A'},
+                     {'id': 2, 'name': 'B'},
+                     {'id': 3, 'name': 'C'},
+                     {'id': 4, 'name': 'D'},
+                     {'id': 5, 'name': 'E'},
+                     {'id': 6, 'name': 'F'}]
+
+            with
+
+            overlap: {}
+            newcat : {1:4, 2:5, 3:6}
+            ```
+        Args:
+            cat1 (list[dict]): Reference category list of dicts
+            cat2 (list[dict]): Target category list of dicts
         """
 
         self.refcat = cat1
@@ -96,10 +104,11 @@ class CatRemapper:
         Check if the reference and target category lists overlap
         and remap them as necessary.
 
-        :return: result: new category list
-        :return: overlap_dict: mapping of overlapping categories
-        :return: newcat_dict: mapping of new categories
-
+        Returns:
+            tuple:
+            - result (list[dict]): New category list
+            - overlap_dict (dict): Mapping of overlapping categories
+            - newcat_dict (dict): Mapping of new categories
         """
         c1 = list(self.cat1.keys())
         c2 = list(self.cat2.keys())
@@ -124,13 +133,7 @@ class CatRemapper:
             except KeyError:
                 continue
 
-        if res:
-            # Return updated reference category list
-            result = res
-        else:
-            # Return original reference category list
-            result = self.refcat
-
+        result = res or self.refcat
         return result, overlap_dict, newcat_dict
 
     def remap_annotations(self, ann, overlaps, new_cats):
@@ -139,10 +142,13 @@ class CatRemapper:
         are mapped to reference category ids and new categories
         are given new ids.
 
-        :param ann: annotation being modified (dict)
-        :param overlaps: mapping of overlapping categories
-        :param new_cats: mapping of new categories
-        :return:
+        Args:
+            ann (dict): Annotation being modified
+            overlaps (dict): Mapping of overlapping categories
+            new_cats (dict): Mapping of new categories
+
+        Returns:
+            ann: Remapped annotation
         """
 
         for a in ann:
@@ -155,8 +161,15 @@ class CatRemapper:
         return ann
 
     def generate_id_map(self, cat):
+        """Generate category id name mapping
+
+        Args:
+            cat (list[dict]): Category list
+
+        Returns:
+            dict: Category id name mapping
+        """
         c = [[i["name"].lower(), i["id"]] for i in cat]
         keys = [i[0] for i in c]
         values = [i[1] for i in c]
-        idmap = dict(zip(keys, values))
-        return idmap
+        return dict(zip(keys, values))

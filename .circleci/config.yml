@@ -29,6 +29,10 @@ jobs:
           severity-threshold: high
           fail-on-issues: false
       - run:
+          name: Building documentation
+          command: |
+            poetry run mkdocs build
+      - run:
           name: Runnning tests
           command: |
             mkdir test-results

@@ -20,7 +20,7 @@ jobs:
             sudo chown -R circleci:circleci /usr/local/
             python -m pip install --upgrade pip
             python -m pip install poetry
-            poetry install -E test
+            poetry install -E test -E doc -E dev
       # - save_cache:
       #     key: coco-{{ .Branch }}
       #     paths:

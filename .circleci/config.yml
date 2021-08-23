@@ -54,6 +54,9 @@ jobs:
     docker:
       - image: cimg/python:3.7
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - cf:c8:70:07:e5:ab:06:9a:da:ac:cf:fa:91:ea:8a:49
       - checkout
       - run:
           name: Setup environment
@@ -86,6 +89,9 @@ jobs:
     docker:
       - image: cimg/python:3.7
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - cf:c8:70:07:e5:ab:06:9a:da:ac:cf:fa:91:ea:8a:49
       - checkout
       - run:
           name: Setup environment

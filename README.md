@@ -29,3 +29,8 @@ COCO-Assistant currently supports the following features:
 -   Remove specfiic category from dataset.
 -   Generate annotations statistics - distribution of object areas and category distribution.
 -   Annotation visualiser for viewing the entire dataset.
+
+
+## Credits
+
+This package was created with the [zillionare/cookiecutter-pypackage](https://github.com/zillionare/cookiecutter-pypackage) project template.

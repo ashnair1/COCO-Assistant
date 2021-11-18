@@ -30,6 +30,8 @@ COCO-Assistant currently supports the following features:
 -   Generate annotations statistics - distribution of object areas and category distribution.
 -   Annotation visualiser for viewing the entire dataset.
 
+## Documentation
+Project documentation can be found [here](https://ashnair1.github.io/COCO-Assistant/index)
 
 ## Credits
 

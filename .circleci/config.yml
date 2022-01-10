@@ -47,11 +47,6 @@ jobs:
           severity-threshold: high
           fail-on-issues: false
       - run:
-          name: Building documentation
-          command: |
-            git config user.name 'github-actions[bot]' && git config user.email 'github-actions[bot]@users.noreply.github.com'
-            poetry run mkdocs gh-deploy -m "[skip ci] Deployed {sha} with MkDocs version: {version}"
-      - run:
           name: Runnning tests
           command: |
             mkdir test-results

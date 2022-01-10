@@ -1,6 +1,6 @@
 import os
 import shutil
-import tarfile
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -8,26 +8,23 @@ from pycocotools.coco import COCO
 
 from coco_assistant import COCO_Assistant
 from coco_assistant.utils import CatRemapper
-from tests import data_getter
+
+TESTS_DATA_DIR = "tests/tiny_coco"
+
+
+def git(*args):
+    return subprocess.check_call(["git"] + list(args))
 
 
 @pytest.fixture
 def get_data():
-    if os.path.isdir("./annotations") is False and os.path.isdir("./images") is False:
-        # Download and extract data
-        print("Downloading...")
-        file_id = "1wvAnXDnMq2xDmYCZ6kUXIiMyHxYTigjy"
-        destination = "test.tar.gz"
-        data_getter.download_file_from_google_drive(file_id, destination)
-        # Unzip data
-        print("Extracting")
-        tar = tarfile.open(destination, "r:gz")
-        tar.extractall()
-        tar.close()
+    if not os.path.isdir(TESTS_DATA_DIR):
+        os.mkdir(TESTS_DATA_DIR)
+        git("clone", "https://github.com/ashnair1/tiny_coco.git", TESTS_DATA_DIR)
     # Set up paths
-    img_dir = os.path.join(os.getcwd(), "images")
-    ann_dir = os.path.join(os.getcwd(), "annotations")
-    return [img_dir, ann_dir]
+    img_dir = os.path.join(TESTS_DATA_DIR, "images")
+    ann_dir = os.path.join(TESTS_DATA_DIR, "annotations")
+    return img_dir, ann_dir
 
 
 # @pytest.mark.skip
@@ -53,8 +50,8 @@ def test_merge(get_data):
 def test_cat_removal(get_data):
     cas = COCO_Assistant(get_data[0], get_data[1])
 
-    test_ann = "tiny2.json"
-    test_rcats = sorted(["plane", "ship", "Large_Vehicle"])
+    test_ann = "val2017.json"
+    test_rcats = sorted(["person", "bottle", "dining table"])
 
     cas.remove_cat(interactive=False, jc=Path(get_data[1]) / test_ann, rcats=test_rcats)
 

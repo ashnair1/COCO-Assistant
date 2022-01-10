@@ -6,6 +6,24 @@ orbs:
   codacy: codacy/coverage-reporter@13.3.0
 
 jobs:
+  build_docs:
+    working_directory: ~/project
+    docker:
+      - image: cimg/python:3.7
+    steps:
+      - checkout
+      - run:
+          name: Setup environment
+          command: |
+            sudo chown -R circleci:circleci /usr/local/
+            python -m pip install --upgrade pip
+            python -m pip install poetry
+            poetry install -E doc
+      - run:
+          name: Building documentation
+          command: |
+            git config user.name 'github-actions[bot]' && git config user.email 'github-actions[bot]@users.noreply.github.com'
+            poetry run mkdocs gh-deploy -m "[skip ci] Deployed {sha} with MkDocs version: {version}"
   test_coco_assistant:
     working_directory: ~/project
     docker:
@@ -93,8 +111,8 @@ jobs:
 
 
 workflows:
-  version: 2.1
-  build_test:
+  version: 2
+  test_and_build_docs:
     jobs:
       - test_coco_assistant:
            filters:
@@ -102,11 +120,22 @@ workflows:
                   only:
                      - master
                      - dev
+      - build_docs:
+           filters:
+              branches:
+                  only:
+                     - master
 
   build_deploy:
     jobs:
       - test_coco_assistant:
             filters:
+              tags:
+                only: /[0-9]+(\.[0-9]+)*/
+              branches:
+                ignore: /.*/
+      - build_docs:
+           filters:
               tags:
                 only: /[0-9]+(\.[0-9]+)*/
               branches:
@@ -120,6 +149,7 @@ workflows:
       - deploy:
             requires:
               - test_coco_assistant
+              - build_docs
               - test_deploy
             filters:
               tags:

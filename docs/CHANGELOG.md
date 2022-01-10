@@ -1,12 +1,24 @@
 # History
 
+## 0.4.0 (2021-08-23)
+
+**Changes**:
+
+-   Drop Python 3.6 support
+-   Improved documentation
+-   Standardise docstring styles ([#32](https://github.com/ashnair1/COCO-Assistant/pull/32>))
+
+**Bugfixes**:
+
+-   Bugfix for merge creating duplicated IDs by [philipsgithub](https://github.com/philipsgithub) ([#50](https://github.com/ashnair1/COCO-Assistant/pull/50))
+
 ## 0.3.5 (2021-05-06)
 
 **Changes**:
 
 -   Replace os with pathlib for managing paths.
 -   Fixed bug in det2seg where small annotations were covered by larger annotations.
--   Faster category removal by [@xychen9459](https://github.com/xychen9459).
+-   Faster category removal by [@xychen9459](https://github.com/xychen9459) ([#43](https://github.com/ashnair1/COCO-Assistant/pull/43>)).
 
 ## 0.3.4 (2021-03-14)
 

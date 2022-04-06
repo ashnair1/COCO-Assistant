@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  snyk: snyk/snyk@1.0.2
+  snyk: snyk/snyk@1.1.2
   #codecov: codecov/codecov@1.0.2
   codacy: codacy/coverage-reporter@13.3.0
 

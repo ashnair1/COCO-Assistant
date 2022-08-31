@@ -25,7 +25,7 @@ packages = [
 python = ">=3.7.1,<4.0"
 
 # Mandatory 
-matplotlib = "^3.4.2"
+matplotlib = "^3.5.0"
 pandas = "^1.3.1"
 pycocotools = {git = "https://github.com/ashnair1/cocoapi.git", subdirectory = "PythonAPI", branch="master"}
 seaborn = "^0.11.1"
@@ -87,7 +87,7 @@ doc = [
 coco-assistant = 'coco_assistant.cli:main'
 
 [build-system]
-requires = ["poetry-core>=1.1.0rc3"]
+requires = ["poetry-core>=1.1.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]

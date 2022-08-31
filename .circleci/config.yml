@@ -17,7 +17,7 @@ jobs:
           command: |
             sudo chown -R circleci:circleci /usr/local/
             python -m pip install --upgrade pip
-            python -m pip install poetry
+            python -m pip install poetry poetry-core
             poetry install -E doc
       - run:
           name: Building documentation

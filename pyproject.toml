@@ -80,6 +80,7 @@ doc = [
     "mkdocs-material",
     "mkdocs-material-extension",
     "mkdocstrings",
+    "mkdocstrings-python",
     "mkdocs-autorefs",
     "mkdocs-section-index"
     ]

@@ -71,7 +71,7 @@ name = "cached-property"
 version = "1.5.2"
 description = "A decorator for caching properties in classes."
 category = "main"
-optional = false
+optional = true
 python-versions = "*"
 
 [[package]]
@@ -117,7 +117,7 @@ name = "click"
 version = "8.1.3"
 description = "Composable command line interface toolkit"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -251,7 +251,7 @@ name = "ghp-import"
 version = "2.1.0"
 description = "Copy your docs directly to the gh-pages branch."
 category = "main"
-optional = false
+optional = true
 python-versions = "*"
 
 [package.dependencies]
@@ -265,7 +265,7 @@ name = "griffe"
 version = "0.22.0"
 description = "Signatures for entire Python programs. Extract the structure, the frame, the skeleton of your project, to generate API documentation or find breaking changes in your API."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -298,7 +298,7 @@ name = "importlib-metadata"
 version = "4.12.0"
 description = "Read metadata from Python packages"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -348,7 +348,7 @@ name = "Jinja2"
 version = "3.1.2"
 description = "A very fast and expressive template engine."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -403,7 +403,7 @@ name = "Markdown"
 version = "3.3.7"
 description = "Python implementation of Markdown."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -417,7 +417,7 @@ name = "MarkupSafe"
 version = "2.1.1"
 description = "Safely add untrusted strings to HTML/XML markup."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [[package]]
@@ -452,7 +452,7 @@ name = "mergedeep"
 version = "1.3.4"
 description = "A deep merge function for 🐍."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [[package]]
@@ -460,7 +460,7 @@ name = "mkdocs"
 version = "1.3.1"
 description = "Project documentation with Markdown."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -483,7 +483,7 @@ name = "mkdocs-autorefs"
 version = "0.4.1"
 description = "Automatically link across pages in MkDocs."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -564,7 +564,7 @@ name = "mkdocstrings"
 version = "0.19.0"
 description = "Automatic documentation from sources, for MkDocs."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -585,7 +585,7 @@ name = "mkdocstrings-python"
 version = "0.7.1"
 description = "A Python handler for mkdocstrings."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -816,7 +816,7 @@ name = "pymdown-extensions"
 version = "9.5"
 description = "Extension pack for Python Markdown."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -903,7 +903,7 @@ name = "PyYAML"
 version = "6.0"
 description = "YAML parser and emitter for Python"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [[package]]
@@ -911,7 +911,7 @@ name = "pyyaml_env_tag"
 version = "0.1"
 description = "A custom YAML tag for referencing environment variables in YAML files. "
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -1200,7 +1200,7 @@ name = "watchdog"
 version = "2.1.9"
 description = "Filesystem events monitoring"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.extras]
@@ -1219,7 +1219,7 @@ name = "zipp"
 version = "3.8.1"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.extras]
@@ -1228,13 +1228,13 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 
 [extras]
 dev = ["tox", "pre-commit", "virtualenv", "pip", "twine", "toml"]
-doc = ["livereload", "mkdocs", "mkdocs-gen-files", "mkdocs-include-markdown-plugin", "mkdocs-literate-nav", "mkdocs-material", "mkdocstrings", "mkdocs-autorefs", "mkdocs-section-index"]
+doc = ["livereload", "mkdocs", "mkdocs-gen-files", "mkdocs-include-markdown-plugin", "mkdocs-literate-nav", "mkdocs-material", "mkdocstrings", "mkdocstrings-python", "mkdocs-autorefs", "mkdocs-section-index"]
 test = ["pytest", "black", "isort", "flake8", "flake8-docstrings", "pytest-cov", "coverage"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7.1,<4.0"
-content-hash = "6b14b7d3e3d1566d0e9b8bb733a36787b333ea6d6a86bbededf85de831b8935d"
+content-hash = "5a989f94b9726286640f677bebf1d5c32fce430e8f294dc4394894169a6d6449"
 
 [metadata.files]
 appdirs = [

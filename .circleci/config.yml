@@ -17,13 +17,13 @@ jobs:
           command: |
             sudo chown -R circleci:circleci /usr/local/
             python -m pip install --upgrade pip
-            python -m pip install poetry poetry-core
-            poetry install -E doc
+            python -m pip install poetry
+            python -m poetry install -E doc
       - run:
           name: Building documentation
           command: |
             git config user.name 'github-actions[bot]' && git config user.email 'github-actions[bot]@users.noreply.github.com'
-            poetry run mkdocs gh-deploy -m "[skip ci] Deployed {sha} with MkDocs version: {version}"
+            python -m poetry run mkdocs gh-deploy -m "[skip ci] Deployed {sha} with MkDocs version: {version}"
   test_coco_assistant:
     working_directory: ~/project
     docker:
@@ -38,9 +38,7 @@ jobs:
             sudo chown -R circleci:circleci /usr/local/
             python -m pip install --upgrade pip
             python -m pip install poetry
-            which poetry
-            pip show poetry
-            poetry install -E test -E doc -E dev
+            python -m poetry install -E test -E doc -E dev
       # - save_cache:
       #     key: coco-{{ .Branch }}
       #     paths:
@@ -52,10 +50,10 @@ jobs:
           name: Runnning tests
           command: |
             mkdir test-results
-            poetry run pytest --junitxml=test-results/junit.xml tests/test_coco_assistant.py
-            poetry run coverage run tests/test_coco_assistant.py
-            poetry run coverage report -m
-            poetry run coverage html && poetry run coverage xml
+            python -m poetry run pytest --junitxml=test-results/junit.xml tests/test_coco_assistant.py
+            python -m poetry run coverage run tests/test_coco_assistant.py
+            python -m poetry run coverage report -m
+            python -m poetry run coverage html && python -m poetry run coverage xml
       - codacy/send_report:
           coverage-reports: coverage.xml
       #- codecov/upload:
@@ -78,13 +76,13 @@ jobs:
           name: Setup environment
           command: |
             sudo chown -R circleci:circleci /usr/local/
-            poetry install -E dev
+            python -m poetry install -E dev
 
       - run:
           name: Build and upload to Test PyPI
           command: |
-            poetry config repositories.testpypi https://test.pypi.org/legacy/
-            poetry publish --build -r testpypi -u ashnair1 -p $TEST_PYPI_PASSWORD
+            python -m poetry config repositories.testpypi https://test.pypi.org/legacy/
+            python -m poetry publish --build -r testpypi -u ashnair1 -p $TEST_PYPI_PASSWORD
 
   deploy:
     working_directory: ~/project
@@ -99,12 +97,12 @@ jobs:
           name: Setup environment
           command: |
             sudo chown -R circleci:circleci /usr/local/
-            poetry install -E dev
+            python -m poetry install -E dev
 
       - run:
           name: Build and upload to PyPI
           command: |
-            poetry publish --build -u ashnair1 -p $PYPI_PASSWORD
+            python -m poetry publish --build -u ashnair1 -p $PYPI_PASSWORD
 
 
 workflows:

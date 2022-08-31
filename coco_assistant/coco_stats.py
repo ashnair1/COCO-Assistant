@@ -84,8 +84,8 @@ def get_object_size_split(ann, areaRng):
     small = len(ann.getAnnIds(areaRng=[(areaRng[0] ** 2), areaRng[1] ** 2 - 1]))
     medium = len(ann.getAnnIds(areaRng=[(areaRng[1] ** 2), areaRng[2] ** 2 - 1]))
     large = len(ann.getAnnIds(areaRng=[(areaRng[2] ** 2), areaRng[3] ** 2 - 1]))
-    left_out = len(ann.getAnnIds(areaRng=[0 ** 2, (areaRng[0] ** 2)])) + len(
-        ann.getAnnIds(areaRng=[areaRng[3] ** 2, (1e5 ** 2)])
+    left_out = len(ann.getAnnIds(areaRng=[0**2, (areaRng[0] ** 2)])) + len(
+        ann.getAnnIds(areaRng=[areaRng[3] ** 2, (1e5**2)])
     )
 
     logging.debug("Number of small objects in set = %s", small)

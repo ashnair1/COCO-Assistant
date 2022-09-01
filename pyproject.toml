@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "coco_assistant"
-version = "0.4.0"
+version = "0.4.1"
 homepage = "https://github.com/ashnair1/coco_assistant"
 description = "Helper for dealing with MS-COCO annotations."
 authors = ["Ashwin Nair <ashnair0007@gmail.com>"]

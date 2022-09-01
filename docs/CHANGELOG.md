@@ -1,5 +1,11 @@
 # History
 
+## 0.4.1 (2022-09-01)
+
+**Changes**:
+
+-   Drop coco-ash dependency. coco-ash was a personal fork of pycocotools and was created as a workaround for when poetry did not support git dependencies rooted in subdirectories. Since that is no longer the case, we're dropping the coco-ash dependency.
+
 ## 0.4.0 (2021-08-23)
 
 **Changes**:

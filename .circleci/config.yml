@@ -76,6 +76,7 @@ jobs:
           name: Setup environment
           command: |
             sudo chown -R circleci:circleci /usr/local/
+            python -m pip install poetry
             python -m poetry install -E dev
 
       - run:
@@ -97,6 +98,7 @@ jobs:
           name: Setup environment
           command: |
             sudo chown -R circleci:circleci /usr/local/
+            python -m pip install poetry
             python -m poetry install -E dev
 
       - run:

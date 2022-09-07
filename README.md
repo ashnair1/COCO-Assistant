@@ -6,6 +6,8 @@
 [![PyPi License](https://img.shields.io/pypi/v/coco-assistant?branch=master&label=PyPi%20Version&logo=PyPi&logoColor=ffffff&labelColor=306998&color=FFD43B&style=flat)](https://pypi.org/project/coco-assistant/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://img.shields.io/github/license/ashnair1/COCO-Assistant?color=yellow&label=License&logo=MIT)
 
+### Note: Please install from source. I've encountered some issues with uploading to Pypi and will look into this when I have time.
+
 Helper for dealing with MS-COCO annotations.
 
 ## Overview

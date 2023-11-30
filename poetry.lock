@@ -1214,13 +1214,13 @@ tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "pa
 
 [[package]]
 name = "pip"
-version = "22.2.2"
+version = "23.3"
 description = "The PyPA recommended tool for installing Python packages."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pip-22.2.2-py3-none-any.whl", hash = "sha256:b61a374b5bc40a6e982426aede40c9b5a08ff20e640f5b56977f4f91fed1e39a"},
-    {file = "pip-22.2.2.tar.gz", hash = "sha256:3fd1929db052f056d7a998439176d3333fa1b3f6c1ad881de1885c0717608a4b"},
+    {file = "pip-23.3-py3-none-any.whl", hash = "sha256:bc38bb52bc286514f8f7cb3a1ba5ed100b76aaef29b521d48574329331c5ae7b"},
+    {file = "pip-23.3.tar.gz", hash = "sha256:bb7d4f69f488432e4e96394612f43ab43dd478d073ef7422604a570f7157561e"},
 ]
 
 [[package]]
@@ -2061,4 +2061,4 @@ test = ["black", "coverage", "flake8", "flake8-docstrings", "isort", "pytest", "
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.7.1,<4.0"
-content-hash = "5a989f94b9726286640f677bebf1d5c32fce430e8f294dc4394894169a6d6449"
+content-hash = "df258fb5df16a01672ccce885c5f79e970aa70a37d137841920fdf78c2e9c644"

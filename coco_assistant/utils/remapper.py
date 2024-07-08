@@ -114,14 +114,16 @@ class CatRemapper:
         c2 = list(self.cat2.keys())
         diff = sorted(list(set(c2) - set(c1)))
 
+        max_c1_id = max(self.cat1.values())
+
         newcat_dict = {}
         overlap_dict = {}
         res = []
         if diff:
             # New categories
             for i, d in enumerate(diff):
-                newcat_dict[self.cat2[d]] = len(c1) + i + 1
-                self.result[d] = len(c1) + i + 1
+                newcat_dict[self.cat2[d]] = max_c1_id + i + 1
+                self.result[d] = max_c1_id + i + 1
                 del self.cat2[d]
 
             for k, v in self.result.items():
